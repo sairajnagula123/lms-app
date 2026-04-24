@@ -6,7 +6,7 @@ function CourseList() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    fetch("http://localhost:5000/api/courses")
+    fetch(`${import.meta.env.VITE_API_URL}/api/courses`)
       .then((res) => res.json())
       .then((data) => setCourses(data));
   }, []);

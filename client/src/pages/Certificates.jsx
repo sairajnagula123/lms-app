@@ -5,7 +5,7 @@ function Certificates() {
   const [certs, setCerts] = useState([]);
 
   useEffect(() => {
-    fetch(`http://localhost:5000/api/certificates/${localStorage.getItem("email")}`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/certificates/${localStorage.getItem("email")}`)
       .then(res => res.json())
       .then(data => setCerts(data));
   }, []);
