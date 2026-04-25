@@ -1,46 +1,138 @@
-/* src/styles/Home.css or ./Home.css depending on your structure */
+/* src/styles/Home.css */
 
+/* Container */
 .home-container {
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 85vh;
-  background: linear-gradient(to right, #007bff, #00c6ff);
-  color: white;
+  min-height: 90vh;
   padding: 20px;
+  background: linear-gradient(135deg, #1e3c72, #2a5298);
+  color: white;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+/* Glass Card */
 .home-content {
   text-align: center;
-  max-width: 600px;
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 40px;
-  border-radius: 12px;
-  backdrop-filter: blur(4px);
-  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+  max-width: 700px;
+  width: 100%;
+  padding: 50px 40px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
 }
 
-.home-content h1 {
-  font-size: 2.5rem;
+/* Title */
+.home-title {
+  font-size: 2.8rem;
+  font-weight: 700;
   margin-bottom: 20px;
 }
 
-.home-content p {
-  font-size: 1.2rem;
-  margin-bottom: 30px;
+/* Highlight brand */
+.highlight {
+  color: #ffd700;
 }
 
+/* Subtitle */
+.home-subtitle {
+  font-size: 1.2rem;
+  line-height: 1.6;
+  margin-bottom: 30px;
+  opacity: 0.9;
+}
+
+/* Button group */
+.cta-group {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  flex-wrap: wrap;
+}
+
+/* Primary Button */
 .cta-button {
-  background-color: white;
-  color: #007bff;
-  padding: 12px 25px;
+  background: white;
+  color: #1e3c72;
+  padding: 12px 28px;
   border-radius: 8px;
   text-decoration: none;
-  font-weight: bold;
-  transition: background 0.3s ease, color 0.3s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
-.cta-button:hover {
-  background-color: #0056b3;
+/* Secondary Button */
+.cta-secondary {
+  border: 1px solid white;
+  padding: 12px 28px;
+  border-radius: 8px;
   color: white;
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+/* Hover effects */
+.cta-button:hover {
+  background: #f1f1f1;
+  transform: translateY(-3px);
+}
+
+.cta-secondary:hover {
+  background: white;
+  color: #1e3c72;
+  transform: translateY(-3px);
+}
+
+/* Stats Section */
+.stats {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 40px;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+/* Individual stat */
+.stat {
+  flex: 1;
+  min-width: 100px;
+}
+
+.stat h3 {
+  font-size: 1.6rem;
+  margin-bottom: 5px;
+}
+
+.stat p {
+  font-size: 0.9rem;
+  opacity: 0.8;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .home-title {
+    font-size: 2rem;
+  }
+
+  .home-subtitle {
+    font-size: 1rem;
+  }
+
+  .stats {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .cta-group {
+    flex-direction: column;
+  }
+
+  .cta-button,
+  .cta-secondary {
+    width: 100%;
+    text-align: center;
+  }
 }
