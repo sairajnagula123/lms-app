@@ -11,29 +11,27 @@ function Signup() {
   const handleSubmit = async (e) => {
   e.preventDefault();
 
-  console.log("Signup clicked", form); // ✅ MUST print
+  console.log("CLICK WORKING"); // 👈 MUST PRINT
 
   try {
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
+    const res = await fetch("https://lms-app-cqbr.onrender.com/api/auth/signup", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)
     });
 
-    console.log("Response status:", res.status);
+    console.log("Response:", res);
 
-    const text = await res.text(); // 👈 important
-    console.log("Raw response:", text);
-
-    const data = JSON.parse(text);
+    const data = await res.json();
+    console.log("Data:", data);
 
     alert(data.msg);
 
   } catch (err) {
-    console.error("ERROR:", err);
-    alert("Error occurred");
+    console.error(err);
+    alert("Error");
   }
-  };
+};
 
   return (
     <div className="auth-container">
