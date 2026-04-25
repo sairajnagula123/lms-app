@@ -9,14 +9,30 @@ function Signup() {
   };
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
+
+  console.log("Signup clicked", form); // ✅ MUST print
+
+  try {
     const res = await fetch(`${import.meta.env.VITE_API_URL}/api/auth/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form)
     });
-    const data = await res.json();
+
+    console.log("Response status:", res.status);
+
+    const text = await res.text(); // 👈 important
+    console.log("Raw response:", text);
+
+    const data = JSON.parse(text);
+
     alert(data.msg);
+
+  } catch (err) {
+    console.error("ERROR:", err);
+    alert("Error occurred");
+  }
   };
 
   return (
