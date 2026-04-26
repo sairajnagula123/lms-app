@@ -5,6 +5,14 @@ const Course = require("../models/Course");
 
 router.post("/add", upload.single("file"), async (req, res) => {
   try {
+    console.log("FILE:", req.file);   // 👈 DEBUG
+    console.log("BODY:", req.body);
+
+    // ✅ CHECK FILE FIRST
+    if (!req.file) {
+      return res.status(400).json({ message: "File not received" });
+    }
+
     const { title, description, contentType } = req.body;
 
     const contentUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
@@ -17,10 +25,15 @@ router.post("/add", upload.single("file"), async (req, res) => {
     });
 
     await newCourse.save();
-    res.json({ message: "Course uploaded successfully", course: newCourse });
+
+    res.json({
+      message: "Course uploaded successfully",
+      course: newCourse
+    });
+
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: "Upload failed" });
+    console.error("ERROR:", err);
+    res.status(500).json({ message: "Upload failed" });
   }
 });
 
