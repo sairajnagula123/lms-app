@@ -3,6 +3,7 @@ import "../styles/CourseUpload.css";
 
 
 function CourseUpload() {
+  console.log("API URL:", import.meta.env.VITE_API_URL); // 👈 ADD HERE
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [contentType, setContentType] = useState("Video");
