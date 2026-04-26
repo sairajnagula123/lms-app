@@ -2,8 +2,6 @@ import { useState } from "react";
 import "../styles/CourseUpload.css";
 
 function CourseUpload() {
-  console.log("API URL:", import.meta.env?.VITE_API_URL);
-
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [contentType, setContentType] = useState("Video");
@@ -12,9 +10,7 @@ function CourseUpload() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const API_URL =
-      import.meta.env?.VITE_API_URL ||
-      "https://lms-app-cqbr.onrender.com";
+    const API_URL = "https://lms-app-cqbr.onrender.com";
 
     const formData = new FormData();
     formData.append("title", title);
