@@ -6,15 +6,16 @@ function CourseList() {
   const [courses, setCourses] = useState([]);
 
   useEffect(() => {
-    // ✅ FIX: fallback API URL
-    const API_URL =
-      import.meta.env.VITE_API_URL || "https://lms-app-cqbr.onrender.com";
+    const API_URL = "https://lms-app-cqbr.onrender.com"; // ✅ HARDCODE
 
-    console.log("API URL:", API_URL); // debug
+    console.log("Fetching from:", API_URL);
 
     fetch(`${API_URL}/api/courses`)
       .then((res) => res.json())
-      .then((data) => setCourses(data))
+      .then((data) => {
+        console.log("Courses:", data); // ✅ debug
+        setCourses(data);
+      })
       .catch((err) => console.error("Fetch error:", err));
   }, []);
 
