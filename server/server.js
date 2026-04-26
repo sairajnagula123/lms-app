@@ -27,6 +27,10 @@ app.use("/uploads", express.static("uploads"));
 const courseRoutes = require("./routes/course");
 app.use("/api/courses", courseRoutes);
 
+app.get("/", (req, res) => {
+  res.send("LMS API is running...");
+});
+
 // ✅ DB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))

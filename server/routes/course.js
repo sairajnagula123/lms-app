@@ -14,7 +14,7 @@ router.post("/add", upload.single("file"), async (req, res) => {
 
     const { title, description, contentType } = req.body;
 
-    const contentUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    const contentUrl = req.file.path;
 
     const newCourse = new Course({
       title,
