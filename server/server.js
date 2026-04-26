@@ -23,18 +23,19 @@ app.use(express.json());
 // ✅ Serve uploaded files
 app.use("/uploads", express.static("uploads"));
 
-// ✅ Routes
-const courseRoutes = require("./routes/course");
-app.use("/api/courses", courseRoutes);
-
+// ✅ ROOT ROUTE (VERY IMPORTANT)
 app.get("/", (req, res) => {
   res.send("LMS API is running...");
 });
 
+// ✅ Routes
+const courseRoutes = require("./routes/course");
+app.use("/api/courses", courseRoutes);
+
 // ✅ DB connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB Connected"))
-  .catch(err => console.log(err));
+  .catch(err => console.log("DB Error:", err));
 
 // ✅ Start server
 const PORT = process.env.PORT || 5000;
