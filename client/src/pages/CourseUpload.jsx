@@ -1,18 +1,20 @@
 import { useState } from "react";
 import "../styles/CourseUpload.css";
 
-
 function CourseUpload() {
-  console.log("API URL:", import.meta.env.VITE_API_URL); // 👈 ADD HERE
+  console.log("API URL:", import.meta.env?.VITE_API_URL);
+
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [contentType, setContentType] = useState("Video");
   const [file, setFile] = useState(null);
 
-  const API_URL = "https://lms-app-cqbr.onrender.com";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const API_URL =
+      import.meta.env?.VITE_API_URL ||
+      "https://lms-app-cqbr.onrender.com";
 
     const formData = new FormData();
     formData.append("title", title);
@@ -38,13 +40,32 @@ function CourseUpload() {
     <div className="upload-container">
       <h2>Upload a New Course</h2>
       <form onSubmit={handleSubmit} encType="multipart/form-data">
-        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} placeholder="Course Title" required />
-        <textarea value={description} onChange={(e) => setDescription(e.target.value)} placeholder="Course Description" required />
-        <select value={contentType} onChange={(e) => setContentType(e.target.value)}>
+        <input
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          placeholder="Course Title"
+          required
+        />
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          placeholder="Course Description"
+          required
+        />
+        <select
+          value={contentType}
+          onChange={(e) => setContentType(e.target.value)}
+        >
           <option value="Video">Video</option>
           <option value="PDF">PDF</option>
         </select>
-        <input type="file" onChange={(e) => setFile(e.target.files[0])} accept="video/*,application/pdf" required />
+        <input
+          type="file"
+          onChange={(e) => setFile(e.target.files[0])}
+          accept="video/*,application/pdf"
+          required
+        />
         <button type="submit">Upload Course</button>
       </form>
     </div>
