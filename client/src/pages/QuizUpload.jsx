@@ -20,7 +20,7 @@ function QuizUpload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${import.meta.env.VITE_API_URL}/api/quizzes/add`, {
+    const res = await fetch(`${process.env.REACT_APP_API_URL.VITE_API_URL}/api/quizzes/add`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(form),

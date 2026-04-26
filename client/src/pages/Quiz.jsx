@@ -10,7 +10,7 @@ function Quiz() {
 
   // Fetch quiz and course title
   useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/quizzes/${courseId}`)
+    fetch(`${process.env.REACT_APP_API_URL.VITE_API_URL}/api/quizzes/${courseId}`)
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data);
@@ -39,7 +39,7 @@ function Quiz() {
     // ✅ Generate certificate if score >= 2
     if (score >= 2) {
       try {
-        const res = await fetch(`${import.meta.env.VITE_API_URL}/api/certificates/generate`, {
+        const res = await fetch(`${process.env.REACT_APP_API_URL.VITE_API_URL}/api/certificates/generate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
