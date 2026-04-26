@@ -3,6 +3,20 @@ const router = express.Router();
 const upload = require("../middleware/upload");
 const Course = require("../models/Course");
 
+
+// ✅ ADD THIS (VERY IMPORTANT)
+router.get("/", async (req, res) => {
+  try {
+    const courses = await Course.find().sort({ createdAt: -1 });
+    res.json(courses);
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
+    res.status(500).json({ message: "Failed to fetch courses" });
+  }
+});
+
+
+// ✅ EXISTING POST
 router.post("/add", upload.single("file"), async (req, res) => {
   try {
     console.log("FILE:", req.file);
@@ -13,7 +27,6 @@ router.post("/add", upload.single("file"), async (req, res) => {
 
     const { title, description, contentType } = req.body;
 
-    // ✅ Cloudinary URL directly from multer
     const contentUrl = req.file.path;
 
     const newCourse = new Course({
