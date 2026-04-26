@@ -53,8 +53,8 @@ function CourseUpload() {
           value={contentType}
           onChange={(e) => setContentType(e.target.value)}
         >
-          <option value="Video">Video</option>
-          <option value="PDF">PDF</option>
+          <option value="video">Video</option>
+          <option value="pdf">PDF</option>
         </select>
         <input
           type="file"
