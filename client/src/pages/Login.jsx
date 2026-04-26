@@ -10,28 +10,35 @@ function Login() {
 
 const handleSubmit = async (e) => {
   e.preventDefault();
-  const res = await fetch("/api/auth/login", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(form),
-  });
 
-  const data = await res.json();
+  try {
+    const res = await fetch("https://lms-app-cqbr.onrender.com/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
 
-  if (data.token) {
+    const data = await res.json();
+
+    if (!res.ok) {
+      alert(data.msg || "Login failed");
+      return;
+    }
+
     localStorage.setItem("token", data.token);
-    localStorage.setItem("role", data.role);  // ✅ Save role here
+    localStorage.setItem("role", data.role);
 
     alert("Login successful");
 
-    // Redirect based on role
     if (data.role === "admin") {
-      window.location.href = "/upload"; // admin dashboard or upload
+      window.location.href = "/upload";
     } else {
-      window.location.href = "/courses"; // student course page
+      window.location.href = "/courses";
     }
-  } else {
-    alert(data.msg || "Login failed");
+
+  } catch (err) {
+    console.error(err);
+    alert("Server error / Network issue");
   }
 };
 
