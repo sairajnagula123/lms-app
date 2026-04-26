@@ -13,9 +13,8 @@ if (!fs.existsSync("uploads")) {
 
 // ✅ Middleware
 app.use(cors({
-  origin: "https://lms-app-xi-one.vercel.app", // your frontend
+  origin: "*",   // allow all (for now)
   methods: ["GET", "POST", "PUT", "DELETE"],
-  credentials: true
 }));
 
 app.use(express.json());
