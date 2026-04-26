@@ -3,19 +3,30 @@ const router = express.Router();
 const upload = require("../middleware/upload");
 const Course = require("../models/Course");
 
+// ✅ ADD THIS (VERY IMPORTANT)
+router.get("/", async (req, res) => {
+  try {
+    const courses = await Course.find().sort({ createdAt: -1 });
+    res.json(courses);
+  } catch (err) {
+    console.error("FETCH ERROR:", err);
+    res.status(500).json({ message: "Failed to fetch courses" });
+  }
+});
+
 router.post("/add", upload.single("file"), async (req, res) => {
   try {
-    console.log("FILE:", req.file);   // 👈 DEBUG
+    console.log("FILE:", req.file);
     console.log("BODY:", req.body);
 
-    // ✅ CHECK FILE FIRST
     if (!req.file) {
       return res.status(400).json({ message: "File not received" });
     }
 
     const { title, description, contentType } = req.body;
 
-    const contentUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    // ✅ Cloudinary gives URL here
+    const contentUrl = req.file.path;
 
     const newCourse = new Course({
       title,
