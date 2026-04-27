@@ -1,12 +1,15 @@
 import { useState } from "react";
-import '../styles/QuizUpload.css';
+import "../styles/QuizUpload.css";
+
 function QuizUpload() {
   const [form, setForm] = useState({
-    courseId: "",       // You can set manually or via dropdown later
+    courseId: "",
     question: "",
     options: ["", "", "", ""],
-    correctAnswer: ""
+    correctAnswer: "",
   });
+
+  const API_URL = process.env.REACT_APP_API_URL; // ✅ correct
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -20,21 +23,40 @@ function QuizUpload() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const res = await fetch(`${process.env.REACT_APP_API_URL.VITE_API_URL}/api/quizzes/add`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form),
-    });
-    const data = await res.json();
-    alert(data.message);
+
+    try {
+      const res = await fetch(`${API_URL}/api/quizzes/add`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+      alert(data.message || "Quiz added successfully!");
+    } catch (err) {
+      console.error(err);
+      alert("Error adding quiz");
+    }
   };
 
   return (
     <div>
       <h2>Upload Quiz</h2>
+
       <form onSubmit={handleSubmit}>
-        <input name="courseId" placeholder="Course ID" onChange={handleChange} required />
-        <input name="question" placeholder="Question" onChange={handleChange} required />
+        <input
+          name="courseId"
+          placeholder="Course ID"
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="question"
+          placeholder="Question"
+          onChange={handleChange}
+          required
+        />
 
         {form.options.map((opt, idx) => (
           <input
@@ -46,7 +68,13 @@ function QuizUpload() {
           />
         ))}
 
-        <input name="correctAnswer" placeholder="Correct Answer" onChange={handleChange} required />
+        <input
+          name="correctAnswer"
+          placeholder="Correct Answer"
+          onChange={handleChange}
+          required
+        />
+
         <button type="submit">Add Question</button>
       </form>
     </div>

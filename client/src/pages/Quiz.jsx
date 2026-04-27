@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import '../styles/Quiz.css';
+import "../styles/Quiz.css";
 
 function Quiz() {
   const { courseId } = useParams();
@@ -8,17 +8,20 @@ function Quiz() {
   const [answers, setAnswers] = useState({});
   const [courseTitle, setCourseTitle] = useState("");
 
+  const API_URL = process.env.REACT_APP_API_URL; // ✅ correct
+
   // Fetch quiz and course title
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_URL.VITE_API_URL}/api/quizzes/${courseId}`)
+    fetch(`${API_URL}/api/quizzes/${courseId}`)
       .then((res) => res.json())
       .then((data) => {
         setQuestions(data);
         if (data.length > 0) {
-          setCourseTitle(data[0].courseTitle || ""); // Make sure this field is included in backend
+          setCourseTitle(data[0].courseTitle || "");
         }
-      });
-  }, [courseId]);
+      })
+      .catch((err) => console.error(err));
+  }, [courseId, API_URL]);
 
   const handleSelect = (qId, answer) => {
     setAnswers({ ...answers, [qId]: answer });
@@ -36,10 +39,10 @@ function Quiz() {
 
     alert(`You scored ${score} / ${questions.length}`);
 
-    // ✅ Generate certificate if score >= 2
+    // Generate certificate if score >= 2
     if (score >= 2) {
       try {
-        const res = await fetch(`${process.env.REACT_APP_API_URL.VITE_API_URL}/api/certificates/generate`, {
+        const res = await fetch(`${API_URL}/api/certificates/generate`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -47,9 +50,11 @@ function Quiz() {
             courseTitle: courseTitle || "Untitled Course",
           }),
         });
+
         const data = await res.json();
         alert(data.message || "Certificate generated!");
       } catch (err) {
+        console.error(err);
         alert("Error generating certificate.");
       }
     }
@@ -58,10 +63,12 @@ function Quiz() {
   return (
     <div className="quiz-container">
       <h2>Quiz - {courseTitle}</h2>
+
       <form onSubmit={handleSubmit}>
         {questions.map((q, index) => (
           <div className="quiz-question" key={q._id}>
             <p>{index + 1}. {q.question}</p>
+
             {q.options.map((opt, i) => (
               <label key={i} className="quiz-option">
                 <input
@@ -74,11 +81,14 @@ function Quiz() {
                 {opt}
               </label>
             ))}
+
             <hr />
           </div>
         ))}
 
-        <button className="quiz-submit" type="submit">Submit Quiz</button>
+        <button className="quiz-submit" type="submit">
+          Submit Quiz
+        </button>
       </form>
     </div>
   );
