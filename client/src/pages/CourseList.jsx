@@ -13,11 +13,7 @@ function CourseList() {
       try {
         const API_URL = process.env.REACT_APP_API_URL;
 
-        console.log("API:", API_URL);
-
         const res = await axios.get(`${API_URL}/api/courses`);
-
-        console.log("Courses:", res.data);
 
         setCourses(res.data);
       } catch (err) {
@@ -32,42 +28,72 @@ function CourseList() {
   }, []);
 
   if (loading) {
-    return <h2>Loading courses...</h2>;
+    return (
+      <div className="course-list-container">
+        <h2 className="course-heading">Loading Courses...</h2>
+
+        <div className="course-card shimmer-card"></div>
+        <div className="course-card shimmer-card"></div>
+      </div>
+    );
   }
 
   if (error) {
-    return <h2>{error}</h2>;
+    return (
+      <div className="course-list-container">
+        <h2 className="error-text">{error}</h2>
+      </div>
+    );
   }
 
   return (
     <div className="course-list-container">
-      <h2>Available Courses</h2>
+      <h2 className="course-heading">Available Courses</h2>
 
-      {courses.length === 0 && <p>No courses found</p>}
+      {courses.length === 0 && (
+        <p className="empty-text">No courses found</p>
+      )}
 
-      {courses.map((course) => (
-        <div key={course._id} className="course-card">
-          <div className="course-title">{course.title}</div>
+      <div className="course-grid">
+        {courses.map((course) => (
+          <div key={course._id} className="course-card">
+            <div className="course-image">
+              <img
+                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3"
+                alt="course"
+              />
+            </div>
 
-          <div className="course-desc">
-            {course.description}
+            <div className="course-content">
+              <div className="course-title">
+                {course.title}
+              </div>
+
+              <div className="course-desc">
+                {course.description}
+              </div>
+
+              <div className="course-buttons">
+                <a
+                  href={course.contentUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="course-button view"
+                >
+                  View Content
+                </a>
+
+                <Link
+                  to={`/quiz/${course._id}`}
+                  className="course-button quiz"
+                >
+                  Take Quiz
+                </Link>
+              </div>
+            </div>
           </div>
-
-          <div className="course-buttons">
-            <a
-              href={course.contentUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              View Content
-            </a>
-
-            <Link to={`/quiz/${course._id}`}>
-              Take Quiz
-            </Link>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
   );
 }
