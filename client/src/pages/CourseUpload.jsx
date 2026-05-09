@@ -151,33 +151,25 @@ function CourseUpload() {
         />
 
         {/* VIDEOS */}
-        <label>
-          🎥 Upload Videos
-        </label>
-
         <input
           type="file"
           multiple
           accept="video/*"
           onChange={(e) =>
             setVideos(
-              e.target.files
+              Array.from(e.target.files)
             )
           }
         />
 
         {/* PDFS */}
-        <label>
-          📄 Upload PDFs
-        </label>
-
         <input
           type="file"
           multiple
           accept="application/pdf"
           onChange={(e) =>
             setPdfs(
-              e.target.files
+              Array.from(e.target.files)
             )
           }
         />
