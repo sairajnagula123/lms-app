@@ -68,9 +68,11 @@ function CourseUpload() {
   };
 
   return (
+  <div className="page">
+
     <div className="upload-container">
 
-      <h2>Upload a New Course</h2>
+      <h2>📚 Upload a New Course</h2>
 
       {error && <p className="error">{error}</p>}
 
@@ -97,31 +99,39 @@ function CourseUpload() {
           value={contentType}
           onChange={(e) => setContentType(e.target.value)}
         >
-          <option value="video">Video</option>
-          <option value="pdf">PDF</option>
+          <option value="video">🎥 Video</option>
+          <option value="pdf">📄 PDF</option>
         </select>
 
-        <input
-          type="file"
-          accept="video/*,application/pdf"
-          onChange={(e) => setFile(e.target.files[0])}
-          required
-        />
+        <div className="file-upload">
+          <input
+            type="file"
+            accept="video/*,application/pdf"
+            onChange={(e) => setFile(e.target.files[0])}
+            required
+          />
+        </div>
 
-        {/* File Preview */}
         {file && (
           <p className="file-name">
-            Selected File: {file.name}
+            ✅ Selected File: {file.name}
           </p>
         )}
 
         <button type="submit" disabled={loading}>
-          {loading ? "Uploading..." : "Upload Course"}
+          {loading ? (
+            <span className="loader"></span>
+          ) : (
+            "Upload Course"
+          )}
         </button>
 
       </form>
+
     </div>
-  );
+
+  </div>
+);
 }
 
 export default CourseUpload;
