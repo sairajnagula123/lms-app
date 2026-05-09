@@ -57,6 +57,7 @@ function CourseViewer() {
 
         <h2>LMS Course</h2>
 
+        {/* VIDEOS */}
         <div
           className={`lesson-item ${
             activeSection === "video"
@@ -70,6 +71,7 @@ function CourseViewer() {
           🎥 Videos
         </div>
 
+        {/* PDFS */}
         <div
           className={`lesson-item ${
             activeSection === "pdf"
@@ -85,9 +87,10 @@ function CourseViewer() {
 
       </div>
 
-      {/* MAIN */}
+      {/* MAIN CONTENT */}
       <div className="course-main">
 
+        {/* HEADER */}
         <div className="course-topbar">
 
           <div>
@@ -104,7 +107,7 @@ function CourseViewer() {
 
         </div>
 
-        {/* VIDEOS */}
+        {/* VIDEO SECTION */}
         {activeSection === "video" && (
 
           <div>
@@ -155,7 +158,7 @@ function CourseViewer() {
           </div>
         )}
 
-        {/* PDFS */}
+        {/* PDF SECTION */}
         {activeSection === "pdf" && (
 
           <div>
@@ -179,15 +182,22 @@ function CourseViewer() {
                       📄 {pdf.title}
                     </h3>
 
-                    <div className="pdf-container">
-                      <iframe
-                        className="pdf-viewer"
-                        src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(
-                          pdf.url
-                        )}`}
-                        title={pdf.title}
-                      ></iframe>
-                    </div>
+                    {/* OPEN BUTTON */}
+                    <a
+                      href={pdf.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="open-pdf-btn"
+                    >
+                      Open PDF
+                    </a>
+
+                    {/* PDF VIEWER */}
+                    <embed
+                      src={`${pdf.url}#toolbar=0`}
+                      type="application/pdf"
+                      className="pdf-viewer"
+                    />
 
                   </div>
                 )

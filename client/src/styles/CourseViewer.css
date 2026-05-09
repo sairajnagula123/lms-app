@@ -1,34 +1,41 @@
+body {
+  margin: 0;
+  padding: 0;
+  font-family: Arial, sans-serif;
+  background: #f3f4f6;
+}
+
 .lms-layout {
   display: flex;
   min-height: 100vh;
-  background: #f4f7fb;
 }
 
 /* SIDEBAR */
+
 .course-sidebar {
-  width: 260px;
-  background: #0f172a;
+  width: 280px;
+  background: #08122f;
   color: white;
-  padding: 25px;
+  padding: 30px 20px;
 }
 
 .course-sidebar h2 {
+  font-size: 22px;
   margin-bottom: 30px;
-  font-size: 28px;
 }
 
 .lesson-item {
-  padding: 16px;
-  border-radius: 12px;
-  margin-bottom: 15px;
+  background: rgba(255,255,255,0.06);
+  padding: 18px;
+  border-radius: 14px;
+  margin-bottom: 16px;
   cursor: pointer;
-  background: rgba(255,255,255,0.05);
+  font-size: 20px;
   transition: 0.3s;
-  font-size: 18px;
 }
 
 .lesson-item:hover {
-  background: rgba(255,255,255,0.1);
+  background: rgba(255,255,255,0.12);
 }
 
 .lesson-item.active {
@@ -36,61 +43,98 @@
 }
 
 /* MAIN */
+
 .course-main {
   flex: 1;
-  padding: 35px;
-}
-
-/* TOPBAR */
-.course-topbar {
-  margin-bottom: 30px;
+  padding: 40px;
 }
 
 .course-topbar h1 {
-  font-size: 38px;
-  color: #111827;
+  font-size: 54px;
   margin-bottom: 10px;
+  color: #111827;
 }
 
 .course-description {
-  color: #555;
-  font-size: 17px;
-  line-height: 1.7;
+  color: #4b5563;
+  font-size: 20px;
+  margin-bottom: 40px;
 }
 
-/* SECTION TITLE */
+/* SECTION */
+
 .section-title {
+  font-size: 38px;
+  margin-bottom: 30px;
+  color: #111827;
+}
+
+/* MEDIA CARD */
+
+.media-box {
+  background: white;
+  padding: 25px;
+  border-radius: 18px;
+  margin-bottom: 35px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+}
+
+.media-box h3 {
+  font-size: 24px;
   margin-bottom: 20px;
   color: #111827;
 }
 
 /* VIDEO */
+
 .video-player {
   width: 100%;
-  height: 700px;
   border-radius: 14px;
   background: black;
+  max-height: 700px;
 }
 
 /* PDF */
+
 .pdf-viewer {
   width: 100%;
-  height: 800px;
+  height: 850px;
   border: none;
   border-radius: 14px;
-  background: white;
+  background: #f9fafb;
+}
+
+/* PDF BUTTON */
+
+.open-pdf-btn {
+  display: inline-block;
+  margin-bottom: 18px;
+  padding: 12px 22px;
+  background: #2563eb;
+  color: white;
+  text-decoration: none;
+  border-radius: 12px;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.open-pdf-btn:hover {
+  background: #1d4ed8;
 }
 
 /* EMPTY BOX */
+
 .empty-box {
   background: white;
   padding: 30px;
-  border-radius: 12px;
-  color: #666;
-  font-size: 18px;
+  border-radius: 16px;
+  color: #6b7280;
+  font-size: 20px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
 }
 
 /* LOADING */
+
 .viewer-loading {
   display: flex;
   justify-content: center;
@@ -98,17 +142,4 @@
   height: 100vh;
   font-size: 28px;
   font-weight: bold;
-}
-
-.pdf-container {
-  width: 100%;
-  margin-top: 20px;
-}
-
-.pdf-viewer {
-  width: 100%;
-  height: 850px;
-  border: none;
-  border-radius: 14px;
-  background: white;
 }
