@@ -40,6 +40,7 @@ function CourseViewer() {
 
   // LOADING
   if (!course) {
+
     return (
       <div className="viewer-loading">
         Loading Course...
@@ -48,6 +49,7 @@ function CourseViewer() {
   }
 
   return (
+
     <div className="lms-layout">
 
       {/* SIDEBAR */}
@@ -55,7 +57,7 @@ function CourseViewer() {
 
         <h2>LMS Course</h2>
 
-        {/* VIDEO */}
+        {/* VIDEO TAB */}
         <div
           className={`lesson-item ${
             activeSection === "video"
@@ -66,10 +68,10 @@ function CourseViewer() {
             setActiveSection("video")
           }
         >
-          🎥 Video
+          🎥 Videos
         </div>
 
-        {/* PDF */}
+        {/* PDF TAB */}
         <div
           className={`lesson-item ${
             activeSection === "pdf"
@@ -93,7 +95,9 @@ function CourseViewer() {
 
           <div>
 
-            <h1>{course.title}</h1>
+            <h1>
+              {course.title}
+            </h1>
 
             <p className="course-description">
               {course.description}
@@ -109,33 +113,50 @@ function CourseViewer() {
           <div>
 
             <h2 className="section-title">
-              Course Video
+              Course Videos
             </h2>
 
             {course.videoUrls &&
             course.videoUrls.length > 0 ? (
 
-              <video
-                className="video-player"
-                controls
-              >
-                <source
-                  src={
-                    course.videoUrls[0].url
-                  }
-                  type="video/mp4"
-                />
+              course.videoUrls.map(
+                (video, index) => (
 
-                Your browser does not
-                support video.
+                  <div
+                    key={index}
+                    className="media-box"
+                  >
 
-              </video>
+                    <h3>
+                      🎥 {video.title}
+                    </h3>
+
+                    <video
+                      className="video-player"
+                      controls
+                    >
+
+                      <source
+                        src={video.url}
+                        type="video/mp4"
+                      />
+
+                      Your browser does not
+                      support video.
+
+                    </video>
+
+                  </div>
+                )
+              )
 
             ) : (
 
               <div className="empty-box">
-                No video uploaded for
+
+                No videos uploaded for
                 this course.
+
               </div>
 
             )}
@@ -155,19 +176,37 @@ function CourseViewer() {
             {course.pdfUrls &&
             course.pdfUrls.length > 0 ? (
 
-              <iframe
-                className="pdf-viewer"
-                src={
-                  course.pdfUrls[0].url
-                }
-                title="PDF Viewer"
-              ></iframe>
+              course.pdfUrls.map(
+                (pdf, index) => (
+
+                  <div
+                    key={index}
+                    className="media-box"
+                  >
+
+                    <h3>
+                      📄 {pdf.title}
+                    </h3>
+
+                    <iframe
+                      className="pdf-viewer"
+                      src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+                        pdf.url
+                      )}`}
+                      title={pdf.title}
+                    ></iframe>
+
+                  </div>
+                )
+              )
 
             ) : (
 
               <div className="empty-box">
-                No PDF uploaded for
+
+                No PDFs uploaded for
                 this course.
+
               </div>
 
             )}
@@ -176,6 +215,7 @@ function CourseViewer() {
         )}
 
       </div>
+
     </div>
   );
 }
