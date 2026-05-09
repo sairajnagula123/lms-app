@@ -197,8 +197,8 @@ function CourseViewer() {
 
                     <a
                       href={pdf.url.replace(
-                        "/raw/upload/",
-                        "/raw/upload/fl_attachment:false/"
+                        "/upload/",
+                        "/upload/fl_inline/"
                       )}
                       target="_blank"
                       rel="noreferrer"
