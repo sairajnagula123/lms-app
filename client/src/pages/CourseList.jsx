@@ -30,10 +30,30 @@ function CourseList() {
   if (loading) {
     return (
       <div className="course-list-container">
-        <h2 className="course-heading">Loading Courses...</h2>
+        <h2 className="course-heading">Available Courses</h2>
 
-        <div className="course-card shimmer-card"></div>
-        <div className="course-card shimmer-card"></div>
+        <div className="course-grid">
+          {[1, 2, 3].map((item) => (
+            <div key={item} className="course-card shimmer-wrapper">
+              
+              <div className="shimmer-image shimmer"></div>
+
+              <div className="course-content">
+                <div className="shimmer-title shimmer"></div>
+
+                <div className="shimmer-text shimmer"></div>
+                <div className="shimmer-text shimmer"></div>
+                <div className="shimmer-text short shimmer"></div>
+
+                <div className="shimmer-buttons">
+                  <div className="shimmer-btn shimmer"></div>
+                  <div className="shimmer-btn shimmer"></div>
+                </div>
+              </div>
+
+            </div>
+          ))}
+        </div>
       </div>
     );
   }
