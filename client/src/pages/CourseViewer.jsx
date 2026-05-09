@@ -196,12 +196,18 @@ function CourseViewer() {
                       Open PDF
                     </a>
 
-                    {/* PDF VIEWER */}
-                    <embed
-                      src={`${pdf.url}#toolbar=0`}
-                      type="application/pdf"
-                      className="pdf-viewer"
-                    />
+                    {/* OPEN BUTTON */}
+                    <a
+                      href={pdf.url.replace(
+                        "/upload/",
+                        "/upload/fl_attachment:false/"
+                      )}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="open-pdf-btn"
+                    >
+                      Open PDF
+                    </a>
 
                   </div>
                 )
