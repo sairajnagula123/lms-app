@@ -1,52 +1,101 @@
-import { useState } from 'react';
-import '../styles/Signup.css';
+import { useState } from "react";
+import axios from "axios";
+import "../styles/Signup.css";
 
 function Signup() {
-  const [form, setForm] = useState({ name: "", email: "", password: "" });
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value });
+    setForm({
+      ...form,
+      [e.target.name]: e.target.value,
+    });
   };
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  console.log("CLICK WORKING"); // 👈 MUST PRINT
+    console.log("CLICK WORKING");
 
-  try {
-    const res = await fetch("https://lms-app-cqbr.onrender.com/api/auth/signup", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(form)
-    });
+    setLoading(true);
+    setError("");
 
-    console.log("Response:", res);
+    try {
+      const res = await axios.post(
+        "https://lms-app-cqbr.onrender.com/api/auth/signup",
+        form
+      );
 
-    const data = await res.json();
-    console.log("Data:", data);
+      console.log("Response:", res.data);
 
-    alert(data.msg);
+      alert(res.data.msg);
 
-  } catch (err) {
-    console.error(err);
-    alert("Error");
-  }
-};
+      // Optional: clear form after signup
+      setForm({
+        name: "",
+        email: "",
+        password: "",
+      });
+
+    } catch (err) {
+      console.error(err);
+
+      if (err.response) {
+        setError(err.response.data.msg || "Signup failed");
+      } else {
+        setError("Server error / Network issue");
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="auth-container">
       <h1>Sign Up</h1>
+
+      {error && <p className="error">{error}</p>}
+
       <form className="auth-form" onSubmit={handleSubmit}>
-        <input name="name" placeholder="Name" onChange={handleChange} required />
-        <input name="email" type="email" placeholder="Email" onChange={handleChange} required />
-        <input name="password" type="password" placeholder="Password" onChange={handleChange} required />
-        <button type="submit">Sign Up</button>
+        <input
+          name="name"
+          placeholder="Name"
+          value={form.name}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="email"
+          type="email"
+          placeholder="Email"
+          value={form.email}
+          onChange={handleChange}
+          required
+        />
+
+        <input
+          name="password"
+          type="password"
+          placeholder="Password"
+          value={form.password}
+          onChange={handleChange}
+          required
+        />
+
+        <button type="submit" disabled={loading}>
+          {loading ? "Signing Up..." : "Sign Up"}
+        </button>
       </form>
     </div>
   );
 }
 
 export default Signup;
-
-
-

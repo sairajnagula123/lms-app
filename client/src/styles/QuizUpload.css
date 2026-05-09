@@ -35,3 +35,8 @@
 .quiz-upload-container button:hover {
   background-color: #0d47a1;
 }
+
+.error {
+  color: red;
+  margin-bottom: 10px;
+}
