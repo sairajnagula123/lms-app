@@ -7,6 +7,7 @@ import CourseList from "./pages/CourseList";
 import QuizUpload from "./pages/QuizUpload";
 import Quiz from "./pages/Quiz";
 import Certificates from "./pages/Certificates";
+import CourseViewer from "./pages/CourseViewer";
 import "./styles/Navbar.css"; // Make sure this exists
 
 
@@ -63,6 +64,7 @@ function App() {
         <Route path="/courses" element={<CourseList />} />
         <Route path="/quiz/:courseId" element={<Quiz />} />
         <Route path="/certificates" element={<Certificates />} />
+        <Route path="/course/:id"element={<CourseViewer />} />
       </Routes>
     </Router>
   );

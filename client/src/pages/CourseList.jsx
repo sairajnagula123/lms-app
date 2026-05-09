@@ -117,15 +117,15 @@ function CourseList() {
               </div>
 
               <div className="course-buttons">
-                <a
-                  href={course.contentUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                {/* OPEN COURSE PAGE */}
+                <Link
+                  to={`/course/${course._id}`}
                   className="course-button view"
                 >
-                  View Content
-                </a>
+                  Open Course
+                </Link>
 
+                {/* QUIZ */}
                 <Link
                   to={`/quiz/${course._id}`}
                   className="course-button quiz"
