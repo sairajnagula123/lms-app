@@ -1,17 +1,19 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import "../styles/CourseViewer.css";
 import axios from "axios";
+import "../styles/CourseViewer.css";
 
 function CourseViewer() {
   const { id } = useParams();
 
-  const [course, setCourse] = useState(null);
+  const [course, setCourse] =
+    useState(null);
 
   useEffect(() => {
     const fetchCourse = async () => {
       try {
-        const API_URL = process.env.REACT_APP_API_URL;
+        const API_URL =
+          process.env.REACT_APP_API_URL;
 
         const res = await axios.get(
           `${API_URL}/api/courses/${id}`
@@ -27,31 +29,58 @@ function CourseViewer() {
     fetchCourse();
   }, [id]);
 
-  // LOADING
   if (!course) {
     return (
       <div className="viewer-loading">
-        Loading course...
+        Loading Course...
       </div>
     );
   }
 
   return (
-    <div className="course-viewer-container">
-      <div className="viewer-card">
+    <div className="lms-layout">
 
-        {/* TITLE */}
-        <h1 className="viewer-title">
-          {course.title}
-        </h1>
+      {/* SIDEBAR */}
+      <div className="course-sidebar">
+
+        <h2>LMS Course</h2>
+
+        <div className="lesson-item active">
+          📘 {course.title}
+        </div>
+
+        <div className="lesson-item">
+          ✅ Quiz
+        </div>
+
+        <div className="lesson-item">
+          📜 Certificate
+        </div>
+
+      </div>
+
+      {/* MAIN CONTENT */}
+      <div className="course-main">
+
+        {/* TOPBAR */}
+        <div className="course-topbar">
+
+          <h1>{course.title}</h1>
+
+          <button>
+            Mark Complete
+          </button>
+
+        </div>
 
         {/* DESCRIPTION */}
-        <p className="viewer-description">
+        <div className="course-description">
           {course.description}
-        </p>
+        </div>
 
-        {/* VIDEO PLAYER */}
-        {course.contentType === "video" && (
+        {/* VIDEO */}
+        {course.contentType ===
+          "video" && (
           <video
             className="video-player"
             controls
@@ -60,21 +89,23 @@ function CourseViewer() {
               src={course.contentUrl}
               type="video/mp4"
             />
-
-            Your browser does not support
-            video.
           </video>
         )}
 
-        {/* PDF VIEWER */}
-        {course.contentType === "pdf" && (
-          <iframe
+        {/* PDF */}
+        {course.contentType ===
+          "pdf" && (
+          <object
+            data={course.contentUrl}
+            type="application/pdf"
+            width="100%"
+            height="800px"
             className="pdf-viewer"
-            src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
-              course.contentUrl
-            )}`}
-            title="PDF Viewer"
-          ></iframe>
+          >
+            <p>
+              PDF cannot be displayed.
+            </p>
+          </object>
         )}
 
       </div>
