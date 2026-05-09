@@ -57,7 +57,6 @@ function CourseViewer() {
 
         <h2>LMS Course</h2>
 
-        {/* VIDEO TAB */}
         <div
           className={`lesson-item ${
             activeSection === "video"
@@ -71,7 +70,6 @@ function CourseViewer() {
           🎥 Videos
         </div>
 
-        {/* PDF TAB */}
         <div
           className={`lesson-item ${
             activeSection === "pdf"
@@ -87,10 +85,9 @@ function CourseViewer() {
 
       </div>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <div className="course-main">
 
-        {/* TOPBAR */}
         <div className="course-topbar">
 
           <div>
@@ -107,7 +104,7 @@ function CourseViewer() {
 
         </div>
 
-        {/* VIDEO SECTION */}
+        {/* VIDEOS */}
         {activeSection === "video" && (
 
           <div>
@@ -141,9 +138,6 @@ function CourseViewer() {
                         type="video/mp4"
                       />
 
-                      Your browser does not
-                      support video.
-
                     </video>
 
                   </div>
@@ -153,10 +147,7 @@ function CourseViewer() {
             ) : (
 
               <div className="empty-box">
-
-                No videos uploaded for
-                this course.
-
+                No videos uploaded.
               </div>
 
             )}
@@ -164,7 +155,7 @@ function CourseViewer() {
           </div>
         )}
 
-        {/* PDF SECTION */}
+        {/* PDFS */}
         {activeSection === "pdf" && (
 
           <div>
@@ -188,16 +179,12 @@ function CourseViewer() {
                       📄 {pdf.title}
                     </h3>
 
-                    <div className="pdf-actions">
-                      <a
-                        href={pdf.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="open-pdf-btn"
-                      >
-                        📄 Open PDF
-                      </a>
-                    </div>
+                    <iframe
+                      className="pdf-viewer"
+                      src={`${pdf.url}#toolbar=1&navpanes=0&scrollbar=1`}
+                      title={pdf.title}
+                    ></iframe>
+
                   </div>
                 )
               )
@@ -205,10 +192,7 @@ function CourseViewer() {
             ) : (
 
               <div className="empty-box">
-
-                No PDFs uploaded for
-                this course.
-
+                No PDFs uploaded.
               </div>
 
             )}

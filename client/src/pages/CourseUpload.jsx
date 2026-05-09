@@ -44,6 +44,7 @@ function CourseUpload() {
 
     // VIDEOS
     videos.forEach((video) => {
+
       formData.append(
         "videos",
         video
@@ -52,6 +53,7 @@ function CourseUpload() {
 
     // PDFS
     pdfs.forEach((pdf) => {
+
       formData.append(
         "pdfs",
         pdf
@@ -105,6 +107,7 @@ function CourseUpload() {
   };
 
   return (
+
     <div className="page">
 
       <div className="upload-container">
@@ -179,11 +182,31 @@ function CourseUpload() {
               Choose Videos
             </label>
 
-            <p className="file-count">
-              {videos.length > 0
-                ? `${videos.length} video(s) selected`
-                : "No videos selected"}
-            </p>
+            <div className="selected-files">
+
+              {videos.length > 0 ? (
+
+                videos.map(
+                  (video, index) => (
+
+                    <div
+                      key={index}
+                      className="file-item"
+                    >
+                      🎥 {video.name}
+                    </div>
+                  )
+                )
+
+              ) : (
+
+                <p className="empty-file">
+                  No videos selected
+                </p>
+
+              )}
+
+            </div>
 
           </div>
 
@@ -216,11 +239,31 @@ function CourseUpload() {
               Choose PDFs
             </label>
 
-            <p className="file-count">
-              {pdfs.length > 0
-                ? `${pdfs.length} PDF(s) selected`
-                : "No PDFs selected"}
-            </p>
+            <div className="selected-files">
+
+              {pdfs.length > 0 ? (
+
+                pdfs.map(
+                  (pdf, index) => (
+
+                    <div
+                      key={index}
+                      className="file-item"
+                    >
+                      📄 {pdf.name}
+                    </div>
+                  )
+                )
+
+              ) : (
+
+                <p className="empty-file">
+                  No PDFs selected
+                </p>
+
+              )}
+
+            </div>
 
           </div>
 
@@ -237,6 +280,7 @@ function CourseUpload() {
         </form>
 
       </div>
+
     </div>
   );
 }
