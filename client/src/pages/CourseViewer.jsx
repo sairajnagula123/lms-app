@@ -40,10 +40,14 @@ function CourseViewer() {
 
   // LOADING
   if (!course) {
-
     return (
-      <div className="viewer-loading">
-        Loading Course...
+      <div className="viewer-shimmer">
+        <div className="shimmer-sidebar"></div>
+        <div className="shimmer-main">
+          <div className="shimmer-title"></div>
+          <div className="shimmer-text"></div>
+          <div className="shimmer-video"></div>
+        </div>
       </div>
     );
   }
