@@ -188,14 +188,16 @@ function CourseViewer() {
                       📄 {pdf.title}
                     </h3>
 
-                    <iframe
-                      className="pdf-viewer"
-                      src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
-                        pdf.url
-                      )}`}
-                      title={pdf.title}
-                    ></iframe>
-
+                    <div className="pdf-actions">
+                      <a
+                        href={pdf.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="open-pdf-btn"
+                      >
+                        📄 Open PDF
+                      </a>
+                    </div>
                   </div>
                 )
               )
