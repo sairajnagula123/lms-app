@@ -179,11 +179,15 @@ function CourseViewer() {
                       📄 {pdf.title}
                     </h3>
 
-                    <iframe
-                      className="pdf-viewer"
-                      src={`${pdf.url}#toolbar=1&navpanes=0&scrollbar=1`}
-                      title={pdf.title}
-                    ></iframe>
+                    <div className="pdf-container">
+                      <iframe
+                        className="pdf-viewer"
+                        src={`https://mozilla.github.io/pdf.js/web/viewer.html?file=${encodeURIComponent(
+                          pdf.url
+                        )}`}
+                        title={pdf.title}
+                      ></iframe>
+                    </div>
 
                   </div>
                 )
