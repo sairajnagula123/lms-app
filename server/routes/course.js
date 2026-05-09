@@ -53,16 +53,7 @@ router.post(
 
       // Original Cloudinary URL
       let contentUrl = req.file.path;
-
-      // PDF FIX
-      if (
-        req.file.mimetype === "application/pdf"
-      ) {
-        contentUrl = contentUrl.replace(
-          "/image/upload/",
-          "/raw/upload/"
-        );
-      }
+      
 
       const newCourse = new Course({
         title,

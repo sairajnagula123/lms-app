@@ -4,16 +4,29 @@ const cloudinary = require("../config/cloudinary");
 
 const storage = new CloudinaryStorage({
   cloudinary,
-  params: async (req, file) => ({
-    folder: "lms_uploads",
-    resource_type: "auto",
 
-    // safer filename
-    public_id:
-      Date.now() +
-      "-" +
-      file.originalname.split(".")[0].replace(/\s+/g, "-"),
-  }),
+  params: async (req, file) => {
+
+    let resourceType = "auto";
+
+    // PDF files
+    if (file.mimetype === "application/pdf") {
+      resourceType = "raw";
+    }
+
+    return {
+      folder: "lms_uploads",
+
+      resource_type: resourceType,
+
+      public_id:
+        Date.now() +
+        "-" +
+        file.originalname
+          .split(".")[0]
+          .replace(/\s+/g, "-"),
+    };
+  },
 });
 
 const upload = multer({ storage });
