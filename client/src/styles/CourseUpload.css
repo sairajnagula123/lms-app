@@ -1,26 +1,38 @@
+body {
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background: linear-gradient(to right, #eef2ff, #f5f7fa);
+}
+
+/* Main Upload Card */
 .upload-container {
   max-width: 520px;
   margin: 60px auto;
-  padding: 35px;
-  background: #ffffff;
-  border-radius: 18px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 40px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(10px);
+  border-radius: 22px;
+  box-shadow: 0 10px 35px rgba(0, 0, 0, 0.12);
+  transition: all 0.3s ease;
 }
 
 .upload-container:hover {
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.12);
+  transform: translateY(-4px);
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
 }
 
+/* Heading */
 .upload-container h2 {
   text-align: center;
-  margin-bottom: 28px;
-  font-size: 32px;
-  color: #111827;
+  margin-bottom: 30px;
+  font-size: 34px;
   font-weight: 700;
+  color: #111827;
 }
 
+/* Form Layout */
 .upload-container form {
   display: flex;
   flex-direction: column;
@@ -28,75 +40,120 @@
 }
 
 /* Inputs */
-.upload-container input[type="text"],
+.upload-container input,
 .upload-container textarea,
-.upload-container select,
-.upload-container input[type="file"] {
-  padding: 14px;
-  font-size: 16px;
+.upload-container select {
+  width: 100%;
+  padding: 15px;
   border: 1px solid #d1d5db;
-  border-radius: 10px;
-  background-color: #f9fafb;
+  border-radius: 12px;
+  background: #f9fafb;
+  font-size: 16px;
   transition: all 0.3s ease;
+  box-sizing: border-box;
   font-family: inherit;
 }
 
-/* Focus Effect */
-.upload-container input[type="text"]:focus,
+/* Input Focus */
+.upload-container input:focus,
 .upload-container textarea:focus,
 .upload-container select:focus {
   outline: none;
-  border-color: #007bff;
-  background-color: #fff;
-  box-shadow: 0 0 0 4px rgba(0, 123, 255, 0.15);
+  border-color: #2563eb;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.15);
 }
 
 /* Textarea */
 .upload-container textarea {
-  resize: vertical;
   min-height: 120px;
+  resize: vertical;
 }
 
 /* File Input */
 .upload-container input[type="file"] {
-  background-color: #fff;
+  background: white;
   cursor: pointer;
+  padding: 12px;
 }
 
-/* Button */
-.upload-container button {
-  background: linear-gradient(135deg, #007bff, #0056d2);
-  color: white;
-  padding: 14px;
-  font-size: 17px;
-  font-weight: 600;
+/* File Upload Button Native */
+.upload-container input[type="file"]::file-selector-button {
   border: none;
-  border-radius: 10px;
+  background: #2563eb;
+  padding: 10px 15px;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  margin-right: 12px;
+  transition: 0.3s ease;
+}
+
+.upload-container input[type="file"]::file-selector-button:hover {
+  background: #1d4ed8;
+}
+
+/* Upload Button */
+.upload-container button {
+  padding: 15px;
+  border: none;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #2563eb, #1d4ed8);
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
   cursor: pointer;
   transition: all 0.3s ease;
 }
 
+/* Hover Effect */
 .upload-container button:hover {
-  transform: translateY(-2px);
-  background: linear-gradient(135deg, #0069d9, #0047b3);
-  box-shadow: 0 6px 15px rgba(0, 123, 255, 0.25);
+  transform: translateY(-3px);
+  box-shadow: 0 10px 20px rgba(37, 99, 235, 0.25);
 }
 
+/* Active Effect */
 .upload-container button:active {
   transform: scale(0.98);
 }
 
-/* Error Message */
-.error {
-  background-color: #ffe5e5;
-  color: #d90429;
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 14px;
-  border: 1px solid #ffb3b3;
+/* Disabled Button */
+.upload-container button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
 }
 
-/* Responsive */
+/* Error Message */
+.error {
+  background: #fee2e2;
+  color: #dc2626;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Success Message */
+.success {
+  background: #dcfce7;
+  color: #166534;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid #86efac;
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+/* Selected File Text */
+.file-name {
+  font-size: 14px;
+  color: #374151;
+  margin-top: -5px;
+  word-break: break-word;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
   .upload-container {
     width: 90%;
@@ -105,7 +162,7 @@
   }
 
   .upload-container h2 {
-    font-size: 26px;
+    font-size: 28px;
   }
 
   .upload-container button {

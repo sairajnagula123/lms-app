@@ -10,11 +10,18 @@ function CourseUpload() {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
+
+  const API_URL = process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const API_URL = process.env.REACT_APP_API_URL;
+    // Validation
+    if (!file) {
+      setError("Please select a file");
+      return;
+    }
 
     const formData = new FormData();
 
@@ -26,8 +33,9 @@ function CourseUpload() {
     try {
       setLoading(true);
       setError("");
+      setSuccess("");
 
-      const res = await axios.post(
+      const response = await axios.post(
         `${API_URL}/api/courses/add`,
         formData,
         {
@@ -37,22 +45,23 @@ function CourseUpload() {
         }
       );
 
-      alert(res.data.message);
+      setSuccess(response.data.message || "Course uploaded successfully!");
 
-      // Optional reset after upload
+      // Reset Form
       setTitle("");
       setDescription("");
       setContentType("video");
       setFile(null);
 
     } catch (err) {
-      console.error("Upload failed:", err);
+      console.error(err);
 
       if (err.response) {
         setError(err.response.data.message || "Upload failed");
       } else {
-        setError("Server error / Network issue");
+        setError("Server error or network issue");
       }
+
     } finally {
       setLoading(false);
     }
@@ -60,24 +69,27 @@ function CourseUpload() {
 
   return (
     <div className="upload-container">
+
       <h2>Upload a New Course</h2>
 
       {error && <p className="error">{error}</p>}
+
+      {success && <p className="success">{success}</p>}
 
       <form onSubmit={handleSubmit} encType="multipart/form-data">
 
         <input
           type="text"
+          placeholder="Course Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="Course Title"
           required
         />
 
         <textarea
+          placeholder="Course Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
-          placeholder="Course Description"
           required
         />
 
@@ -91,10 +103,17 @@ function CourseUpload() {
 
         <input
           type="file"
-          onChange={(e) => setFile(e.target.files[0])}
           accept="video/*,application/pdf"
+          onChange={(e) => setFile(e.target.files[0])}
           required
         />
+
+        {/* File Preview */}
+        {file && (
+          <p className="file-name">
+            Selected File: {file.name}
+          </p>
+        )}
 
         <button type="submit" disabled={loading}>
           {loading ? "Uploading..." : "Upload Course"}
