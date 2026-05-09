@@ -38,16 +38,25 @@ function CourseViewer() {
 
   }, [id]);
 
-  // LOADING
+  // SHIMMER LOADING
   if (!course) {
+
     return (
+
       <div className="viewer-shimmer">
+
         <div className="shimmer-sidebar"></div>
+
         <div className="shimmer-main">
+
           <div className="shimmer-title"></div>
+
           <div className="shimmer-text"></div>
+
           <div className="shimmer-video"></div>
+
         </div>
+
       </div>
     );
   }
@@ -186,21 +195,10 @@ function CourseViewer() {
                       📄 {pdf.title}
                     </h3>
 
-                    {/* OPEN BUTTON */}
-                    <a
-                      href={pdf.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="open-pdf-btn"
-                    >
-                      Open PDF
-                    </a>
-
-                    {/* OPEN BUTTON */}
                     <a
                       href={pdf.url.replace(
-                        "/upload/",
-                        "/upload/fl_attachment:false/"
+                        "/raw/upload/",
+                        "/raw/upload/fl_attachment:false/"
                       )}
                       target="_blank"
                       rel="noreferrer"
