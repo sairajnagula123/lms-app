@@ -43,22 +43,20 @@ function CourseUpload() {
     );
 
     // VIDEOS
-    for (let i = 0; i < videos.length; i++) {
-
+    videos.forEach((video) => {
       formData.append(
         "videos",
-        videos[i]
+        video
       );
-    }
+    });
 
     // PDFS
-    for (let i = 0; i < pdfs.length; i++) {
-
+    pdfs.forEach((pdf) => {
       formData.append(
         "pdfs",
-        pdfs[i]
+        pdf
       );
-    }
+    });
 
     try {
 
@@ -107,83 +105,138 @@ function CourseUpload() {
   };
 
   return (
-    <div className="upload-container">
+    <div className="page">
 
-      <h2>
-        📚 Upload New Course
-      </h2>
+      <div className="upload-container">
 
-      {error && (
-        <p className="error">
-          {error}
-        </p>
-      )}
+        <h2>
+          📚 Upload New Course
+        </h2>
 
-      {success && (
-        <p className="success">
-          {success}
-        </p>
-      )}
+        {error && (
+          <p className="error">
+            {error}
+          </p>
+        )}
 
-      <form onSubmit={handleSubmit}>
+        {success && (
+          <p className="success">
+            {success}
+          </p>
+        )}
 
-        {/* TITLE */}
-        <input
-          type="text"
-          placeholder="Course Title"
-          value={title}
-          onChange={(e) =>
-            setTitle(e.target.value)
-          }
-          required
-        />
+        <form onSubmit={handleSubmit}>
 
-        {/* DESCRIPTION */}
-        <textarea
-          placeholder="Course Description"
-          value={description}
-          onChange={(e) =>
-            setDescription(
-              e.target.value
-            )
-          }
-          required
-        />
+          {/* TITLE */}
+          <input
+            type="text"
+            placeholder="Course Title"
+            value={title}
+            onChange={(e) =>
+              setTitle(e.target.value)
+            }
+            required
+          />
 
-        {/* VIDEOS */}
-        <input
-          type="file"
-          multiple
-          accept="video/*"
-          onChange={(e) =>
-            setVideos(
-              Array.from(e.target.files)
-            )
-          }
-        />
+          {/* DESCRIPTION */}
+          <textarea
+            placeholder="Course Description"
+            value={description}
+            onChange={(e) =>
+              setDescription(
+                e.target.value
+              )
+            }
+            required
+          />
 
-        {/* PDFS */}
-        <input
-          type="file"
-          multiple
-          accept="application/pdf"
-          onChange={(e) =>
-            setPdfs(
-              Array.from(e.target.files)
-            )
-          }
-        />
+          {/* VIDEO UPLOAD */}
+          <div className="upload-box">
 
-        <button
-          type="submit"
-          disabled={loading}
-        >
-          {loading
-            ? "Uploading..."
-            : "Upload Course"}
-        </button>
+            <label className="upload-label">
+              🎥 Upload Videos
+            </label>
 
-      </form>
+            <input
+              type="file"
+              multiple
+              accept="video/*"
+              id="videoUpload"
+              hidden
+              onChange={(e) =>
+                setVideos(
+                  Array.from(
+                    e.target.files
+                  )
+                )
+              }
+            />
+
+            <label
+              htmlFor="videoUpload"
+              className="custom-upload-btn"
+            >
+              Choose Videos
+            </label>
+
+            <p className="file-count">
+              {videos.length > 0
+                ? `${videos.length} video(s) selected`
+                : "No videos selected"}
+            </p>
+
+          </div>
+
+          {/* PDF UPLOAD */}
+          <div className="upload-box">
+
+            <label className="upload-label">
+              📄 Upload PDFs
+            </label>
+
+            <input
+              type="file"
+              multiple
+              accept="application/pdf"
+              id="pdfUpload"
+              hidden
+              onChange={(e) =>
+                setPdfs(
+                  Array.from(
+                    e.target.files
+                  )
+                )
+              }
+            />
+
+            <label
+              htmlFor="pdfUpload"
+              className="custom-upload-btn"
+            >
+              Choose PDFs
+            </label>
+
+            <p className="file-count">
+              {pdfs.length > 0
+                ? `${pdfs.length} PDF(s) selected`
+                : "No PDFs selected"}
+            </p>
+
+          </div>
+
+          {/* SUBMIT */}
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? "Uploading..."
+              : "Upload Course"}
+          </button>
+
+        </form>
+
+      </div>
     </div>
   );
 }
