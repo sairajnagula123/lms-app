@@ -13,20 +13,16 @@ const courseSchema =
       required: true,
     },
 
-    // VIDEO
-    videoUrl: {
-      type: String,
-      default: "",
-    },
+    // MULTIPLE VIDEOS
+    videoUrls: [
+      {
+        title: String,
+        url: String,
+      },
+    ],
 
-    // PDF NOTES
-    pdfUrl: {
-      type: String,
-      default: "",
-    },
-
-    // OPTIONAL FUTURE
-    resources: [
+    // MULTIPLE PDFS
+    pdfUrls: [
       {
         title: String,
         url: String,

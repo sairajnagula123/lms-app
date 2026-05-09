@@ -4,14 +4,21 @@ import axios from "axios";
 import "../styles/CourseViewer.css";
 
 function CourseViewer() {
+
   const { id } = useParams();
 
   const [course, setCourse] =
     useState(null);
 
+  const [activeSection, setActiveSection] =
+    useState("video");
+
   useEffect(() => {
+
     const fetchCourse = async () => {
+
       try {
+
         const API_URL =
           process.env.REACT_APP_API_URL;
 
@@ -22,13 +29,16 @@ function CourseViewer() {
         setCourse(res.data);
 
       } catch (err) {
+
         console.error(err);
       }
     };
 
     fetchCourse();
+
   }, [id]);
 
+  // LOADING
   if (!course) {
     return (
       <div className="viewer-loading">
@@ -45,16 +55,32 @@ function CourseViewer() {
 
         <h2>LMS Course</h2>
 
-        <div className="lesson-item active">
-          📘 {course.title}
+        {/* VIDEO */}
+        <div
+          className={`lesson-item ${
+            activeSection === "video"
+              ? "active"
+              : ""
+          }`}
+          onClick={() =>
+            setActiveSection("video")
+          }
+        >
+          🎥 Video
         </div>
 
-        <div className="lesson-item">
-          ✅ Quiz
-        </div>
-
-        <div className="lesson-item">
-          📜 Certificate
+        {/* PDF */}
+        <div
+          className={`lesson-item ${
+            activeSection === "pdf"
+              ? "active"
+              : ""
+          }`}
+          onClick={() =>
+            setActiveSection("pdf")
+          }
+        >
+          📄 PDF Notes
         </div>
 
       </div>
@@ -65,47 +91,82 @@ function CourseViewer() {
         {/* TOPBAR */}
         <div className="course-topbar">
 
-          <h1>{course.title}</h1>
+          <div>
 
-          <button>
-            Mark Complete
-          </button>
+            <h1>{course.title}</h1>
+
+            <p className="course-description">
+              {course.description}
+            </p>
+
+          </div>
 
         </div>
 
-        {/* DESCRIPTION */}
-        <div className="course-description">
-          {course.description}
-        </div>
+        {/* VIDEO SECTION */}
+        {activeSection === "video" && (
 
-        {/* VIDEO */}
-        {course.contentType ===
-          "video" && (
-          <video
-            className="video-player"
-            controls
-          >
-            <source
-              src={course.contentUrl}
-              type="video/mp4"
-            />
-          </video>
+          <div>
+
+            <h2 className="section-title">
+              Course Video
+            </h2>
+
+            {course.videoUrl ? (
+
+              <video
+                className="video-player"
+                controls
+              >
+                <source
+                  src={course.videoUrl}
+                  type="video/mp4"
+                />
+
+                Your browser does not
+                support video.
+
+              </video>
+
+            ) : (
+
+              <div className="empty-box">
+                No video uploaded for
+                this course.
+              </div>
+
+            )}
+
+          </div>
         )}
 
-        {/* PDF */}
-        {course.contentType ===
-          "pdf" && (
-          <object
-            data={course.contentUrl}
-            type="application/pdf"
-            width="100%"
-            height="800px"
-            className="pdf-viewer"
-          >
-            <p>
-              PDF cannot be displayed.
-            </p>
-          </object>
+        {/* PDF SECTION */}
+        {activeSection === "pdf" && (
+
+          <div>
+
+            <h2 className="section-title">
+              PDF Notes
+            </h2>
+
+            {course.pdfUrl ? (
+
+              <iframe
+                className="pdf-viewer"
+                src={course.pdfUrl}
+                title="PDF Viewer"
+              ></iframe>
+
+            ) : (
+
+              <div className="empty-box">
+                No PDF uploaded for
+                this course.
+              </div>
+
+            )}
+
+          </div>
         )}
 
       </div>

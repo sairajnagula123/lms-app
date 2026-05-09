@@ -10,11 +10,11 @@ function CourseUpload() {
   const [description, setDescription] =
     useState("");
 
-  const [video, setVideo] =
-    useState(null);
+  const [videos, setVideos] =
+    useState([]);
 
-  const [pdf, setPdf] =
-    useState(null);
+  const [pdfs, setPdfs] =
+    useState([]);
 
   const [loading, setLoading] =
     useState(false);
@@ -42,12 +42,22 @@ function CourseUpload() {
       description
     );
 
-    if (video) {
-      formData.append("video", video);
+    // VIDEOS
+    for (let i = 0; i < videos.length; i++) {
+
+      formData.append(
+        "videos",
+        videos[i]
+      );
     }
 
-    if (pdf) {
-      formData.append("pdf", pdf);
+    // PDFS
+    for (let i = 0; i < pdfs.length; i++) {
+
+      formData.append(
+        "pdfs",
+        pdfs[i]
+      );
     }
 
     try {
@@ -58,16 +68,17 @@ function CourseUpload() {
 
       setSuccess("");
 
-      const response = await axios.post(
-        `${API_URL}/api/courses/add`,
-        formData,
-        {
-          headers: {
-            "Content-Type":
-              "multipart/form-data",
-          },
-        }
-      );
+      const response =
+        await axios.post(
+          `${API_URL}/api/courses/add`,
+          formData,
+          {
+            headers: {
+              "Content-Type":
+                "multipart/form-data",
+            },
+          }
+        );
 
       setSuccess(
         response.data.message
@@ -78,9 +89,9 @@ function CourseUpload() {
 
       setDescription("");
 
-      setVideo(null);
+      setVideos([]);
 
-      setPdf(null);
+      setPdfs([]);
 
     } catch (err) {
 
@@ -139,32 +150,34 @@ function CourseUpload() {
           required
         />
 
-        {/* VIDEO */}
+        {/* VIDEOS */}
         <label>
-          🎥 Upload Video
+          🎥 Upload Videos
         </label>
 
         <input
           type="file"
+          multiple
           accept="video/*"
           onChange={(e) =>
-            setVideo(
-              e.target.files[0]
+            setVideos(
+              e.target.files
             )
           }
         />
 
-        {/* PDF */}
+        {/* PDFS */}
         <label>
-          📄 Upload PDF Notes
+          📄 Upload PDFs
         </label>
 
         <input
           type="file"
+          multiple
           accept="application/pdf"
           onChange={(e) =>
-            setPdf(
-              e.target.files[0]
+            setPdfs(
+              e.target.files
             )
           }
         />
