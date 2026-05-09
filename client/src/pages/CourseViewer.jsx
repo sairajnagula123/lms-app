@@ -112,14 +112,17 @@ function CourseViewer() {
               Course Video
             </h2>
 
-            {course.videoUrl ? (
+            {course.videoUrls &&
+            course.videoUrls.length > 0 ? (
 
               <video
                 className="video-player"
                 controls
               >
                 <source
-                  src={course.videoUrl}
+                  src={
+                    course.videoUrls[0].url
+                  }
                   type="video/mp4"
                 />
 
@@ -149,11 +152,14 @@ function CourseViewer() {
               PDF Notes
             </h2>
 
-            {course.pdfUrl ? (
+            {course.pdfUrls &&
+            course.pdfUrls.length > 0 ? (
 
               <iframe
                 className="pdf-viewer"
-                src={course.pdfUrl}
+                src={
+                  course.pdfUrls[0].url
+                }
                 title="PDF Viewer"
               ></iframe>
 
