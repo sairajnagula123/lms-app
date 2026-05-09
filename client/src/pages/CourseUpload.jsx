@@ -1,157 +1,184 @@
 import { useState } from "react";
 import axios from "axios";
-import { useDropzone } from "react-dropzone";
 import "../styles/CourseUpload.css";
 
 function CourseUpload() {
 
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [contentType, setContentType] = useState("video");
-  const [file, setFile] = useState(null);
+  const [title, setTitle] =
+    useState("");
 
-  const [loading, setLoading] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const [description, setDescription] =
+    useState("");
 
-  const [error, setError] = useState("");
-  const [success, setSuccess] = useState("");
+  const [video, setVideo] =
+    useState(null);
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  const [pdf, setPdf] =
+    useState(null);
 
-  // DRAG & DROP
-  const onDrop = (acceptedFiles) => {
-    setFile(acceptedFiles[0]);
-  };
+  const [loading, setLoading] =
+    useState(false);
 
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: {
-      "video/*": [],
-      "application/pdf": [],
-    },
-  });
+  const [error, setError] =
+    useState("");
+
+  const [success, setSuccess] =
+    useState("");
+
+  const API_URL =
+    process.env.REACT_APP_API_URL;
 
   // SUBMIT
   const handleSubmit = async (e) => {
+
     e.preventDefault();
-
-    if (!file) {
-      setError("Please select a file");
-      return;
-    }
-
-    if (contentType === "pdf" && file.type !== "application/pdf") {
-      setError("Please upload a PDF file");
-      return;
-    }
-
-    if (contentType === "video" && !file.type.startsWith("video/")) {
-      setError("Please upload a video file");
-      return;
-    }
 
     const formData = new FormData();
 
     formData.append("title", title);
-    formData.append("description", description);
-    formData.append("contentType", contentType);
-    formData.append("file", file);
+
+    formData.append(
+      "description",
+      description
+    );
+
+    if (video) {
+      formData.append("video", video);
+    }
+
+    if (pdf) {
+      formData.append("pdf", pdf);
+    }
 
     try {
+
       setLoading(true);
+
       setError("");
+
       setSuccess("");
 
       const response = await axios.post(
         `${API_URL}/api/courses/add`,
         formData,
         {
-          headers: { "Content-Type": "multipart/form-data" },
+          headers: {
+            "Content-Type":
+              "multipart/form-data",
+          },
         }
       );
 
-      setSuccess(response.data.message || "Course uploaded successfully!");
+      setSuccess(
+        response.data.message
+      );
 
-      // RESET FORM
+      // RESET
       setTitle("");
+
       setDescription("");
-      setContentType("video");
-      setFile(null);
+
+      setVideo(null);
+
+      setPdf(null);
 
     } catch (err) {
 
-      if (err.response) {
-        setError(err.response.data.message || "Upload failed");
-      } else {
-        setError("Server error or network issue");
-      }
+      setError(
+        err.response?.data?.message ||
+          "Upload failed"
+      );
 
     } finally {
+
       setLoading(false);
     }
   };
 
   return (
-    <div className={darkMode ? "page dark" : "page"}>
+    <div className="upload-container">
 
-      {/* DARK MODE TOGGLE */}
-      <button className="dark-toggle" onClick={() => setDarkMode(!darkMode)}>
-        {darkMode ? "☀ Light" : "🌙 Dark"}
-      </button>
+      <h2>
+        📚 Upload New Course
+      </h2>
 
-      <div className="upload-container">
+      {error && (
+        <p className="error">
+          {error}
+        </p>
+      )}
 
-        <h2>📚 Upload New Course</h2>
+      {success && (
+        <p className="success">
+          {success}
+        </p>
+      )}
 
-        {error && <p className="error">{error}</p>}
+      <form onSubmit={handleSubmit}>
 
-        {success && <p className="success">{success}</p>}
+        {/* TITLE */}
+        <input
+          type="text"
+          placeholder="Course Title"
+          value={title}
+          onChange={(e) =>
+            setTitle(e.target.value)
+          }
+          required
+        />
 
-        <form onSubmit={handleSubmit}>
+        {/* DESCRIPTION */}
+        <textarea
+          placeholder="Course Description"
+          value={description}
+          onChange={(e) =>
+            setDescription(
+              e.target.value
+            )
+          }
+          required
+        />
 
-          {/* TITLE */}
-          <input
-            type="text"
-            placeholder="Course Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-          />
+        {/* VIDEO */}
+        <label>
+          🎥 Upload Video
+        </label>
 
-          {/* DESCRIPTION */}
-          <textarea
-            placeholder="Course Description"
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            required
-          />
+        <input
+          type="file"
+          accept="video/*"
+          onChange={(e) =>
+            setVideo(
+              e.target.files[0]
+            )
+          }
+        />
 
-          {/* CONTENT TYPE */}
-          <select
-            value={contentType}
-            onChange={(e) => setContentType(e.target.value)}
-          >
-            <option value="video">🎥 Video</option>
-            <option value="pdf">📄 PDF</option>
-          </select>
+        {/* PDF */}
+        <label>
+          📄 Upload PDF Notes
+        </label>
 
-          {/* DROPZONE */}
-          <div {...getRootProps()} className="dropzone">
-            <input {...getInputProps()} />
+        <input
+          type="file"
+          accept="application/pdf"
+          onChange={(e) =>
+            setPdf(
+              e.target.files[0]
+            )
+          }
+        />
 
-            <p>Drag & Drop Course File Here</p>
+        <button
+          type="submit"
+          disabled={loading}
+        >
+          {loading
+            ? "Uploading..."
+            : "Upload Course"}
+        </button>
 
-            <span>or click to browse</span>
-          </div>
-
-          {/* SUBMIT BUTTON */}
-          <button type="submit" disabled={loading}>
-            {loading ? "Uploading..." : "Upload Course"}
-          </button>
-
-        </form>
-
-      </div>
+      </form>
     </div>
   );
 }

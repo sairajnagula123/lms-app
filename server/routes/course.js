@@ -68,32 +68,41 @@ router.get("/:id", async (req, res) => {
 
 router.post(
   "/add",
-  upload.single("file"),
+
+  upload.fields([
+    {
+      name: "video",
+      maxCount: 1,
+    },
+
+    {
+      name: "pdf",
+      maxCount: 1,
+    },
+  ]),
+
   async (req, res) => {
+
     try {
-
-      console.log("FILE:", req.file);
-
-      if (!req.file) {
-        return res.status(400).json({
-          message: "File not received",
-        });
-      }
 
       const {
         title,
         description,
-        contentType,
       } = req.body;
 
-      // Cloudinary URL
-      let contentUrl = req.file.path;
+      // VIDEO URL
+      const videoUrl =
+        req.files?.video?.[0]?.path || "";
+
+      // PDF URL
+      const pdfUrl =
+        req.files?.pdf?.[0]?.path || "";
 
       const newCourse = new Course({
         title,
         description,
-        contentType,
-        contentUrl,
+        videoUrl,
+        pdfUrl,
       });
 
       await newCourse.save();
@@ -101,6 +110,7 @@ router.post(
       res.json({
         message:
           "Course uploaded successfully",
+
         course: newCourse,
       });
 
