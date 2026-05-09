@@ -324,3 +324,128 @@ body {
     font-size: 15px;
   }
 }
+
+/* Dark Mode */
+.dark {
+  background: #0f172a;
+  color: white;
+}
+
+.dark .upload-container {
+  background: rgba(30, 41, 59, 0.95);
+}
+
+.dark input,
+.dark textarea,
+.dark select {
+  background: #1e293b;
+  color: white;
+  border: 1px solid #334155;
+}
+
+.dark h2 {
+  color: white;
+}
+
+/* Toggle Button */
+.dark-toggle {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+
+  border: none;
+
+  padding: 10px 16px;
+
+  border-radius: 10px;
+
+  background: #111827;
+
+  color: white;
+
+  cursor: pointer;
+}
+
+/* Dropzone */
+.dropzone {
+  border: 2px dashed #3b82f6;
+
+  padding: 35px;
+
+  border-radius: 16px;
+
+  text-align: center;
+
+  background: #f8fbff;
+
+  cursor: pointer;
+
+  transition: 0.3s ease;
+}
+
+.dropzone:hover {
+  background: #eff6ff;
+}
+
+.dropzone p {
+  font-size: 18px;
+  font-weight: 600;
+}
+
+.dropzone span {
+  color: gray;
+  font-size: 14px;
+}
+
+/* File Preview */
+.preview-card {
+  display: flex;
+
+  align-items: center;
+
+  gap: 15px;
+
+  padding: 14px;
+
+  background: #f9fafb;
+
+  border-radius: 12px;
+}
+
+.preview-card img {
+  width: 60px;
+  height: 60px;
+
+  object-fit: cover;
+
+  border-radius: 10px;
+}
+
+.file-icon {
+  font-size: 40px;
+}
+
+/* Progress */
+.progress-wrapper {
+  width: 100%;
+
+  height: 14px;
+
+  background: #e5e7eb;
+
+  border-radius: 20px;
+
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+
+  background: linear-gradient(
+    to right,
+    #2563eb,
+    #1d4ed8
+  );
+
+  transition: width 0.3s ease;
+}

@@ -1,23 +1,43 @@
 import { useState } from "react";
 import axios from "axios";
+import { useDropzone } from "react-dropzone";
 import "../styles/CourseUpload.css";
 
 function CourseUpload() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [contentType, setContentType] = useState("video");
+
   const [file, setFile] = useState(null);
 
   const [loading, setLoading] = useState(false);
+
+  const [progress, setProgress] = useState(0);
+
+  const [darkMode, setDarkMode] = useState(false);
+
   const [error, setError] = useState("");
+
   const [success, setSuccess] = useState("");
 
   const API_URL = process.env.REACT_APP_API_URL;
 
+  // Drag & Drop
+  const onDrop = (acceptedFiles) => {
+    setFile(acceptedFiles[0]);
+  };
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: {
+      "video/*": [],
+      "application/pdf": [],
+    },
+  });
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validation
     if (!file) {
       setError("Please select a file");
       return;
@@ -32,8 +52,12 @@ function CourseUpload() {
 
     try {
       setLoading(true);
+
       setError("");
+
       setSuccess("");
+
+      setProgress(0);
 
       const response = await axios.post(
         `${API_URL}/api/courses/add`,
@@ -42,22 +66,34 @@ function CourseUpload() {
           headers: {
             "Content-Type": "multipart/form-data",
           },
+
+          onUploadProgress: (progressEvent) => {
+            const percent = Math.round(
+              (progressEvent.loaded * 100) /
+                progressEvent.total
+            );
+
+            setProgress(percent);
+          },
         }
       );
 
-      setSuccess(response.data.message || "Course uploaded successfully!");
+      setSuccess(
+        response.data.message ||
+          "Course uploaded successfully!"
+      );
 
-      // Reset Form
       setTitle("");
       setDescription("");
       setContentType("video");
       setFile(null);
 
     } catch (err) {
-      console.error(err);
-
       if (err.response) {
-        setError(err.response.data.message || "Upload failed");
+        setError(
+          err.response.data.message ||
+            "Upload failed"
+        );
       } else {
         setError("Server error or network issue");
       }
@@ -68,70 +104,127 @@ function CourseUpload() {
   };
 
   return (
-  <div className="page">
+    <div className={darkMode ? "page dark" : "page"}>
 
-    <div className="upload-container">
+      {/* Dark Mode Toggle */}
+      <button
+        className="dark-toggle"
+        onClick={() => setDarkMode(!darkMode)}
+      >
+        {darkMode ? "☀ Light" : "🌙 Dark"}
+      </button>
 
-      <h2>📚 Upload a New Course</h2>
+      <div className="upload-container">
 
-      {error && <p className="error">{error}</p>}
+        <h2>📚 Upload New Course</h2>
 
-      {success && <p className="success">{success}</p>}
+        {error && <p className="error">{error}</p>}
 
-      <form onSubmit={handleSubmit} encType="multipart/form-data">
-
-        <input
-          type="text"
-          placeholder="Course Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-          required
-        />
-
-        <textarea
-          placeholder="Course Description"
-          value={description}
-          onChange={(e) => setDescription(e.target.value)}
-          required
-        />
-
-        <select
-          value={contentType}
-          onChange={(e) => setContentType(e.target.value)}
-        >
-          <option value="video">🎥 Video</option>
-          <option value="pdf">📄 PDF</option>
-        </select>
-
-        <div className="file-upload">
-          <input
-            type="file"
-            accept="video/*,application/pdf"
-            onChange={(e) => setFile(e.target.files[0])}
-            required
-          />
-        </div>
-
-        {file && (
-          <p className="file-name">
-            ✅ Selected File: {file.name}
-          </p>
+        {success && (
+          <p className="success">{success}</p>
         )}
 
-        <button type="submit" disabled={loading}>
-          {loading ? (
-            <span className="loader"></span>
-          ) : (
-            "Upload Course"
-          )}
-        </button>
+        <form onSubmit={handleSubmit}>
 
-      </form>
+          <input
+            type="text"
+            placeholder="Course Title"
+            value={title}
+            onChange={(e) =>
+              setTitle(e.target.value)
+            }
+            required
+          />
+
+          <textarea
+            placeholder="Course Description"
+            value={description}
+            onChange={(e) =>
+              setDescription(e.target.value)
+            }
+            required
+          />
+
+          <select
+            value={contentType}
+            onChange={(e) =>
+              setContentType(e.target.value)
+            }
+          >
+            <option value="video">
+              🎥 Video
+            </option>
+
+            <option value="pdf">
+              📄 PDF
+            </option>
+          </select>
+
+          {/* Drag & Drop */}
+          <div
+            {...getRootProps()}
+            className="dropzone"
+          >
+            <input {...getInputProps()} />
+
+            <p>
+              Drag & Drop Course File Here
+            </p>
+
+            <span>
+              or click to browse
+            </span>
+          </div>
+
+          {/* File Preview */}
+          {file && (
+            <div className="preview-card">
+
+              {file.type.includes("image") ? (
+                <img
+                  src={URL.createObjectURL(file)}
+                  alt="preview"
+                />
+              ) : (
+                <div className="file-icon">
+                  📁
+                </div>
+              )}
+
+              <p>{file.name}</p>
+
+            </div>
+          )}
+
+          {/* Progress Bar */}
+          {loading && (
+            <div className="progress-wrapper">
+
+              <div
+                className="progress-bar"
+                style={{
+                  width: `${progress}%`,
+                }}
+              ></div>
+
+            </div>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+          >
+            {loading
+              ? `Uploading ${progress}%`
+              : "Upload Course"}
+          </button>
+
+        </form>
+
+      </div>
 
     </div>
-
-  </div>
-);
+  );
 }
 
 export default CourseUpload;
