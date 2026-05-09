@@ -4,31 +4,59 @@ const {
   CloudinaryStorage,
 } = require("multer-storage-cloudinary");
 
-const cloudinary = require(
-  "../config/cloudinary"
-);
+const cloudinary =
+  require("../config/cloudinary");
 
-const storage = new CloudinaryStorage({
-  cloudinary,
+const storage =
+  new CloudinaryStorage({
 
-  params: async (req, file) => {
+    cloudinary,
 
-    return {
-      folder: "lms_uploads",
+    params: async (
+      req,
+      file
+    ) => {
 
-      // IMPORTANT
-      resource_type: "auto",
+      let resourceType = "auto";
 
-      public_id:
-        Date.now() +
-        "-" +
-        file.originalname
-          .split(".")[0]
-          .replace(/\s+/g, "-"),
-    };
-  },
-});
+      // PDF
+      if (
+        file.mimetype ===
+        "application/pdf"
+      ) {
 
-const upload = multer({ storage });
+        resourceType = "raw";
+      }
+
+      // VIDEO
+      if (
+        file.mimetype.startsWith(
+          "video"
+        )
+      ) {
+
+        resourceType = "video";
+      }
+
+      return {
+
+        folder:
+          "lms_uploads",
+
+        resource_type:
+          resourceType,
+
+        public_id:
+          Date.now() +
+          "-" +
+          file.originalname
+            .split(".")[0]
+            .replace(/\s+/g, "-"),
+      };
+    },
+  });
+
+const upload =
+  multer({ storage });
 
 module.exports = upload;
