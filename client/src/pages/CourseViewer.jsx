@@ -27,7 +27,7 @@ function CourseViewer() {
     fetchCourse();
   }, [id]);
 
-  // Loading
+  // LOADING
   if (!course) {
     return (
       <div className="viewer-loading">
@@ -40,10 +40,12 @@ function CourseViewer() {
     <div className="course-viewer-container">
       <div className="viewer-card">
 
+        {/* TITLE */}
         <h1 className="viewer-title">
           {course.title}
         </h1>
 
+        {/* DESCRIPTION */}
         <p className="viewer-description">
           {course.description}
         </p>
@@ -59,7 +61,8 @@ function CourseViewer() {
               type="video/mp4"
             />
 
-            Your browser does not support video.
+            Your browser does not support
+            video.
           </video>
         )}
 
@@ -67,10 +70,9 @@ function CourseViewer() {
         {course.contentType === "pdf" && (
           <iframe
             className="pdf-viewer"
-            src={course.contentUrl.replace(
-              "/upload/",
-              "/upload/fl_attachment:false/"
-            )}
+            src={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(
+              course.contentUrl
+            )}`}
             title="PDF Viewer"
           ></iframe>
         )}
