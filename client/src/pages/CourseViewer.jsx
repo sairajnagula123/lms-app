@@ -18,6 +18,7 @@ function CourseViewer() {
         );
 
         setCourse(res.data);
+
       } catch (err) {
         console.error(err);
       }
@@ -26,7 +27,7 @@ function CourseViewer() {
     fetchCourse();
   }, [id]);
 
-  // LOADING
+  // Loading
   if (!course) {
     return (
       <div className="viewer-loading">
@@ -38,6 +39,7 @@ function CourseViewer() {
   return (
     <div className="course-viewer-container">
       <div className="viewer-card">
+
         <h1 className="viewer-title">
           {course.title}
         </h1>
@@ -46,7 +48,7 @@ function CourseViewer() {
           {course.description}
         </p>
 
-        {/* VIDEO */}
+        {/* VIDEO PLAYER */}
         {course.contentType === "video" && (
           <video
             className="video-player"
@@ -56,10 +58,12 @@ function CourseViewer() {
               src={course.contentUrl}
               type="video/mp4"
             />
+
+            Your browser does not support video.
           </video>
         )}
 
-        {/* PDF */}
+        {/* PDF VIEWER */}
         {course.contentType === "pdf" && (
           <iframe
             className="pdf-viewer"
@@ -70,6 +74,7 @@ function CourseViewer() {
             title="PDF Viewer"
           ></iframe>
         )}
+
       </div>
     </div>
   );
