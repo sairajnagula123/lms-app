@@ -13,7 +13,14 @@ function CourseList() {
       try {
         const API_URL = process.env.REACT_APP_API_URL;
 
-        const res = await axios.get(`${API_URL}/api/courses`);
+        // Temporary delay for shimmer testing
+        await new Promise((resolve) =>
+          setTimeout(resolve, 3000)
+        );
+
+        const res = await axios.get(
+          `${API_URL}/api/courses`
+        );
 
         setCourses(res.data);
       } catch (err) {
@@ -27,30 +34,37 @@ function CourseList() {
     fetchCourses();
   }, []);
 
+  // SHIMMER UI
   if (loading) {
     return (
       <div className="course-list-container">
-        <h2 className="course-heading">Available Courses</h2>
+        <h2 className="course-heading">
+          Available Courses
+        </h2>
 
         <div className="course-grid">
           {[1, 2, 3].map((item) => (
-            <div key={item} className="course-card shimmer-wrapper">
-              
+            <div
+              key={item}
+              className="course-card shimmer-wrapper"
+            >
               <div className="shimmer-image shimmer"></div>
 
               <div className="course-content">
                 <div className="shimmer-title shimmer"></div>
 
                 <div className="shimmer-text shimmer"></div>
+
                 <div className="shimmer-text shimmer"></div>
+
                 <div className="shimmer-text short shimmer"></div>
 
                 <div className="shimmer-buttons">
                   <div className="shimmer-btn shimmer"></div>
+
                   <div className="shimmer-btn shimmer"></div>
                 </div>
               </div>
-
             </div>
           ))}
         </div>
@@ -58,6 +72,7 @@ function CourseList() {
     );
   }
 
+  // ERROR
   if (error) {
     return (
       <div className="course-list-container">
@@ -66,17 +81,25 @@ function CourseList() {
     );
   }
 
+  // MAIN UI
   return (
     <div className="course-list-container">
-      <h2 className="course-heading">Available Courses</h2>
+      <h2 className="course-heading">
+        Available Courses
+      </h2>
 
       {courses.length === 0 && (
-        <p className="empty-text">No courses found</p>
+        <p className="empty-text">
+          No courses found
+        </p>
       )}
 
       <div className="course-grid">
         {courses.map((course) => (
-          <div key={course._id} className="course-card">
+          <div
+            key={course._id}
+            className="course-card"
+          >
             <div className="course-image">
               <img
                 src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3"

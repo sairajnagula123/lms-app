@@ -106,15 +106,20 @@ body {
   margin-top: 50px;
 }
 
-/* SHIMMER EFFECT */
+/* ===== SHIMMER UI ===== */
 
-.shimmer-card {
-  height: 350px;
-  position: relative;
+.shimmer-wrapper {
   overflow: hidden;
 }
 
-.shimmer-card::before {
+.shimmer {
+  position: relative;
+  background: #e5e7eb;
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.shimmer::after {
   content: "";
   position: absolute;
   top: 0;
@@ -122,18 +127,51 @@ body {
   width: 150px;
   height: 100%;
   background: linear-gradient(
-    to right,
+    90deg,
     transparent,
-    rgba(255, 255, 255, 0.6),
+    rgba(255, 255, 255, 0.7),
     transparent
   );
-  animation: shimmer 1.2s infinite;
+  animation: shimmer-animation 1.5s infinite;
 }
 
-@keyframes shimmer {
+@keyframes shimmer-animation {
   100% {
-    left: 100%;
+    transform: translateX(700px);
   }
+}
+
+.shimmer-image {
+  width: 100%;
+  height: 220px;
+  margin-bottom: 20px;
+}
+
+.shimmer-title {
+  width: 80%;
+  height: 28px;
+  margin-bottom: 20px;
+}
+
+.shimmer-text {
+  width: 100%;
+  height: 15px;
+  margin-bottom: 12px;
+}
+
+.shimmer-text.short {
+  width: 70%;
+}
+
+.shimmer-buttons {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+}
+
+.shimmer-btn {
+  width: 120px;
+  height: 42px;
 }
 
 /* RESPONSIVE */
@@ -154,72 +192,4 @@ body {
   .course-button {
     text-align: center;
   }
-}
-/* SHIMMER UI */
-
-.shimmer-wrapper {
-  overflow: hidden;
-}
-
-.shimmer {
-  position: relative;
-  background: #e5e7eb;
-  overflow: hidden;
-}
-
-.shimmer::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: -150px;
-  width: 150px;
-  height: 100%;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(255, 255, 255, 0.7),
-    transparent
-  );
-  animation: shimmer-animation 1.2s infinite;
-}
-
-@keyframes shimmer-animation {
-  100% {
-    left: 100%;
-  }
-}
-
-.shimmer-image {
-  width: 100%;
-  height: 220px;
-}
-
-.shimmer-title {
-  width: 80%;
-  height: 28px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-}
-
-.shimmer-text {
-  width: 100%;
-  height: 16px;
-  border-radius: 6px;
-  margin-bottom: 12px;
-}
-
-.shimmer-text.short {
-  width: 70%;
-}
-
-.shimmer-buttons {
-  display: flex;
-  gap: 15px;
-  margin-top: 25px;
-}
-
-.shimmer-btn {
-  width: 130px;
-  height: 42px;
-  border-radius: 10px;
 }
