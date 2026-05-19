@@ -30,38 +30,62 @@ function App() {
 
         <ul className="navbar-links">
 
-          <li><Link to="/">Home</Link></li>
+          <li>
+            <Link to="/">Home</Link>
+          </li>
 
           {/* ✅ Before Login */}
           {!role && (
             <>
-              <li><Link to="/signup">Signup</Link></li>
+              <li>
+                <Link to="/signup">Signup</Link>
+              </li>
 
-              <li><Link to="/login">Login</Link></li>
+              <li>
+                <Link to="/login">Login</Link>
+              </li>
             </>
           )}
 
           {/* ✅ User Navbar */}
           {role === "user" && (
             <>
-              <li><Link to="/courses">Courses</Link></li>
+              <li>
+                <Link to="/courses">Courses</Link>
+              </li>
 
-              <li><Link to="/liveclasses">Live Classes</Link></li>
+              <li>
+                <Link to="/liveclasses">Live Classes</Link>
+              </li>
 
-              <li><Link to="/certificates">My Certificates</Link></li>
+              <li>
+                <Link to="/certificates">My Certificates</Link>
+              </li>
             </>
           )}
 
           {/* ✅ Admin Navbar */}
           {role === "admin" && (
             <>
-              <li><Link to="/upload">Upload Course</Link></li>
+              <li>
+                <Link to="/upload">Upload Course</Link>
+              </li>
 
-              <li><Link to="/quiz-upload">Upload Quiz</Link></li>
+              <li>
+                <Link to="/quiz-upload">Upload Quiz</Link>
+              </li>
 
-              <li><Link to="/liveclass-upload">Add Live Class</Link></li>
+              <li>
+                <Link to="/liveclass-upload">
+                  Add Live Class
+                </Link>
+              </li>
 
-              <li><Link to="/liveclasses">View Classes</Link></li>
+              <li>
+                <Link to="/liveclasses">
+                  View Classes
+                </Link>
+              </li>
             </>
           )}
 
@@ -85,20 +109,66 @@ function App() {
 
       {/* ✅ Routes */}
       <Routes>
-        <Route path="/" element={<Home />} />
-        <Route path="/signup" element={<Signup />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/upload" element={<CourseUpload />} />
-        <Route path="/quiz-upload" element={<QuizUpload />} />
-        <Route path="/courses" element={<CourseList />} />
-        <Route path="/quiz/:courseId" element={<Quiz />} />
-        <Route path="/certificates" element={<Certificates />} />
-        <Route path="/course/:id" element={<CourseViewer />} />
+
+        <Route
+          path="/"
+          element={<Home />}
+        />
+
+        <Route
+          path="/signup"
+          element={<Signup />}
+        />
+
+        <Route
+          path="/login"
+          element={<Login />}
+        />
+
+        <Route
+          path="/upload"
+          element={<CourseUpload />}
+        />
+
+        <Route
+          path="/quiz-upload"
+          element={<QuizUpload />}
+        />
+
+        <Route
+          path="/courses"
+          element={<CourseList />}
+        />
+
+        <Route
+          path="/quiz/:courseId"
+          element={<Quiz />}
+        />
+
+        <Route
+          path="/certificates"
+          element={<Certificates />}
+        />
+
+        <Route
+          path="/course/:id"
+          element={<CourseViewer />}
+        />
+
         {/* ✅ Live Classes */}
-        <Route path="/liveclasses" element={<LiveClasses />} />
+        <Route
+          path="/liveclasses"
+          element={<LiveClasses />}
+        />
+
         {/* ✅ Add Live Class */}
-        <Route path="/liveclass-upload" element={<LiveClassUpload />} />
+        <Route
+          path="/liveclass-upload"
+          element={<LiveClassUpload />}
+        />
+
       </Routes>
+
     </Router>
   );
 }
