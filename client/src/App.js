@@ -8,6 +8,7 @@ import QuizUpload from "./pages/QuizUpload";
 import Quiz from "./pages/Quiz";
 import Certificates from "./pages/Certificates";
 import CourseViewer from "./pages/CourseViewer";
+import LiveClasses from "./pages/LiveClasses";
 import "./styles/Navbar.css"; // Make sure this exists
 
 
@@ -32,7 +33,14 @@ function App() {
           {role === "user" && (
             <>
               <li><Link to="/courses">Courses</Link></li>
-              <li><Link to="/certificates">My Certificates</Link></li> {/* ✅ New */}
+
+              <li>
+                <Link to="/liveclasses">Live Classes</Link>
+              </li>
+
+              <li>
+                <Link to="/certificates">My Certificates</Link>
+              </li>
             </>
           )}
 
@@ -65,6 +73,7 @@ function App() {
         <Route path="/quiz/:courseId" element={<Quiz />} />
         <Route path="/certificates" element={<Certificates />} />
         <Route path="/course/:id"element={<CourseViewer />} />
+        <Route path="/liveclasses" element={<LiveClasses />} />
       </Routes>
     </Router>
   );

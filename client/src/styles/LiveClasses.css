@@ -1,0 +1,42 @@
+.live-container {
+  padding: 30px;
+}
+
+.live-title {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+.live-card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  margin-bottom: 20px;
+  box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.live-card h2 {
+  margin-bottom: 10px;
+  color: #222;
+}
+
+.live-card p {
+  margin: 8px 0;
+  color: #555;
+}
+
+.join-btn {
+  margin-top: 15px;
+  padding: 10px 18px;
+  border: none;
+  background-color: #0077ff;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.join-btn:hover {
+  background-color: #005ed9;
+}

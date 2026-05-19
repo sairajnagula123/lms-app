@@ -7,6 +7,7 @@ const app = express();
 
 const PORT = process.env.PORT || 5000;
 
+
 // ✅ Middleware
 app.use(cors({
   origin: "*",
@@ -14,25 +15,39 @@ app.use(cors({
 }));
 
 app.use(express.json());
+
+
+// ✅ Static Upload Folder
 app.use("/uploads", express.static("uploads"));
 
-// ✅ Root route
+
+// ✅ Root Route
 app.get("/", (req, res) => {
   res.send("LMS API is running...");
 });
 
-// ✅ MongoDB
+
+// ✅ MongoDB Connection
 mongoose.connect(process.env.MONGO_URI)
   .then(() => console.log("MongoDB connected"))
   .catch((err) => console.log(err));
 
-// ✅ Routes (IMPORTANT)
-app.use("/api/auth", require("./routes/authRoutes")); // 🔥 correct
+
+// ✅ Routes
+app.use("/api/auth", require("./routes/authRoutes"));
+
 app.use("/api/courses", require("./routes/course"));
+
 app.use("/api/quizzes", require("./routes/quiz"));
+
 app.use("/api/certificates", require("./routes/certificates"));
 
-// ✅ Start server
+
+// ✅ LIVE CLASSES ROUTE
+app.use("/api/liveclasses", require("./routes/liveClassRoutes"));
+
+
+// ✅ Start Server
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
