@@ -42,13 +42,15 @@ const LiveClasses = () => {
         </p>
 
         <a
-          href={`https://meet.jit.si/${item.roomId}`}
+          href={`/liveclassroom/${item.roomId}`}
           target="_blank"
           rel="noreferrer"
         >
-          <button className="join-btn">
-            Join Class
-          </button>
+            <Link to={`/liveclassroom/${item.roomId}`}>
+                <button className="join-btn">
+                    Join Class
+                </button>
+            </Link>
         </a>
       </div>
     ))}
