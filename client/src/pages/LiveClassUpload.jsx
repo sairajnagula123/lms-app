@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 
 function LiveClassUpload() {
+
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -11,23 +12,28 @@ function LiveClassUpload() {
   });
 
   const handleChange = (e) => {
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     try {
+
       await axios.post(
         "https://lms-app-cqbr.onrender.com/api/liveclasses/create",
         form
       );
 
-      alert("Live Class Created");
+      alert("Live Class Created Successfully");
 
+      // ✅ Clear Form
       setForm({
         title: "",
         description: "",
@@ -36,18 +42,30 @@ function LiveClassUpload() {
         time: "",
       });
 
+      // ✅ Redirect Admin To View Classes
+      window.location.href = "/liveclasses";
+
     } catch (error) {
+
       console.log(error);
-      alert("Error creating class");
+
+      alert("Error creating live class");
+
     }
+
   };
 
   return (
     <div className="auth-container">
+
       <h1>Create Live Class</h1>
 
-      <form className="auth-form" onSubmit={handleSubmit}>
+      <form
+        className="auth-form"
+        onSubmit={handleSubmit}
+      >
 
+        {/* CLASS TITLE */}
         <input
           type="text"
           name="title"
@@ -57,6 +75,7 @@ function LiveClassUpload() {
           required
         />
 
+        {/* DESCRIPTION */}
         <textarea
           name="description"
           placeholder="Description"
@@ -65,6 +84,7 @@ function LiveClassUpload() {
           required
         />
 
+        {/* ROOM ID */}
         <input
           type="text"
           name="roomId"
@@ -74,6 +94,7 @@ function LiveClassUpload() {
           required
         />
 
+        {/* DATE */}
         <input
           type="date"
           name="date"
@@ -82,6 +103,7 @@ function LiveClassUpload() {
           required
         />
 
+        {/* TIME */}
         <input
           type="time"
           name="time"
@@ -90,11 +112,13 @@ function LiveClassUpload() {
           required
         />
 
+        {/* SUBMIT BUTTON */}
         <button type="submit">
           Create Live Class
         </button>
 
       </form>
+
     </div>
   );
 }
