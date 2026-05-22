@@ -1,53 +1,12 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const http = require("http");
-const { Server } = require("socket.io");
 
 require("dotenv").config();
 
 const app = express();
 
 const PORT = process.env.PORT || 5000;
-
-
-// ✅ Create HTTP Server
-const server = http.createServer(app);
-
-
-// ✅ Socket.io Setup
-const io = new Server(server, {
-  cors: {
-    origin: "*",
-    methods: ["GET", "POST"],
-  },
-});
-
-
-// ✅ Socket Connection
-io.on("connection", (socket) => {
-
-  console.log("User connected:", socket.id);
-
-
-  // RECEIVE MESSAGE
-  socket.on("send_message", (data) => {
-
-    console.log("Message:", data);
-
-    // SEND TO ALL USERS
-    io.emit("receive_message", data);
-
-  });
-
-
-  socket.on("disconnect", () => {
-
-    console.log("User disconnected");
-
-  });
-
-});
 
 
 // ✅ Middleware
@@ -90,6 +49,6 @@ app.use("/api/liveclasses", require("./routes/liveClassRoutes"));
 
 
 // ✅ Start Server
-server.listen(PORT, () => {
+app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
