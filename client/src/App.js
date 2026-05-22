@@ -11,7 +11,6 @@ import Certificates from "./pages/Certificates";
 import CourseViewer from "./pages/CourseViewer";
 import LiveClasses from "./pages/LiveClasses";
 import LiveClassUpload from "./pages/LiveClassUpload";
-import LiveClassRoom from "./pages/LiveClassRoom";
 
 import "./styles/Navbar.css";
 
@@ -166,10 +165,6 @@ function App() {
         <Route
           path="/liveclass-upload"
           element={<LiveClassUpload />}
-        />
-        <Route
-          path="/liveclassroom/:roomId"
-          element={<LiveClassRoom />}
         />
 
       </Routes>
