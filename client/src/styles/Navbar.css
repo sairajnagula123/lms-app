@@ -1,4 +1,7 @@
-/* NAVBAR */
+/* =========================
+   NAVBAR
+========================= */
+
 .navbar {
 
   width: 95%;
@@ -7,10 +10,6 @@
   margin: 20px auto;
 
   padding: 18px 35px;
-
-  background: #ffffff;
-
-  border-radius: 22px;
 
   display: flex;
   justify-content: space-between;
@@ -21,26 +20,61 @@
 
   z-index: 1000;
 
-  /* REMOVE EXTRA BACKSIDE EFFECT */
-  box-shadow: none;
+  /* MODERN GLASS EFFECT */
+  background: rgba(255, 255, 255, 0.08);
 
-  border: 1px solid #edf2f7;
+  backdrop-filter: blur(12px);
+
+  border: 1px solid rgba(255,255,255,0.08);
+
+  border-radius: 24px;
+
+  box-shadow:
+    0 8px 32px rgba(0,0,0,0.18);
 }
 
-/* LOGO */
+
+/* =========================
+   LOGO
+========================= */
+
 .logo {
+
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   font-size: 2rem;
   font-weight: 700;
 
-  color: #2563eb;
+  color: white;
+
+  cursor: pointer;
 }
 
-/* LINKS */
+.logo span {
+
+  background: linear-gradient(
+    to right,
+    #ffffff,
+    #7c3aed
+  );
+
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+/* =========================
+   NAV LINKS
+========================= */
+
 .nav-links {
 
   display: flex;
-  gap: 40px;
+  align-items: center;
+
+  gap: 38px;
 
   list-style: none;
 }
@@ -49,38 +83,75 @@
 
   text-decoration: none;
 
-  color: #0f172a;
+  color: #e2e8f0;
 
+  font-size: 1rem;
   font-weight: 500;
+
+  position: relative;
+
+  transition: 0.3s;
+}
+
+/* HOVER UNDERLINE EFFECT */
+
+.nav-links a::after {
+
+  content: "";
+
+  position: absolute;
+
+  left: 0;
+  bottom: -6px;
+
+  width: 0%;
+  height: 2px;
+
+  background: #7c3aed;
 
   transition: 0.3s;
 }
 
 .nav-links a:hover {
 
-  color: #2563eb;
+  color: white;
 }
 
-/* RIGHT SIDE */
+.nav-links a:hover::after {
+
+  width: 100%;
+}
+
+
+/* =========================
+   RIGHT SIDE BUTTONS
+========================= */
+
 .nav-buttons {
 
   display: flex;
   align-items: center;
 
-  gap: 15px;
+  gap: 14px;
 }
 
-/* THEME BUTTON */
+
+/* =========================
+   THEME BUTTON
+========================= */
+
 .theme-btn {
 
   width: 48px;
   height: 48px;
 
-  border-radius: 12px;
+  border-radius: 14px;
 
-  border: 1px solid #dbeafe;
+  border: 1px solid rgba(255,255,255,0.08);
 
-  background: white;
+  background: rgba(255,255,255,0.05);
+
+  color: white;
 
   cursor: pointer;
 
@@ -91,21 +162,29 @@
 
 .theme-btn:hover {
 
-  transform: scale(1.05);
+  transform: translateY(-2px);
+
+  background: rgba(255,255,255,0.1);
 }
 
-/* LOGIN BUTTON */
+
+/* =========================
+   LOGIN BUTTON
+========================= */
+
 .login-btn {
 
-  padding: 12px 22px;
+  padding: 12px 24px;
 
-  border-radius: 12px;
+  border-radius: 14px;
 
-  border: 1px solid #dbeafe;
+  border: 1px solid rgba(255,255,255,0.12);
+
+  background: rgba(255,255,255,0.04);
 
   text-decoration: none;
 
-  color: #2563eb;
+  color: white;
 
   font-weight: 600;
 
@@ -114,15 +193,21 @@
 
 .login-btn:hover {
 
-  background: #f8fbff;
+  background: rgba(255,255,255,0.1);
+
+  transform: translateY(-2px);
 }
 
-/* SIGNUP BUTTON */
+
+/* =========================
+   SIGNUP BUTTON
+========================= */
+
 .signup-btn {
 
   padding: 12px 24px;
 
-  border-radius: 12px;
+  border-radius: 14px;
 
   text-decoration: none;
 
@@ -131,35 +216,94 @@
   color: white;
 
   background: linear-gradient(
-    to right,
+    135deg,
     #2563eb,
     #7c3aed
   );
+
+  box-shadow:
+    0 6px 18px rgba(124,58,237,0.35);
 
   transition: 0.3s;
 }
 
 .signup-btn:hover {
 
+  transform: translateY(-3px) scale(1.02);
+}
+
+
+/* =========================
+   LOGOUT BUTTON
+========================= */
+
+.logout-btn {
+
+  padding: 12px 24px;
+
+  border: none;
+
+  border-radius: 14px;
+
+  background: linear-gradient(
+    135deg,
+    #ef4444,
+    #dc2626
+  );
+
+  color: white;
+
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.logout-btn:hover {
+
   transform: translateY(-2px);
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
+
+/* =========================
+   MOBILE RESPONSIVE
+========================= */
+
+@media (max-width: 900px) {
 
   .navbar {
 
     flex-direction: column;
 
-    gap: 20px;
+    gap: 22px;
+
+    padding: 22px;
   }
 
   .nav-links {
 
-    gap: 20px;
-
     flex-wrap: wrap;
 
     justify-content: center;
+
+    gap: 22px;
   }
+
+  .nav-buttons {
+
+    width: 100%;
+
+    justify-content: center;
+  }
+}
+
+
+/* =========================
+   DARK MODE BODY
+========================= */
+
+body.dark {
+
+  background: #020617;
 }

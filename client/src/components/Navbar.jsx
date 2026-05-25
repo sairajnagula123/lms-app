@@ -11,8 +11,8 @@ function Navbar() {
   useEffect(() => {
     setRole(localStorage.getItem("role") || "");
 
-    // optional: restore theme
     const savedTheme = localStorage.getItem("theme");
+
     if (savedTheme === "dark") {
       setDarkMode(true);
       document.body.classList.add("dark");
@@ -39,54 +39,74 @@ function Navbar() {
     <nav className="navbar">
 
       {/* LOGO */}
-      <div className="logo">🎓 MyLMS</div>
+      <div className="logo">
+        🎓 <span>MyLMS</span>
+      </div>
 
-      {/* LINKS */}
+      {/* CENTER LINKS */}
       <ul className="nav-links">
 
-        <li><Link to="/">Home</Link></li>
-
-        {!role && (
-          <>
-            <li><Link to="/signup">Signup</Link></li>
-            <li><Link to="/login">Login</Link></li>
-          </>
-        )}
+        <li>
+          <Link to="/">Home</Link>
+        </li>
 
         {role === "user" && (
           <>
-            <li><Link to="/courses">Courses</Link></li>
-            <li><Link to="/liveclasses">Live Classes</Link></li>
-            <li><Link to="/certificates">Certificates</Link></li>
+            <li>
+              <Link to="/courses">Courses</Link>
+            </li>
+
+            <li>
+              <Link to="/liveclasses">Live Classes</Link>
+            </li>
+
+            <li>
+              <Link to="/certificates">Certificates</Link>
+            </li>
           </>
         )}
 
         {role === "admin" && (
           <>
-            <li><Link to="/upload">Upload Course</Link></li>
-            <li><Link to="/quiz-upload">Upload Quiz</Link></li>
-            <li><Link to="/liveclass-upload">Add Class</Link></li>
-            <li><Link to="/liveclasses">View Classes</Link></li>
+            <li>
+              <Link to="/upload">Upload Course</Link>
+            </li>
+
+            <li>
+              <Link to="/quiz-upload">Upload Quiz</Link>
+            </li>
+
+            <li>
+              <Link to="/liveclass-upload">Add Class</Link>
+            </li>
+
+            <li>
+              <Link to="/liveclasses">View Classes</Link>
+            </li>
           </>
         )}
-
       </ul>
 
-      {/* RIGHT SIDE BUTTONS */}
+      {/* RIGHT SIDE */}
       <div className="nav-buttons">
 
-        {/* 🌙 DARK MODE TOGGLE */}
+        {/* THEME BUTTON */}
         <button
           className="theme-btn"
-          onClick={() => setDarkMode(prev => !prev)}
+          onClick={() => setDarkMode(!darkMode)}
         >
           {darkMode ? "☀️" : "🌙"}
         </button>
 
         {!role ? (
           <>
-            <Link className="login-btn" to="/login">Login</Link>
-            <Link className="signup-btn" to="/signup">Sign Up</Link>
+            <Link className="login-btn" to="/login">
+              Login
+            </Link>
+
+            <Link className="signup-btn" to="/signup">
+              Sign Up
+            </Link>
           </>
         ) : (
           <button className="logout-btn" onClick={logout}>
