@@ -1,13 +1,10 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 import "../styles/Signup.css";
 
 function Login() {
-
-  const navigate = useNavigate();
 
   const [form, setForm] = useState({
     email: "",
@@ -46,9 +43,9 @@ function Login() {
 
       // Redirect based on role
       if (data.role === "admin") {
-        navigate("/upload");
+        window.location.href = "/upload";
       } else {
-        navigate("/courses");
+        window.location.href = "/courses";
       }
 
     } catch (err) {
