@@ -1,15 +1,20 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import axios from "axios";
+
 import "../styles/Signup.css";
 
 function Login() {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({
@@ -22,38 +27,44 @@ function Login() {
     e.preventDefault();
 
     setLoading(true);
-    setError("");
 
     try {
+
       const res = await axios.post(
         "https://lms-app-cqbr.onrender.com/api/auth/login",
         form
       );
 
-      // Axios automatically stores response inside res.data
       const data = res.data;
 
+      // Store token and role
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
 
-      alert("Login successful");
+      // Success Toast
+      toast.success("Login successful");
 
+      // Redirect based on role
       if (data.role === "admin") {
-        window.location.href = "/upload";
+        navigate("/upload");
       } else {
-        window.location.href = "/courses";
+        navigate("/courses");
       }
+
     } catch (err) {
+
       console.error(err);
 
-      // Backend error message
+      // Backend Error
       if (err.response) {
-        setError(err.response.data.msg || "Login failed");
+        toast.error(err.response.data.msg || "Login failed");
       }
-      // Network/server down
+
+      // Network Error
       else {
-        setError("Server error / Network issue");
+        toast.error("Server error / Network issue");
       }
+
     } finally {
       setLoading(false);
     }
@@ -61,12 +72,14 @@ function Login() {
 
   return (
     <div className="auth-container">
+
       <h1>Login</h1>
 
-      {/* Error Message */}
-      {error && <p className="error">{error}</p>}
+      <form
+        className="auth-form"
+        onSubmit={handleSubmit}
+      >
 
-      <form className="auth-form" onSubmit={handleSubmit}>
         <input
           name="email"
           type="email"
@@ -83,10 +96,15 @@ function Login() {
           required
         />
 
-        <button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+        >
           {loading ? "Logging in..." : "Login"}
         </button>
+
       </form>
+
     </div>
   );
 }

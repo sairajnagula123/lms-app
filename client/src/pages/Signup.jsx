@@ -1,8 +1,14 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 import axios from "axios";
+
 import "../styles/Signup.css";
 
 function Signup() {
+
+  const navigate = useNavigate();
+
   const [form, setForm] = useState({
     name: "",
     email: "",
@@ -10,7 +16,6 @@ function Signup() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({
@@ -22,36 +27,44 @@ function Signup() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log("CLICK WORKING");
-
     setLoading(true);
-    setError("");
 
     try {
+
       const res = await axios.post(
         "https://lms-app-cqbr.onrender.com/api/auth/signup",
         form
       );
 
-      console.log("Response:", res.data);
+      // Success Toast
+      toast.success(res.data.msg || "Signup successful");
 
-      alert(res.data.msg);
-
-      // Optional: clear form after signup
+      // Clear Form
       setForm({
         name: "",
         email: "",
         password: "",
       });
 
+      // Redirect to login page
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
+
     } catch (err) {
+
       console.error(err);
 
+      // Backend Error
       if (err.response) {
-        setError(err.response.data.msg || "Signup failed");
-      } else {
-        setError("Server error / Network issue");
+        toast.error(err.response.data.msg || "Signup failed");
       }
+
+      // Network Error
+      else {
+        toast.error("Server error / Network issue");
+      }
+
     } finally {
       setLoading(false);
     }
@@ -59,11 +72,14 @@ function Signup() {
 
   return (
     <div className="auth-container">
+
       <h1>Sign Up</h1>
 
-      {error && <p className="error">{error}</p>}
+      <form
+        className="auth-form"
+        onSubmit={handleSubmit}
+      >
 
-      <form className="auth-form" onSubmit={handleSubmit}>
         <input
           name="name"
           placeholder="Name"
@@ -90,10 +106,15 @@ function Signup() {
           required
         />
 
-        <button type="submit" disabled={loading}>
+        <button
+          type="submit"
+          disabled={loading}
+        >
           {loading ? "Signing Up..." : "Sign Up"}
         </button>
+
       </form>
+
     </div>
   );
 }

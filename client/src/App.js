@@ -12,6 +12,8 @@ import CourseViewer from "./pages/CourseViewer";
 import LiveClasses from "./pages/LiveClasses";
 import LiveClassUpload from "./pages/LiveClassUpload";
 import ProtectedRoute from "./components/ProtectedRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import "./styles/Navbar.css";
 
@@ -21,6 +23,7 @@ function App() {
 
   return (
     <Router>
+      <ToastContainer position="top-right" autoClose={3000} />
 
       {/* ✅ Navbar */}
       <nav className="navbar">
