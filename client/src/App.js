@@ -11,6 +11,7 @@ import Certificates from "./pages/Certificates";
 import CourseViewer from "./pages/CourseViewer";
 import LiveClasses from "./pages/LiveClasses";
 import LiveClassUpload from "./pages/LiveClassUpload";
+import ProtectedRoute from "./components/ProtectedRoute";
 
 import "./styles/Navbar.css";
 
@@ -137,7 +138,11 @@ function App() {
 
         <Route
           path="/courses"
-          element={<CourseList />}
+          element={
+            <ProtectedRoute>
+              <CourseList />
+            </ProtectedRoute>
+          }
         />
 
         <Route
