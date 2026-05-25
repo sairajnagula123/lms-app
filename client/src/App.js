@@ -1,5 +1,4 @@
-import { BrowserRouter as Router, Routes, Route, Link } from "react-router-dom";
-
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -11,107 +10,27 @@ import Certificates from "./pages/Certificates";
 import CourseViewer from "./pages/CourseViewer";
 import LiveClasses from "./pages/LiveClasses";
 import LiveClassUpload from "./pages/LiveClassUpload";
+
 import ProtectedRoute from "./components/ProtectedRoute";
+import Navbar from "./components/Navbar";
+
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import "./styles/Navbar.css";
 
 function App() {
-
-  const role = localStorage.getItem("role");
-
   return (
     <Router>
-      <ToastContainer position="top-right" autoClose={3000} />
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+      />
 
-      {/* ✅ Navbar */}
-      <nav className="navbar">
+      {/* Navbar */}
+      <Navbar />
 
-        <div className="navbar-brand">
-          MyLMS
-        </div>
-
-        <ul className="navbar-links">
-
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-
-          {/* ✅ Before Login */}
-          {!role && (
-            <>
-              <li>
-                <Link to="/signup">Signup</Link>
-              </li>
-
-              <li>
-                <Link to="/login">Login</Link>
-              </li>
-            </>
-          )}
-
-          {/* ✅ User Navbar */}
-          {role === "user" && (
-            <>
-              <li>
-                <Link to="/courses">Courses</Link>
-              </li>
-
-              <li>
-                <Link to="/liveclasses">Live Classes</Link>
-              </li>
-
-              <li>
-                <Link to="/certificates">My Certificates</Link>
-              </li>
-            </>
-          )}
-
-          {/* ✅ Admin Navbar */}
-          {role === "admin" && (
-            <>
-              <li>
-                <Link to="/upload">Upload Course</Link>
-              </li>
-
-              <li>
-                <Link to="/quiz-upload">Upload Quiz</Link>
-              </li>
-
-              <li>
-                <Link to="/liveclass-upload">
-                  Add Live Class
-                </Link>
-              </li>
-
-              <li>
-                <Link to="/liveclasses">
-                  View Classes
-                </Link>
-              </li>
-            </>
-          )}
-
-          {/* ✅ Logout */}
-          {role && (
-            <li>
-              <button
-                onClick={() => {
-                  localStorage.clear();
-                  window.location.href = "/";
-                }}
-              >
-                Logout
-              </button>
-            </li>
-          )}
-
-        </ul>
-
-      </nav>
-
-      {/* ✅ Routes */}
+      {/* Routes */}
       <Routes>
 
         <Route
@@ -129,16 +48,35 @@ function App() {
           element={<Login />}
         />
 
+        {/* Admin Routes */}
         <Route
           path="/upload"
-          element={<CourseUpload />}
+          element={
+            <ProtectedRoute>
+              <CourseUpload />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/quiz-upload"
-          element={<QuizUpload />}
+          element={
+            <ProtectedRoute>
+              <QuizUpload />
+            </ProtectedRoute>
+          }
         />
 
+        <Route
+          path="/liveclass-upload"
+          element={
+            <ProtectedRoute>
+              <LiveClassUpload />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* User Routes */}
         <Route
           path="/courses"
           element={
@@ -155,24 +93,30 @@ function App() {
 
         <Route
           path="/certificates"
-          element={<Certificates />}
+          element={
+            <ProtectedRoute>
+              <Certificates />
+            </ProtectedRoute>
+          }
         />
 
         <Route
           path="/course/:id"
-          element={<CourseViewer />}
+          element={
+            <ProtectedRoute>
+              <CourseViewer />
+            </ProtectedRoute>
+          }
         />
 
-        {/* ✅ Live Classes */}
+        {/* Live Classes */}
         <Route
           path="/liveclasses"
-          element={<LiveClasses />}
-        />
-
-        {/* ✅ Add Live Class */}
-        <Route
-          path="/liveclass-upload"
-          element={<LiveClassUpload />}
+          element={
+            <ProtectedRoute>
+              <LiveClasses />
+            </ProtectedRoute>
+          }
         />
 
       </Routes>
