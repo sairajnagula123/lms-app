@@ -1,17 +1,16 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
-
 import "../styles/Signup.css";
 
 function Login() {
-
   const [form, setForm] = useState({
     email: "",
     password: "",
   });
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
   const handleChange = (e) => {
     setForm({
@@ -24,44 +23,38 @@ function Login() {
     e.preventDefault();
 
     setLoading(true);
+    setError("");
 
     try {
-
       const res = await axios.post(
         "https://lms-app-cqbr.onrender.com/api/auth/login",
         form
       );
 
+      // Axios automatically stores response inside res.data
       const data = res.data;
 
-      // Store token and role
       localStorage.setItem("token", data.token);
       localStorage.setItem("role", data.role);
 
-      // Success Toast
       toast.success("Login successful");
 
-      // Redirect based on role
       if (data.role === "admin") {
         window.location.href = "/upload";
       } else {
         window.location.href = "/courses";
       }
-
     } catch (err) {
-
       console.error(err);
 
-      // Backend Error
+      // Backend error message
       if (err.response) {
-        toast.error(err.response.data.msg || "Login failed");
+        setError(err.response.data.msg || "Login failed");
       }
-
-      // Network Error
+      // Network/server down
       else {
-        toast.error("Server error / Network issue");
+        setError("Server error / Network issue");
       }
-
     } finally {
       setLoading(false);
     }
@@ -69,14 +62,12 @@ function Login() {
 
   return (
     <div className="auth-container">
-
       <h1>Login</h1>
 
-      <form
-        className="auth-form"
-        onSubmit={handleSubmit}
-      >
+      {/* Error Message */}
+      {error && <p className="error">{error}</p>}
 
+      <form className="auth-form" onSubmit={handleSubmit}>
         <input
           name="email"
           type="email"
@@ -93,15 +84,10 @@ function Login() {
           required
         />
 
-        <button
-          type="submit"
-          disabled={loading}
-        >
+        <button type="submit" disabled={loading}>
           {loading ? "Logging in..." : "Login"}
         </button>
-
       </form>
-
     </div>
   );
 }
