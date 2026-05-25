@@ -1,91 +1,100 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import "../styles/Navbar.css";
 
 function Navbar() {
-  const role = localStorage.getItem("role");
+  const [role, setRole] = useState("");
+  const [darkMode, setDarkMode] = useState(false);
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    setRole(localStorage.getItem("role") || "");
+
+    // optional: restore theme
+    const savedTheme = localStorage.getItem("theme");
+    if (savedTheme === "dark") {
+      setDarkMode(true);
+      document.body.classList.add("dark");
+    }
+  }, []);
+
+  useEffect(() => {
+    if (darkMode) {
+      document.body.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    } else {
+      document.body.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    }
+  }, [darkMode]);
+
+  const logout = () => {
+    localStorage.clear();
+    setRole("");
+    navigate("/");
+  };
 
   return (
     <nav className="navbar">
 
-      <div className="navbar-brand">
-        MyLMS
-      </div>
+      {/* LOGO */}
+      <div className="logo">🎓 MyLMS</div>
 
-      <ul className="navbar-links">
+      {/* LINKS */}
+      <ul className="nav-links">
 
-        <li>
-          <Link to="/">Home</Link>
-        </li>
+        <li><Link to="/">Home</Link></li>
 
-        {/* Before Login */}
         {!role && (
           <>
-            <li>
-              <Link to="/signup">Signup</Link>
-            </li>
-
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
+            <li><Link to="/signup">Signup</Link></li>
+            <li><Link to="/login">Login</Link></li>
           </>
         )}
 
-        {/* User Navbar */}
         {role === "user" && (
           <>
-            <li>
-              <Link to="/courses">Courses</Link>
-            </li>
-
-            <li>
-              <Link to="/liveclasses">Live Classes</Link>
-            </li>
-
-            <li>
-              <Link to="/certificates">My Certificates</Link>
-            </li>
+            <li><Link to="/courses">Courses</Link></li>
+            <li><Link to="/liveclasses">Live Classes</Link></li>
+            <li><Link to="/certificates">Certificates</Link></li>
           </>
         )}
 
-        {/* Admin Navbar */}
         {role === "admin" && (
           <>
-            <li>
-              <Link to="/upload">Upload Course</Link>
-            </li>
-
-            <li>
-              <Link to="/quiz-upload">Upload Quiz</Link>
-            </li>
-
-            <li>
-              <Link to="/liveclass-upload">
-                Add Live Class
-              </Link>
-            </li>
-
-            <li>
-              <Link to="/liveclasses">
-                View Classes
-              </Link>
-            </li>
+            <li><Link to="/upload">Upload Course</Link></li>
+            <li><Link to="/quiz-upload">Upload Quiz</Link></li>
+            <li><Link to="/liveclass-upload">Add Class</Link></li>
+            <li><Link to="/liveclasses">View Classes</Link></li>
           </>
-        )}
-
-        {/* Logout */}
-        {role && (
-          <li>
-            <button
-              onClick={() => {
-                localStorage.clear();
-                window.location.href = "/";
-              }}
-            >
-              Logout
-            </button>
-          </li>
         )}
 
       </ul>
+
+      {/* RIGHT SIDE BUTTONS */}
+      <div className="nav-buttons">
+
+        {/* 🌙 DARK MODE TOGGLE */}
+        <button
+          className="theme-btn"
+          onClick={() => setDarkMode(prev => !prev)}
+        >
+          {darkMode ? "☀️" : "🌙"}
+        </button>
+
+        {!role ? (
+          <>
+            <Link className="login-btn" to="/login">Login</Link>
+            <Link className="signup-btn" to="/signup">Sign Up</Link>
+          </>
+        ) : (
+          <button className="logout-btn" onClick={logout}>
+            Logout
+          </button>
+        )}
+
+      </div>
 
     </nav>
   );
