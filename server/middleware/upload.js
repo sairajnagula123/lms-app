@@ -17,34 +17,10 @@ const storage =
       file
     ) => {
 
-      let resourceType = "auto";
-
-      // PDF
-      if (
-        file.mimetype ===
-        "application/pdf"
-      ) {
-
-        resourceType = "raw";
-      }
-
-      // VIDEO
-      if (
-        file.mimetype.startsWith(
-          "video"
-        )
-      ) {
-
-        resourceType = "video";
-      }
-
-      return {
+      let uploadOptions = {
 
         folder:
           "lms_uploads",
-
-        resource_type:
-          resourceType,
 
         public_id:
           Date.now() +
@@ -53,10 +29,52 @@ const storage =
             .split(".")[0]
             .replace(/\s+/g, "-"),
       };
+
+      // PDF
+      if (
+        file.mimetype ===
+        "application/pdf"
+      ) {
+
+        uploadOptions.resource_type =
+          "raw";
+
+        uploadOptions.flags =
+          "attachment";
+      }
+
+      // VIDEO
+      else if (
+        file.mimetype.startsWith(
+          "video"
+        )
+      ) {
+
+        uploadOptions.resource_type =
+          "video";
+      }
+
+      // IMAGE
+      else {
+
+        uploadOptions.resource_type =
+          "image";
+      }
+
+      return uploadOptions;
     },
   });
 
 const upload =
-  multer({ storage });
+  multer({
+    storage,
+
+    limits: {
+      fileSize:
+        100 *
+        1024 *
+        1024,
+    },
+  });
 
 module.exports = upload;
