@@ -1,44 +1,58 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+
+import { useNavigate }
+from "react-router-dom";
+
 import axios from "axios";
 
 import "../styles/Login.css";
 
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import {
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 
-import { toast } from "react-toastify";
+import {
+  toast,
+} from "react-toastify";
 
-/* IMPORT IMAGE */
-import loginImage from "../assets/signup-image.png";
+/* IMAGE */
+import loginImage
+from "../assets/signup-image.png";
 
 function Login() {
 
-  const navigate = useNavigate();
+  const navigate =
+    useNavigate();
 
-  const [showPassword, setShowPassword] =
+  const [showPassword,
+    setShowPassword] =
     useState(false);
 
   // FORM STATE
-  const [form, setForm] = useState({
-    email: "",
-    password: "",
-  });
-
-  const [loading, setLoading] =
-    useState(false);
-
-  // HANDLE INPUT
-  const handleChange = (e) => {
-
-    setForm({
-      ...form,
-      [e.target.name]:
-        e.target.value,
+  const [form, setForm] =
+    useState({
+      email: "",
+      password: "",
     });
 
-  };
+  const [loading,
+    setLoading] =
+    useState(false);
 
-  // HANDLE LOGIN
+  // INPUT CHANGE
+  const handleChange =
+    (e) => {
+
+      setForm({
+        ...form,
+
+        [e.target.name]:
+          e.target.value,
+      });
+    };
+
+  // LOGIN
   const handleSubmit =
     async (e) => {
 
@@ -91,31 +105,21 @@ function Login() {
           toast.error(
             "Server Error"
           );
-
         }
 
       } finally {
 
         setLoading(false);
-
       }
-
     };
 
   return (
 
     <div className="login-container">
 
-      {/* TOAST */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-      />
-
-      {/* LEFT SIDE */}
+      {/* LEFT */}
       <div className="login-left">
 
-        {/* TEXT */}
         <div className="login-content">
 
           <h1>MyLMS</h1>
@@ -125,13 +129,13 @@ function Login() {
           </h2>
 
           <p>
-            Continue your learning journey with
-            interactive courses and live classes.
+            Continue your learning journey
+            with interactive courses and
+            live classes.
           </p>
 
         </div>
 
-        {/* IMAGE BELOW TEXT */}
         <img
           src={loginImage}
           alt="login"
@@ -140,7 +144,7 @@ function Login() {
 
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT */}
       <div className="login-right">
 
         <div className="login-card">
@@ -148,7 +152,8 @@ function Login() {
           <h1>Login</h1>
 
           <p className="subtitle">
-            Enter your credentials to continue
+            Enter your credentials
+            to continue
           </p>
 
           <form
@@ -236,9 +241,7 @@ function Login() {
       </div>
 
     </div>
-
   );
-
 }
 
 export default Login;

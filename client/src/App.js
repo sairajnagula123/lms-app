@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+} from "react-router-dom";
+
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -14,23 +19,30 @@ import LiveClassUpload from "./pages/LiveClassUpload";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
 
-import { ToastContainer } from "react-toastify";
+import {
+  ToastContainer,
+} from "react-toastify";
+
 import "react-toastify/dist/ReactToastify.css";
 
 import "./styles/Navbar.css";
 
 function App() {
+
   return (
+
     <Router>
+
+      {/* GLOBAL TOAST */}
       <ToastContainer
         position="top-right"
         autoClose={3000}
       />
 
-      {/* Navbar */}
+      {/* NAVBAR */}
       <Navbar />
 
-      {/* Routes */}
+      {/* ROUTES */}
       <Routes>
 
         <Route
@@ -48,7 +60,7 @@ function App() {
           element={<Login />}
         />
 
-        {/* Admin Routes */}
+        {/* ADMIN */}
         <Route
           path="/upload"
           element={
@@ -76,7 +88,7 @@ function App() {
           }
         />
 
-        {/* User Routes */}
+        {/* USER */}
         <Route
           path="/courses"
           element={
@@ -109,7 +121,6 @@ function App() {
           }
         />
 
-        {/* Live Classes */}
         <Route
           path="/liveclasses"
           element={
