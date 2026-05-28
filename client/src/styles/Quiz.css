@@ -1,43 +1,146 @@
-.quiz-container {
-  max-width: 600px;
-  margin: 30px auto;
-  padding: 25px;
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  background-color: #fdfdfd;
+.quiz-container{
+
+  max-width: 700px;
+
+  margin: 40px auto;
+
+  padding: 30px;
+
+  border-radius: 18px;
+
+  background: var(--card);
+
+  box-shadow:
+    0px 4px 18px
+    rgba(0,0,0,0.08);
+
+  transition: 0.3s;
 }
 
-.quiz-container h2 {
+/* =========================
+   TITLE
+========================= */
+
+.quiz-container h2{
+
   text-align: center;
-  margin-bottom: 20px;
+
+  margin-bottom: 30px;
+
+  color: var(--text);
+
+  font-size: 36px;
+
+  font-weight: 700;
 }
 
-.quiz-question {
-  margin-bottom: 20px;
+/* =========================
+   QUESTION BOX
+========================= */
+
+.quiz-question{
+
+  margin-bottom: 28px;
+
+  padding: 18px;
+
+  border-radius: 12px;
+
+  background:
+    rgba(255,255,255,0.04);
 }
 
-.quiz-question p {
-  font-weight: bold;
+/* =========================
+   QUESTION TEXT
+========================= */
+
+.quiz-question p{
+
+  font-weight: 700;
+
+  font-size: 18px;
+
+  margin-bottom: 15px;
+
+  color: var(--text);
 }
 
-.quiz-option {
+/* =========================
+   OPTIONS
+========================= */
+
+.quiz-option{
+
   display: block;
-  margin: 6px 0;
-}
 
-.quiz-submit {
-  display: block;
-  width: 100%;
-  margin-top: 20px;
-  padding: 10px;
+  margin: 10px 0;
+
+  color: var(--secondary-text);
+
   font-size: 16px;
-  background-color: #4caf50;
-  color: white;
-  border: none;
-  border-radius: 6px;
+
   cursor: pointer;
 }
 
-.quiz-submit:hover {
+.quiz-option input{
+
+  margin-right: 10px;
+}
+
+/* =========================
+   SUBMIT BUTTON
+========================= */
+
+.quiz-submit{
+
+  display: block;
+
+  width: 100%;
+
+  margin-top: 25px;
+
+  padding: 14px;
+
+  font-size: 17px;
+
+  font-weight: 600;
+
+  background-color: #4caf50;
+
+  color: white;
+
+  border: none;
+
+  border-radius: 10px;
+
+  cursor: pointer;
+
+  transition: 0.3s;
+}
+
+.quiz-submit:hover{
+
   background-color: #388e3c;
+
+  transform: scale(1.02);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width:768px){
+
+  .quiz-container{
+
+    margin: 20px;
+
+    padding: 22px;
+  }
+
+  .quiz-container h2{
+
+    font-size: 28px;
+  }
+
 }

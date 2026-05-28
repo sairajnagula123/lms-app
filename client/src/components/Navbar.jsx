@@ -112,9 +112,20 @@ function Navbar({
         {/* THEME BUTTON */}
         <button
           className="theme-btn"
-          onClick={() =>
-            setDarkMode(!darkMode)
+          onClick={() => {
+          const newMode =
+            !darkMode;
+          setDarkMode(newMode);
+          if(newMode){
+            document.body.classList.add(
+              "dark"
+            );
+          } else {
+            document.body.classList.remove(
+              "dark"
+            );
           }
+        }}
         >
           {darkMode ? "☀️" : "🌙"}
         </button>

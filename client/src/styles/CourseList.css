@@ -157,7 +157,7 @@ body {
 
 .shimmer {
   position: relative;
-  background: #e5e7eb;
+  background: var(--card);
   overflow: hidden;
   border-radius: 8px;
 }

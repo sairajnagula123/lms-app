@@ -1,24 +1,27 @@
 :root{
 
-  --bg: white;
+  --bg: #f5f7ff;
 
   --card: white;
 
-  --text: black;
+  --text: #111827;
+
+  --secondary-text: #64748b;
 
   --input: white;
-
 }
 
 /* DARK MODE */
 
-.dark{
+body.dark{
 
   --bg: #020617;
 
   --card: #1e293b;
 
   --text: white;
+
+  --secondary-text: #cbd5e1;
 
   --input: #334155;
 }
