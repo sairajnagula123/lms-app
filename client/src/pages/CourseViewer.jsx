@@ -55,7 +55,44 @@ function CourseViewer() {
 
         <h2>LMS Course</h2>
 
-        {/* VIDEOS */}
+        <div
+          className={`lesson-item ${
+            activeSection === "video"
+              ? "active"
+              : ""
+          }`}
+          onClick={() =>
+            setActiveSection("video")
+          }
+        >
+          🎥 Videos
+        </div>
+
+        <div
+          className={`lesson-item ${
+            activeSection === "pdf"
+              ? "active"
+              : ""
+          }`}
+          onClick={() =>
+            setActiveSection("pdf")
+          }
+        >
+          📄 PDF Notes
+        </div>
+
+      </div>
+
+      {/* MAIN CONTENT */}
+      <div className="course-main">
+
+        <h1>{course.title}</h1>
+
+        <p className="course-description">
+          {course.description}
+        </p>
+
+        {/* VIDEO SECTION */}
         {activeSection === "video" && (
 
           <div>
@@ -78,7 +115,7 @@ function CourseViewer() {
                       🎥 {video.title}
                     </h3>
 
-                    {/* VIDEO PLAYER */}
+                    {/* VIDEO */}
                     <video
                       controls
                       className="video-player"
@@ -94,7 +131,6 @@ function CourseViewer() {
                     {/* BUTTONS */}
                     <div className="video-buttons">
 
-                      {/* OPEN VIDEO */}
                       <a
                         href={video.url}
                         target="_blank"
@@ -104,7 +140,6 @@ function CourseViewer() {
                         Open Video
                       </a>
 
-                      {/* DOWNLOAD VIDEO */}
                       <a
                         href={video.url}
                         download
@@ -130,12 +165,12 @@ function CourseViewer() {
           </div>
         )}
 
-        {/* PDFS */}
+        {/* PDF SECTION */}
         {activeSection === "pdf" && (
 
           <div>
 
-            <h2>
+            <h2 className="section-title">
               PDF Notes
             </h2>
 

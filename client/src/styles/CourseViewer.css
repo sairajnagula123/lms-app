@@ -1,238 +1,129 @@
+/* =========================
+   MAIN LAYOUT
+========================= */
+
 .lms-layout{
   display: flex;
   min-height: 100vh;
-  background: #f5f7fb;
+  background: #f4f7fb;
+  font-family: Arial, Helvetica, sans-serif;
 }
 
-/* SIDEBAR */
+/* =========================
+   SIDEBAR
+========================= */
 
 .course-sidebar{
   width: 260px;
-  background: #111827;
+  background: linear-gradient(
+    180deg,
+    #021042,
+    #0f172a
+  );
   color: white;
-  padding: 25px;
+  padding: 30px 20px;
 }
 
 .course-sidebar h2{
-  margin-bottom: 30px;
+  font-size: 32px;
+  margin-bottom: 35px;
+  text-align: center;
+  font-weight: bold;
 }
 
+/* MENU ITEMS */
+
 .lesson-item{
-  padding: 14px;
-  border-radius: 10px;
-  margin-bottom: 12px;
+  padding: 16px 18px;
+  margin-bottom: 16px;
+  border-radius: 14px;
   cursor: pointer;
-  transition: 0.3s;
+  font-size: 18px;
+  font-weight: 500;
   background: rgba(255,255,255,0.08);
+  transition: 0.3s;
 }
 
 .lesson-item:hover{
-  background: rgba(255,255,255,0.15);
+  background: rgba(255,255,255,0.18);
 }
 
 .lesson-item.active{
-  background: #2563eb;
+  background: #3467eb;
 }
 
-/* MAIN */
+/* =========================
+   MAIN CONTENT
+========================= */
 
 .course-main{
   flex: 1;
-  padding: 30px;
+  padding: 40px;
 }
 
-.course-topbar{
-  margin-bottom: 30px;
+/* TITLE */
+
+.course-main h1{
+  font-size: 42px;
+  color: #111827;
+  margin-bottom: 10px;
 }
+
+/* DESCRIPTION */
 
 .course-description{
-  color: #555;
-  margin-top: 8px;
+  font-size: 18px;
+  color: #6b7280;
+  margin-bottom: 35px;
+  line-height: 1.6;
 }
+
+/* SECTION TITLE */
 
 .section-title{
-  margin-bottom: 20px;
+  font-size: 30px;
+  margin-bottom: 25px;
+  color: #111827;
 }
 
-/* MEDIA BOX */
+/* =========================
+   MEDIA BOX
+========================= */
 
 .media-box{
   background: white;
-  padding: 20px;
-  border-radius: 14px;
-  margin-bottom: 25px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
-}
-
-.video-player{
-  width: 100%;
-  margin-top: 15px;
-  border-radius: 12px;
-}
-
-/* PDF BUTTONS */
-
-.pdf-buttons{
-  display: flex;
-  gap: 12px;
-  margin-top: 15px;
-}
-
-.open-pdf-btn,
-.download-pdf-btn{
-
-  padding: 10px 18px;
-
-  border-radius: 8px;
-
-  text-decoration: none;
-
-  color: white;
-
-  font-weight: 600;
-
-  border: none;
-
-  cursor: pointer;
-
-  transition: 0.3s;
-}
-
-.open-pdf-btn{
-  background: #2563eb;
-}
-
-.download-pdf-btn{
-  background: #16a34a;
-}
-
-.open-pdf-btn:hover{
-  background: #1d4ed8;
-}
-
-.download-pdf-btn:hover{
-  background: #15803d;
-}
-
-/* PDF VIEWER */
-
-iframe{
-  width: 100%;
-  height: 700px;
-  border: none;
-  border-radius: 14px;
-  margin-top: 25px;
-  background: white;
-}
-
-/* EMPTY BOX */
-
-.empty-box{
-  background: white;
   padding: 25px;
-  border-radius: 12px;
-  color: #666;
+  border-radius: 20px;
+  margin-bottom: 30px;
+  box-shadow:
+    0 4px 12px
+    rgba(0,0,0,0.08);
+  max-width: 900px;
 }
 
-/* SHIMMER */
-
-.viewer-shimmer{
-  display: flex;
-  min-height: 100vh;
+.media-box h3{
+  font-size: 24px;
+  margin-bottom: 18px;
+  color: #111827;
 }
 
-.shimmer-sidebar{
-  width: 260px;
-  background: #e5e7eb;
-}
+/* =========================
+   VIDEO PLAYER
+========================= */
 
-.shimmer-main{
-  flex: 1;
-  padding: 30px;
-}
-
-.shimmer-title,
-.shimmer-text,
-.shimmer-video{
-
-  background: #e5e7eb;
-
-  border-radius: 10px;
-
-  margin-bottom: 20px;
-
-  animation:
-    shimmer 1.5s infinite;
-}
-
-.shimmer-title{
-  width: 40%;
-  height: 40px;
-}
-
-.shimmer-text{
-  width: 70%;
-  height: 20px;
-}
-
-.shimmer-video{
-  width: 100%;
-  height: 350px;
-}
-
-@keyframes shimmer{
-
-  0%{
-    opacity: 0.5;
-  }
-
-  50%{
-    opacity: 1;
-  }
-
-  100%{
-    opacity: 0.5;
-  }
-}
-
-.download-pdf-btn{
-  background: #16a34a;
-  color: white;
-  padding: 10px 18px;
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  transition: 0.3s;
-}
-
-.download-pdf-btn:hover{
-  background: #15803d;
-}
-
-.pdf-buttons{
-  display: flex;
-  gap: 12px;
-  margin-top: 15px;
-}
-
-
-/* VIDEO PLAYER */
-
-.video-player{
-  width: 100%;
-  max-width: 800px;
-  height: 450px;
-  object-fit: contain;
+video.video-player{
+  width: 700px !important;
+  height: 400px !important;
+  object-fit: contain !important;
   border-radius: 14px;
-  margin-top: 20px;
   background: black;
   display: block;
+  margin-top: 20px;
 }
 
-/* VIDEO BUTTONS */
+/* =========================
+   VIDEO BUTTONS
+========================= */
 
 .video-buttons{
   display: flex;
@@ -240,13 +131,11 @@ iframe{
   margin-top: 20px;
 }
 
-/* OPEN BUTTON */
-
 .open-video-btn{
   background: #2563eb;
   color: white;
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 12px 22px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
   transition: 0.3s;
@@ -256,13 +145,11 @@ iframe{
   background: #1d4ed8;
 }
 
-/* DOWNLOAD BUTTON */
-
 .download-video-btn{
   background: #16a34a;
   color: white;
-  padding: 12px 24px;
-  border-radius: 12px;
+  padding: 12px 22px;
+  border-radius: 10px;
   text-decoration: none;
   font-weight: 600;
   transition: 0.3s;
@@ -270,4 +157,106 @@ iframe{
 
 .download-video-btn:hover{
   background: #15803d;
+}
+
+/* =========================
+   PDF BUTTONS
+========================= */
+
+.pdf-buttons{
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+}
+
+.open-pdf-btn{
+  background: #2563eb;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.open-pdf-btn:hover{
+  background: #1d4ed8;
+}
+
+.download-pdf-btn{
+  background: #16a34a;
+  color: white;
+  padding: 12px 22px;
+  border-radius: 10px;
+  text-decoration: none;
+  font-weight: 600;
+  transition: 0.3s;
+}
+
+.download-pdf-btn:hover{
+  background: #15803d;
+}
+
+/* =========================
+   EMPTY BOX
+========================= */
+
+.empty-box{
+  background: white;
+  padding: 25px;
+  border-radius: 16px;
+  color: #6b7280;
+  font-size: 18px;
+  box-shadow:
+    0 2px 10px
+    rgba(0,0,0,0.06);
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media(max-width: 900px){
+
+  .lms-layout{
+    flex-direction: column;
+  }
+
+  .course-sidebar{
+    width: 100%;
+  }
+
+  .course-main{
+    padding: 20px;
+  }
+
+  .course-main h1{
+    font-size: 34px;
+  }
+
+  .section-title{
+    font-size: 26px;
+  }
+
+  .media-box h3{
+    font-size: 20px;
+  }
+
+  video.video-player{
+    width: 100% !important;
+    height: auto !important;
+  }
+
+  .video-buttons,
+  .pdf-buttons{
+    flex-direction: column;
+  }
+
+  .open-video-btn,
+  .download-video-btn,
+  .open-pdf-btn,
+  .download-pdf-btn{
+    width: 100%;
+    text-align: center;
+  }
 }
