@@ -1,144 +1,356 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+
 import "../styles/Quiz.css";
 
 function Quiz() {
-  const { courseId } = useParams();
 
-  const [questions, setQuestions] = useState([]);
-  const [answers, setAnswers] = useState({});
-  const [courseTitle, setCourseTitle] = useState("");
+  const { courseId } =
+    useParams();
 
-  const [loading, setLoading] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [error, setError] = useState("");
+  const [questions, setQuestions] =
+    useState([]);
 
-  const API_URL = process.env.REACT_APP_API_URL;
+  const [answers, setAnswers] =
+    useState({});
 
-  // Fetch quiz questions
+  const [courseTitle,
+    setCourseTitle] =
+    useState("");
+
+  const [loading, setLoading] =
+    useState(true);
+
+  const [submitting,
+    setSubmitting] =
+    useState(false);
+
+  const [error, setError] =
+    useState("");
+
+  // TIMER
+  const [timeLeft, setTimeLeft] =
+    useState(300);
+
+  const API_URL =
+    process.env.REACT_APP_API_URL;
+
+  /* =========================
+     FETCH QUIZ
+  ========================= */
+
   useEffect(() => {
-    const fetchQuiz = async () => {
-      try {
-        setLoading(true);
 
-        const res = await axios.get(
-          `${API_URL}/api/quizzes/${courseId}`
-        );
+    const fetchQuiz =
+      async () => {
 
-        setQuestions(res.data);
+        try {
 
-        if (res.data.length > 0) {
-          setCourseTitle(res.data[0].courseTitle || "");
+          setLoading(true);
+
+          const res =
+            await axios.get(
+              `${API_URL}/api/quizzes/${courseId}`
+            );
+
+          setQuestions(res.data);
+
+          if (
+            res.data.length > 0
+          ) {
+
+            setCourseTitle(
+              res.data[0].courseTitle || ""
+            );
+
+          }
+
+        } catch (err) {
+
+          console.error(err);
+
+          setError(
+            "Failed to load quiz"
+          );
+
+        } finally {
+
+          setLoading(false);
+
         }
 
-      } catch (err) {
-        console.error(err);
-        setError("Failed to load quiz");
-      } finally {
-        setLoading(false);
-      }
-    };
+      };
 
     fetchQuiz();
+
   }, [courseId, API_URL]);
 
-  const handleSelect = (qId, answer) => {
-    setAnswers({
-      ...answers,
-      [qId]: answer,
-    });
-  };
+  /* =========================
+     TIMER
+  ========================= */
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  useEffect(() => {
 
-    setSubmitting(true);
+    if (timeLeft <= 0) {
 
-    let score = 0;
+      alert("Time Up!");
 
-    questions.forEach((q) => {
-      if (answers[q._id] === q.correctAnswer) {
-        score++;
-      }
-    });
-
-    alert(`You scored ${score} / ${questions.length}`);
-
-    // Generate certificate if passed
-    if (score >= 2) {
-      try {
-        const res = await axios.post(
-          `${API_URL}/api/certificates/generate`,
-          {
-            userEmail: localStorage.getItem("email"),
-            courseTitle: courseTitle || "Untitled Course",
-          }
-        );
-
-        alert(res.data.message || "Certificate generated!");
-
-      } catch (err) {
-        console.error(err);
-        alert("Error generating certificate.");
-      }
+      return;
     }
 
-    setSubmitting(false);
-  };
+    const timer =
+      setInterval(() => {
+
+        setTimeLeft(
+          (prev) => prev - 1
+        );
+
+      }, 1000);
+
+    return () =>
+      clearInterval(timer);
+
+  }, [timeLeft]);
+
+  /* =========================
+     SELECT ANSWER
+  ========================= */
+
+  const handleSelect =
+    (qId, answer) => {
+
+      setAnswers({
+        ...answers,
+        [qId]: answer,
+      });
+
+    };
+
+  /* =========================
+     SUBMIT QUIZ
+  ========================= */
+
+  const handleSubmit =
+    async (e) => {
+
+      e.preventDefault();
+
+      setSubmitting(true);
+
+      let score = 0;
+
+      questions.forEach((q) => {
+
+        if (
+          answers[q._id] ===
+          q.correctAnswer
+        ) {
+
+          score++;
+
+        }
+
+      });
+
+      alert(
+        `You scored ${score} / ${questions.length}`
+      );
+
+      // PASS CONDITION
+      if (
+        score >=
+        Math.ceil(
+          questions.length / 2
+        )
+      ) {
+
+        try {
+
+          const res =
+            await axios.post(
+              `${API_URL}/api/certificates/generate`,
+              {
+                userEmail:
+                  localStorage.getItem(
+                    "userEmail"
+                  ),
+
+                courseTitle:
+                  courseTitle ||
+                  "Untitled Course",
+              }
+            );
+
+          alert(
+            res.data.message ||
+            "Certificate generated!"
+          );
+
+        } catch (err) {
+
+          console.error(err);
+
+          alert(
+            "Error generating certificate."
+          );
+
+        }
+
+      }
+
+      setSubmitting(false);
+
+    };
+
+  /* =========================
+     LOADING
+  ========================= */
 
   if (loading) {
-    return <h2>Loading quiz...</h2>;
+
+    return (
+
+      <div className="quiz-container">
+
+        <h2>
+          Loading Quiz...
+        </h2>
+
+      </div>
+
+    );
+
   }
 
+  /* =========================
+     ERROR
+  ========================= */
+
   if (error) {
-    return <h2>{error}</h2>;
+
+    return (
+
+      <div className="quiz-container">
+
+        <h2>{error}</h2>
+
+      </div>
+
+    );
+
   }
 
   return (
+
     <div className="quiz-container">
-      <h2>Quiz - {courseTitle}</h2>
 
-      <form onSubmit={handleSubmit}>
+      <h2>
+        Quiz - {courseTitle}
+      </h2>
 
-        {questions.map((q, index) => (
-          <div className="quiz-question" key={q._id}>
+      {/* TIMER */}
 
-            <p>
-              {index + 1}. {q.question}
-            </p>
+      <div className="quiz-timer">
 
-            {q.options.map((opt, i) => (
-              <label key={i} className="quiz-option">
+        Time Left :
 
-                <input
-                  type="radio"
-                  name={q._id}
-                  value={opt}
-                  onChange={() => handleSelect(q._id, opt)}
-                  required
-                />
+        {Math.floor(timeLeft / 60)}
+        :
 
-                {opt}
+        {String(timeLeft % 60)
+          .padStart(2, "0")}
 
-              </label>
-            ))}
+      </div>
 
-            <hr />
+      <form
+        onSubmit={handleSubmit}
+      >
 
-          </div>
-        ))}
+        {questions.map(
+          (q, index) => (
+
+            <div
+              className="quiz-question"
+              key={q._id}
+            >
+
+              <p>
+
+                {index + 1}.
+                {" "}
+                {q.question}
+
+              </p>
+
+              {q.options.map(
+                (opt, i) => {
+
+                  const labels = [
+                    "A",
+                    "B",
+                    "C",
+                    "D",
+                  ];
+
+                  return (
+
+                    <label
+                      key={i}
+                      className="quiz-option"
+                    >
+
+                      <input
+                        type="radio"
+                        name={q._id}
+                        value={opt}
+                        onChange={() =>
+                          handleSelect(
+                            q._id,
+                            opt
+                          )
+                        }
+                        required
+                      />
+
+                      <span className="option-label">
+
+                        {labels[i]}.
+
+                      </span>
+
+                      {opt}
+
+                    </label>
+
+                  );
+
+                }
+              )}
+
+              <hr />
+
+            </div>
+
+          )
+        )}
 
         <button
           className="quiz-submit"
           type="submit"
           disabled={submitting}
         >
-          {submitting ? "Submitting..." : "Submit Quiz"}
+
+          {submitting
+            ? "Submitting..."
+            : "Submit Quiz"}
+
         </button>
 
       </form>
+
     </div>
+
   );
 }
 
