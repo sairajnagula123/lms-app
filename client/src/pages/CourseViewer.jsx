@@ -91,23 +91,24 @@ function CourseViewer() {
 
                     </video>
 
-                    {/* VIDEO BUTTONS */}
-                    <div className="pdf-buttons">
+                    {/* BUTTONS */}
+                    <div className="video-buttons">
 
                       {/* OPEN VIDEO */}
                       <a
                         href={video.url}
                         target="_blank"
                         rel="noreferrer"
-                        className="open-pdf-btn"
+                        className="open-video-btn"
                       >
                         Open Video
                       </a>
 
                       {/* DOWNLOAD VIDEO */}
                       <a
-                        href={`${video.url}?fl_attachment=true`}
-                        className="download-pdf-btn"
+                        href={video.url}
+                        download
+                        className="download-video-btn"
                       >
                         Download Video
                       </a>
