@@ -1,9 +1,12 @@
 body {
   margin: 0;
   padding: 0;
-  background: linear-gradient(to right, #eef2ff, #f8fafc);
+  background: var(--bg);
   font-family: "Segoe UI", sans-serif;
+  transition: 0.3s;
 }
+
+/* MAIN CONTAINER */
 
 .course-list-container {
   max-width: 1200px;
@@ -11,32 +14,52 @@ body {
   padding: 20px;
 }
 
+/* HEADING */
+
 .course-heading {
   text-align: center;
   font-size: 42px;
   margin-bottom: 40px;
-  color: #111827;
+  color: var(--text);
   font-weight: 700;
 }
 
+/* GRID */
+
 .course-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+  grid-template-columns:
+    repeat(
+      auto-fit,
+      minmax(380px, 1fr)
+    );
+
   gap: 30px;
 }
+
+/* CARD */
 
 .course-card {
   background: var(--card);
   border-radius: 18px;
   overflow: hidden;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+
+  box-shadow:
+    0 4px 20px
+    rgba(0, 0, 0, 0.08);
+
   transition: all 0.3s ease;
 }
 
 .course-card:hover {
   transform: translateY(-8px);
-  box-shadow: 0 12px 28px rgba(0, 0, 0, 0.15);
+
+  box-shadow:
+    0 12px 28px
+    rgba(0, 0, 0, 0.15);
 }
+
+/* IMAGE */
 
 .course-image img {
   width: 100%;
@@ -44,9 +67,13 @@ body {
   object-fit: cover;
 }
 
+/* CONTENT */
+
 .course-content {
   padding: 22px;
 }
+
+/* TITLE */
 
 .course-title {
   font-size: 24px;
@@ -56,17 +83,23 @@ body {
   line-height: 1.4;
 }
 
+/* DESCRIPTION */
+
 .course-desc {
   font-size: 16px;
-  color: #4b5563;
+  color: var(--secondary-text);
   line-height: 1.8;
   margin-bottom: 22px;
 }
+
+/* BUTTONS */
 
 .course-buttons {
   display: flex;
   gap: 15px;
 }
+
+/* BUTTON */
 
 .course-button {
   padding: 12px 18px;
@@ -78,6 +111,8 @@ body {
   transition: 0.3s ease;
 }
 
+/* VIEW BUTTON */
+
 .course-button.view {
   background: #10b981;
 }
@@ -85,6 +120,8 @@ body {
 .course-button.view:hover {
   background: #059669;
 }
+
+/* QUIZ BUTTON */
 
 .course-button.quiz {
   background: #2563eb;
@@ -94,11 +131,15 @@ body {
   background: #1d4ed8;
 }
 
+/* EMPTY */
+
 .empty-text {
   text-align: center;
   font-size: 18px;
-  color: #6b7280;
+  color: var(--secondary-text);
 }
+
+/* ERROR */
 
 .error-text {
   text-align: center;
@@ -106,7 +147,9 @@ body {
   margin-top: 50px;
 }
 
-/* ===== SHIMMER UI ===== */
+/* =========================
+   SHIMMER UI
+========================= */
 
 .shimmer-wrapper {
   overflow: hidden;
@@ -121,24 +164,35 @@ body {
 
 .shimmer::after {
   content: "";
+
   position: absolute;
+
   top: 0;
   left: -150px;
+
   width: 150px;
   height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent,
-    rgba(255, 255, 255, 0.7),
-    transparent
-  );
-  animation: shimmer-animation 1.5s infinite;
+
+  background:
+    linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.7),
+      transparent
+    );
+
+  animation:
+    shimmer-animation
+    1.5s
+    infinite;
 }
 
 @keyframes shimmer-animation {
+
   100% {
     transform: translateX(700px);
   }
+
 }
 
 .shimmer-image {
@@ -174,9 +228,12 @@ body {
   height: 42px;
 }
 
-/* RESPONSIVE */
+/* =========================
+   RESPONSIVE
+========================= */
 
 @media (max-width: 768px) {
+
   .course-heading {
     font-size: 32px;
   }
@@ -192,4 +249,5 @@ body {
   .course-button {
     text-align: center;
   }
+
 }
