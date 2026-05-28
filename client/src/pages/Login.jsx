@@ -66,7 +66,7 @@ function Login() {
         const res =
           await axios.post(
 
-            "hhttps://lms-app-cqbr.onrender.com/api/auth/login",
+            "https://lms-app-cqbr.onrender.com/api/auth/login",
 
             form
 
