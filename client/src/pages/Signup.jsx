@@ -1,13 +1,13 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { toast } from "react-toastify";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 import "../styles/Signup.css";
 
 function Signup() {
 
-  const navigate = useNavigate();
+  const [showPassword, setShowPassword] = useState(false);
 
   const [form, setForm] = useState({
     name: "",
@@ -17,17 +17,26 @@ function Signup() {
 
   const [loading, setLoading] = useState(false);
 
+  const [error, setError] = useState("");
+
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
+
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
+
   };
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
 
     setLoading(true);
+
+    setError("");
 
     try {
 
@@ -36,86 +45,205 @@ function Signup() {
         form
       );
 
-      // Success Toast
-      toast.success(res.data.msg || "Signup successful");
+      alert(res.data.msg);
 
-      // Clear Form
       setForm({
         name: "",
         email: "",
         password: "",
       });
 
-      // Redirect to login page
-      setTimeout(() => {
-        navigate("/login");
-      }, 1500);
+      navigate("/login");
 
     } catch (err) {
 
-      console.error(err);
+      console.log(err);
 
-      // Backend Error
       if (err.response) {
-        toast.error(err.response.data.msg || "Signup failed");
-      }
 
-      // Network Error
-      else {
-        toast.error("Server error / Network issue");
+        setError(err.response.data.msg);
+
+      } else {
+
+        setError("Server Error");
+
       }
 
     } finally {
+
       setLoading(false);
+
     }
+
   };
 
   return (
-    <div className="auth-container">
 
-      <h1>Sign Up</h1>
+    <div className="signup-container">
 
-      <form
-        className="auth-form"
-        onSubmit={handleSubmit}
-      >
+      {/* LEFT SIDE */}
 
-        <input
-          name="name"
-          placeholder="Name"
-          value={form.name}
-          onChange={handleChange}
-          required
-        />
+      <div className="signup-left">
 
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          value={form.email}
-          onChange={handleChange}
-          required
-        />
+        <div className="overlay">
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          value={form.password}
-          onChange={handleChange}
-          required
-        />
+          <h1>MyLMS</h1>
 
-        <button
-          type="submit"
-          disabled={loading}
-        >
-          {loading ? "Signing Up..." : "Sign Up"}
-        </button>
+          <h2>
+            Start Your <br />
+            Learning Journey
+          </h2>
 
-      </form>
+          <p>
+            Join thousands of learners and explore
+            courses anytime anywhere.
+          </p>
+
+          <div className="feature">
+
+            <span>📚</span>
+
+            <div>
+              <h4>Expert Instructors</h4>
+              <p>Learn from the best mentors</p>
+            </div>
+
+          </div>
+
+          <div className="feature">
+
+            <span>🎥</span>
+
+            <div>
+              <h4>Live Classes</h4>
+              <p>Interactive live sessions</p>
+            </div>
+
+          </div>
+
+          <div className="feature">
+
+            <span>🏆</span>
+
+            <div>
+              <h4>Get Certified</h4>
+              <p>Boost your career skills</p>
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* RIGHT SIDE */}
+
+      <div className="signup-right">
+
+        <div className="signup-card">
+
+          <h1>Create Account</h1>
+
+          <p className="subtitle">
+            Fill your details to get started
+          </p>
+
+          {error && (
+            <p className="error">
+              {error}
+            </p>
+          )}
+
+          <form onSubmit={handleSubmit}>
+
+            {/* NAME */}
+
+            <input
+              type="text"
+              name="name"
+              placeholder="Full Name"
+              value={form.name}
+              onChange={handleChange}
+              autoComplete="off"
+              required
+            />
+
+            {/* EMAIL */}
+
+            <input
+              type="email"
+              name="email"
+              placeholder="Email Address"
+              value={form.email}
+              onChange={handleChange}
+              autoComplete="off"
+              required
+            />
+
+            {/* PASSWORD */}
+
+            <div className="password-box">
+
+              <input
+                type={showPassword ? "text" : "password"}
+                name="password"
+                placeholder="Password"
+                value={form.password}
+                onChange={handleChange}
+                autoComplete="off"
+                required
+              />
+
+              <span
+                className="eye-icon"
+                onClick={() =>
+                  setShowPassword(!showPassword)
+                }
+              >
+
+                {showPassword
+                  ? <FaEyeSlash />
+                  : <FaEye />}
+
+              </span>
+
+            </div>
+
+            {/* BUTTON */}
+
+            <button
+              type="submit"
+              disabled={loading}
+            >
+
+              {loading
+                ? "Signing Up..."
+                : "Sign Up"}
+
+            </button>
+
+          </form>
+
+          {/* LOGIN */}
+
+          <p className="login-text">
+
+            Already have an account?{" "}
+
+            <span
+              onClick={() => navigate("/login")}
+            >
+              Login
+            </span>
+
+          </p>
+
+        </div>
+
+      </div>
 
     </div>
+
   );
 }
 
