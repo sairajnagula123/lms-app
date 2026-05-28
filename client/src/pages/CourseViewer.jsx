@@ -28,6 +28,8 @@ function CourseViewer() {
               `${API_URL}/api/courses/${id}`
             );
 
+          console.log(res.data);
+
           setCourse(res.data);
 
         } catch (err) {
@@ -186,35 +188,33 @@ function CourseViewer() {
             course.pdfUrls.length > 0 ? (
 
               course.pdfUrls.map(
-                (pdf, index) => {
+                (pdf, index) => (
 
-                  console.log(
-                    pdf.url
-                  );
+                  <div
+                    key={index}
+                    className="media-box"
+                  >
 
-                  return (
+                    <h3>
+                      📄 {pdf.title}
+                    </h3>
 
-                    <div
-                      key={index}
-                      className="media-box"
+                    {/* DEBUG URL */}
+                    <p>
+                      {pdf.url}
+                    </p>
+
+                    <a
+                      href={pdf.url}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="open-pdf-btn"
                     >
+                      Open PDF
+                    </a>
 
-                      <h3>
-                        📄 {pdf.title}
-                      </h3>
-
-                      <a
-                        href={pdf.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="open-pdf-btn"
-                      >
-                        Open PDF
-                      </a>
-
-                    </div>
-                  );
-                }
+                  </div>
+                )
               )
 
             ) : (
