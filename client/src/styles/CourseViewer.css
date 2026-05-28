@@ -1,223 +1,196 @@
-body {
-  margin: 0;
-  padding: 0;
-  font-family: Arial, sans-serif;
-  background: #f3f4f6;
-}
-
-.lms-layout {
+.lms-layout{
   display: flex;
   min-height: 100vh;
+  background: #f5f7fb;
 }
 
 /* SIDEBAR */
 
-.course-sidebar {
-  width: 280px;
-  background: #08122f;
+.course-sidebar{
+  width: 260px;
+  background: #111827;
   color: white;
-  padding: 30px 20px;
+  padding: 25px;
 }
 
-.course-sidebar h2 {
-  font-size: 22px;
+.course-sidebar h2{
   margin-bottom: 30px;
 }
 
-.lesson-item {
-  background: rgba(255,255,255,0.06);
-  padding: 18px;
-  border-radius: 14px;
-  margin-bottom: 16px;
+.lesson-item{
+  padding: 14px;
+  border-radius: 10px;
+  margin-bottom: 12px;
   cursor: pointer;
-  font-size: 20px;
   transition: 0.3s;
+  background: rgba(255,255,255,0.08);
 }
 
-.lesson-item:hover {
-  background: rgba(255,255,255,0.12);
+.lesson-item:hover{
+  background: rgba(255,255,255,0.15);
 }
 
-.lesson-item.active {
+.lesson-item.active{
   background: #2563eb;
 }
 
 /* MAIN */
 
-.course-main {
+.course-main{
   flex: 1;
-  padding: 40px;
+  padding: 30px;
 }
 
-.course-topbar h1 {
-  font-size: 54px;
-  margin-bottom: 10px;
-  color: #111827;
-}
-
-.course-description {
-  color: #4b5563;
-  font-size: 20px;
-  margin-bottom: 40px;
-}
-
-/* SECTION */
-
-.section-title {
-  font-size: 38px;
+.course-topbar{
   margin-bottom: 30px;
-  color: #111827;
 }
 
-/* MEDIA CARD */
-
-.media-box {
-  background: white;
-  padding: 25px;
-  border-radius: 18px;
-  margin-bottom: 35px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+.course-description{
+  color: #555;
+  margin-top: 8px;
 }
 
-.media-box h3 {
-  font-size: 24px;
+.section-title{
   margin-bottom: 20px;
-  color: #111827;
 }
 
-/* VIDEO */
+/* MEDIA BOX */
 
-.video-player {
-  width: 100%;
+.media-box{
+  background: white;
+  padding: 20px;
   border-radius: 14px;
-  background: black;
-  max-height: 700px;
+  margin-bottom: 25px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.06);
 }
 
-/* PDF */
-
-.pdf-viewer {
+.video-player{
   width: 100%;
-  height: 850px;
-  border: none;
-  border-radius: 14px;
-  background: #f9fafb;
-}
-
-/* PDF BUTTON */
-
-.open-pdf-btn {
-  display: inline-block;
-  margin-bottom: 18px;
-  padding: 12px 22px;
-  background: #2563eb;
-  color: white;
-  text-decoration: none;
+  margin-top: 15px;
   border-radius: 12px;
+}
+
+/* PDF BUTTONS */
+
+.pdf-buttons{
+  display: flex;
+  gap: 12px;
+  margin-top: 15px;
+}
+
+.open-pdf-btn,
+.download-pdf-btn{
+
+  padding: 10px 18px;
+
+  border-radius: 8px;
+
+  text-decoration: none;
+
+  color: white;
+
   font-weight: 600;
+
+  border: none;
+
+  cursor: pointer;
+
   transition: 0.3s;
 }
 
-.open-pdf-btn:hover {
+.open-pdf-btn{
+  background: #2563eb;
+}
+
+.download-pdf-btn{
+  background: #16a34a;
+}
+
+.open-pdf-btn:hover{
   background: #1d4ed8;
+}
+
+.download-pdf-btn:hover{
+  background: #15803d;
+}
+
+/* PDF VIEWER */
+
+iframe{
+  width: 100%;
+  height: 700px;
+  border: none;
+  border-radius: 14px;
+  margin-top: 25px;
+  background: white;
 }
 
 /* EMPTY BOX */
 
-.empty-box {
+.empty-box{
   background: white;
-  padding: 30px;
-  border-radius: 16px;
-  color: #6b7280;
-  font-size: 20px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.06);
+  padding: 25px;
+  border-radius: 12px;
+  color: #666;
 }
 
-/* LOADING */
+/* SHIMMER */
 
-.viewer-loading {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  font-size: 28px;
-  font-weight: bold;
-}
-
-.viewer-shimmer {
+.viewer-shimmer{
   display: flex;
   min-height: 100vh;
-  background: #f3f4f6;
 }
 
-.shimmer-sidebar {
-  width: 280px;
-  background: linear-gradient(
-    90deg,
-    #0f172a 25%,
-    #1e293b 50%,
-    #0f172a 75%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.5s infinite;
+.shimmer-sidebar{
+  width: 260px;
+  background: #e5e7eb;
 }
 
-.shimmer-main {
+.shimmer-main{
   flex: 1;
-  padding: 40px;
+  padding: 30px;
 }
 
-.shimmer-title {
-  width: 300px;
-  height: 60px;
+.shimmer-title,
+.shimmer-text,
+.shimmer-video{
+
+  background: #e5e7eb;
+
   border-radius: 10px;
+
   margin-bottom: 20px;
-  background: linear-gradient(
-    90deg,
-    #e5e7eb 25%,
-    #f3f4f6 50%,
-    #e5e7eb 75%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.5s infinite;
+
+  animation:
+    shimmer 1.5s infinite;
 }
 
-.shimmer-text {
-  width: 500px;
-  height: 25px;
-  border-radius: 8px;
-  margin-bottom: 40px;
-  background: linear-gradient(
-    90deg,
-    #e5e7eb 25%,
-    #f3f4f6 50%,
-    #e5e7eb 75%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.5s infinite;
+.shimmer-title{
+  width: 40%;
+  height: 40px;
 }
 
-.shimmer-video {
+.shimmer-text{
+  width: 70%;
+  height: 20px;
+}
+
+.shimmer-video{
   width: 100%;
-  height: 500px;
-  border-radius: 20px;
-  background: linear-gradient(
-    90deg,
-    #e5e7eb 25%,
-    #f3f4f6 50%,
-    #e5e7eb 75%
-  );
-  background-size: 400% 100%;
-  animation: shimmer 1.5s infinite;
+  height: 350px;
 }
 
-@keyframes shimmer {
+@keyframes shimmer{
 
-  0% {
-    background-position: 100% 0;
+  0%{
+    opacity: 0.5;
   }
 
-  100% {
-    background-position: -100% 0;
+  50%{
+    opacity: 1;
+  }
+
+  100%{
+    opacity: 0.5;
   }
 }

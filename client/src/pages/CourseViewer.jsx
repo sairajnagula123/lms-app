@@ -13,6 +13,9 @@ function CourseViewer() {
   const [activeSection, setActiveSection] =
     useState("video");
 
+  const [selectedPdf, setSelectedPdf] =
+    useState("");
+
   useEffect(() => {
 
     const fetchCourse =
@@ -40,27 +43,9 @@ function CourseViewer() {
 
   }, [id]);
 
-  // LOADING
   if (!course) {
 
-    return (
-
-      <div className="viewer-shimmer">
-
-        <div className="shimmer-sidebar"></div>
-
-        <div className="shimmer-main">
-
-          <div className="shimmer-title"></div>
-
-          <div className="shimmer-text"></div>
-
-          <div className="shimmer-video"></div>
-
-        </div>
-
-      </div>
-    );
+    return <h1>Loading...</h1>;
   }
 
   return (
@@ -72,7 +57,6 @@ function CourseViewer() {
 
         <h2>LMS Course</h2>
 
-        {/* VIDEOS */}
         <div
           className={`lesson-item ${
             activeSection === "video"
@@ -86,7 +70,6 @@ function CourseViewer() {
           🎥 Videos
         </div>
 
-        {/* PDFS */}
         <div
           className={`lesson-item ${
             activeSection === "pdf"
@@ -102,133 +85,115 @@ function CourseViewer() {
 
       </div>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <div className="course-main">
 
-        {/* HEADER */}
-        <div className="course-topbar">
+        <h1>{course.title}</h1>
 
-          <div>
+        <p>
+          {course.description}
+        </p>
 
-            <h1>
-              {course.title}
-            </h1>
-
-            <p className="course-description">
-              {course.description}
-            </p>
-
-          </div>
-
-        </div>
-
-        {/* VIDEO SECTION */}
+        {/* VIDEOS */}
         {activeSection === "video" && (
 
           <div>
 
-            <h2 className="section-title">
+            <h2>
               Course Videos
             </h2>
 
-            {course.videoUrls &&
-            course.videoUrls.length > 0 ? (
+            {course.videoUrls?.map(
+              (video, index) => (
 
-              course.videoUrls.map(
-                (video, index) => (
+                <div
+                  key={index}
+                  className="media-box"
+                >
 
-                  <div
-                    key={index}
-                    className="media-box"
+                  <h3>
+                    {video.title}
+                  </h3>
+
+                  <video
+                    controls
+                    width="100%"
                   >
 
-                    <h3>
-                      🎥 {video.title}
-                    </h3>
+                    <source
+                      src={video.url}
+                      type="video/mp4"
+                    />
 
-                    <video
-                      className="video-player"
-                      controls
-                    >
+                  </video>
 
-                      <source
-                        src={video.url}
-                        type="video/mp4"
-                      />
-
-                    </video>
-
-                  </div>
-                )
+                </div>
               )
-
-            ) : (
-
-              <div className="empty-box">
-                No videos uploaded.
-              </div>
-
             )}
 
           </div>
         )}
 
-        {/* PDF SECTION */}
+        {/* PDFS */}
         {activeSection === "pdf" && (
 
           <div>
 
-            <h2 className="section-title">
+            <h2>
               PDF Notes
             </h2>
 
-            {course.pdfUrls &&
-            course.pdfUrls.length > 0 ? (
+            {course.pdfUrls?.map(
+              (pdf, index) => (
 
-              course.pdfUrls.map(
-                (pdf, index) => (
+                <div
+                  key={index}
+                  className="media-box"
+                >
 
-                  <div
-                    key={index}
-                    className="media-box"
+                  <h3>
+                    📄 {pdf.title}
+                  </h3>
+
+                  <button
+                    className="open-pdf-btn"
+                    onClick={() =>
+                      setSelectedPdf(
+                        pdf.url
+                      )
+                    }
                   >
+                    View PDF
+                  </button>
 
-                    <h3>
-                      📄 {pdf.title}
-                    </h3>
+                  <a
+                    href={`${pdf.url}?fl_attachment=true`}
+                    className="download-pdf-btn"
+                  >
+                    Download PDF
+                  </a>
 
-                    <div className="pdf-buttons">
-
-                      {/* VIEW PDF */}
-                      <a
-                        href={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdf.url)}`}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="open-pdf-btn"
-                      >
-                        View PDF
-                      </a>
-
-                      {/* DOWNLOAD PDF */}
-                      <a
-                        href={`${pdf.url}?fl_attachment=true`}
-                        className="download-pdf-btn"
-                      >
-                        Download PDF
-                      </a>
-
-                    </div>
-
-                  </div>
-                )
+                </div>
               )
+            )}
 
-            ) : (
+            {/* PDF VIEWER */}
+            {selectedPdf && (
 
-              <div className="empty-box">
-                No PDFs uploaded.
+              <div
+                style={{
+                  marginTop: "30px",
+                }}
+              >
+
+                <iframe
+                  src={selectedPdf}
+                  title="PDF Viewer"
+                  width="100%"
+                  height="700px"
+                />
+
               </div>
-
             )}
 
           </div>
