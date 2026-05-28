@@ -6,44 +6,72 @@ import "../styles/CourseViewer.css";
 function CourseViewer() {
 
   const { id } = useParams();
-  const [course, setCourse] = useState(null);
-  const [activeSection, setActiveSection] = useState("video");
+
+  const [course, setCourse] =
+    useState(null);
+
+  const [activeSection, setActiveSection] =
+    useState("video");
 
   useEffect(() => {
-    const fetchCourse = async () => {
-      try {
-        const API_URL =
-          process.env.REACT_APP_API_URL;
-        const res = await axios.get(
-          `${API_URL}/api/courses/${id}`
-        );
-        setCourse(res.data);
-      } catch (err) {
-        console.error(err);
-      }
-    };
+
+    const fetchCourse =
+      async () => {
+
+        try {
+
+          const API_URL =
+            process.env.REACT_APP_API_URL;
+
+          const res =
+            await axios.get(
+              `${API_URL}/api/courses/${id}`
+            );
+
+          setCourse(res.data);
+
+        } catch (err) {
+
+          console.error(err);
+        }
+      };
+
     fetchCourse();
+
   }, [id]);
 
   // SHIMMER LOADING
   if (!course) {
+
     return (
+
       <div className="viewer-shimmer">
+
         <div className="shimmer-sidebar"></div>
+
         <div className="shimmer-main">
+
           <div className="shimmer-title"></div>
+
           <div className="shimmer-text"></div>
+
           <div className="shimmer-video"></div>
+
         </div>
+
       </div>
     );
   }
 
   return (
+
     <div className="lms-layout">
+
       {/* SIDEBAR */}
       <div className="course-sidebar">
+
         <h2>LMS Course</h2>
+
         {/* VIDEOS */}
         <div
           className={`lesson-item ${
@@ -170,10 +198,7 @@ function CourseViewer() {
                     </h3>
 
                     <a
-                      href={pdf.url.replace(
-                        "/upload/",
-                        "/upload/fl_inline/"
-                      )}
+                      href={pdf.url}
                       target="_blank"
                       rel="noreferrer"
                       className="open-pdf-btn"
@@ -195,7 +220,9 @@ function CourseViewer() {
 
           </div>
         )}
+
       </div>
+
     </div>
   );
 }
