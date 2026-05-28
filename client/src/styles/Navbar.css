@@ -2,7 +2,7 @@
    NAVBAR
 ========================= */
 
-.navbar {
+.navbar{
 
   width: 95%;
   max-width: 1400px;
@@ -29,26 +29,27 @@
   border: 1px solid #edf2f7;
 }
 
-
 /* =========================
    DARK MODE NAVBAR
 ========================= */
 
-body.dark .navbar {
+.dark .navbar{
 
-  background: rgba(15, 23, 42, 0.95);
+  background:
+    rgba(15, 23, 42, 0.95);
 
-  border: 1px solid rgba(255,255,255,0.08);
+  border:
+    1px solid
+    rgba(255,255,255,0.08);
 
   backdrop-filter: blur(10px);
 }
-
 
 /* =========================
    LOGO
 ========================= */
 
-.logo {
+.logo{
 
   font-size: 2rem;
   font-weight: 700;
@@ -56,17 +57,16 @@ body.dark .navbar {
   color: #2563eb;
 }
 
-body.dark .logo {
+.dark .logo{
 
   color: white;
 }
-
 
 /* =========================
    NAV LINKS
 ========================= */
 
-.nav-links {
+.nav-links{
 
   display: flex;
   gap: 40px;
@@ -74,7 +74,7 @@ body.dark .logo {
   list-style: none;
 }
 
-.nav-links a {
+.nav-links a{
 
   text-decoration: none;
 
@@ -85,22 +85,21 @@ body.dark .logo {
   transition: 0.3s;
 }
 
-body.dark .nav-links a {
+.dark .nav-links a{
 
   color: #e2e8f0;
 }
 
-.nav-links a:hover {
+.nav-links a:hover{
 
   color: #2563eb;
 }
-
 
 /* =========================
    RIGHT SIDE
 ========================= */
 
-.nav-buttons {
+.nav-buttons{
 
   display: flex;
   align-items: center;
@@ -108,12 +107,11 @@ body.dark .nav-links a {
   gap: 15px;
 }
 
-
 /* =========================
    THEME BUTTON
 ========================= */
 
-.theme-btn {
+.theme-btn{
 
   width: 48px;
   height: 48px;
@@ -131,26 +129,28 @@ body.dark .nav-links a {
   transition: 0.3s;
 }
 
-body.dark .theme-btn {
+.dark .theme-btn{
 
-  background: rgba(255,255,255,0.08);
+  background:
+    rgba(255,255,255,0.08);
 
-  border: 1px solid rgba(255,255,255,0.08);
+  border:
+    1px solid
+    rgba(255,255,255,0.08);
 
   color: white;
 }
 
-.theme-btn:hover {
+.theme-btn:hover{
 
   transform: scale(1.05);
 }
-
 
 /* =========================
    LOGIN BUTTON
 ========================= */
 
-.login-btn {
+.login-btn{
 
   padding: 12px 22px;
 
@@ -167,31 +167,34 @@ body.dark .theme-btn {
   transition: 0.3s;
 }
 
-body.dark .login-btn {
+.dark .login-btn{
 
   color: white;
 
-  border: 1px solid rgba(255,255,255,0.12);
+  border:
+    1px solid
+    rgba(255,255,255,0.12);
 
-  background: rgba(255,255,255,0.05);
+  background:
+    rgba(255,255,255,0.05);
 }
 
-.login-btn:hover {
+.login-btn:hover{
 
   background: #f8fbff;
 }
 
-body.dark .login-btn:hover {
+.dark .login-btn:hover{
 
-  background: rgba(255,255,255,0.1);
+  background:
+    rgba(255,255,255,0.1);
 }
-
 
 /* =========================
    SIGNUP BUTTON
 ========================= */
 
-.signup-btn {
+.signup-btn{
 
   padding: 12px 24px;
 
@@ -203,26 +206,26 @@ body.dark .login-btn:hover {
 
   color: white;
 
-  background: linear-gradient(
-    to right,
-    #2563eb,
-    #7c3aed
-  );
+  background:
+    linear-gradient(
+      to right,
+      #2563eb,
+      #7c3aed
+    );
 
   transition: 0.3s;
 }
 
-.signup-btn:hover {
+.signup-btn:hover{
 
   transform: translateY(-2px);
 }
-
 
 /* =========================
    LOGOUT BUTTON
 ========================= */
 
-.logout-btn {
+.logout-btn{
 
   padding: 12px 22px;
 
@@ -237,37 +240,38 @@ body.dark .login-btn:hover {
   font-weight: 600;
 
   cursor: pointer;
+
+  transition: 0.3s;
 }
 
+.logout-btn:hover{
 
-/* =========================
-   BODY DARK MODE
-========================= */
-
-body.dark {
-
-  background: #020617;
-
-  color: white;
+  transform: scale(1.03);
 }
-
 
 /* =========================
    MOBILE
 ========================= */
 
-@media (max-width: 768px) {
+@media (max-width: 768px){
 
-  .navbar {
+  .navbar{
 
     flex-direction: column;
 
     gap: 20px;
   }
 
-  .nav-links {
+  .nav-links{
 
     gap: 20px;
+
+    flex-wrap: wrap;
+
+    justify-content: center;
+  }
+
+  .nav-buttons{
 
     flex-wrap: wrap;
 

@@ -2,89 +2,108 @@ import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/Navbar.css";
 
-function Navbar() {
-  const [role, setRole] = useState("");
-  const [darkMode, setDarkMode] = useState(false);
+function Navbar({
+  darkMode,
+  setDarkMode,
+}) {
 
-  const navigate = useNavigate();
+  const [role, setRole] =
+    useState("");
+
+  const navigate =
+    useNavigate();
 
   useEffect(() => {
-    setRole(localStorage.getItem("role") || "");
 
-    const savedTheme = localStorage.getItem("theme");
+    setRole(
+      localStorage.getItem("role") || ""
+    );
 
-    if (savedTheme === "dark") {
-      setDarkMode(true);
-      document.body.classList.add("dark");
-    }
   }, []);
 
-  useEffect(() => {
-    if (darkMode) {
-      document.body.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.body.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
-
   const logout = () => {
+
     localStorage.clear();
+
     setRole("");
+
     navigate("/");
   };
 
   return (
+
     <nav className="navbar">
 
       {/* LOGO */}
       <div className="logo">
+
         🎓 <span>MyLMS</span>
+
       </div>
 
-      {/* CENTER LINKS */}
+      {/* LINKS */}
       <ul className="nav-links">
 
         <li>
-          <Link to="/">Home</Link>
+          <Link to="/">
+            Home
+          </Link>
         </li>
 
         {role === "user" && (
           <>
+
             <li>
-              <Link to="/courses">Courses</Link>
+              <Link to="/courses">
+                Courses
+              </Link>
             </li>
 
             <li>
-              <Link to="/liveclasses">Live Classes</Link>
+              <Link to="/liveclasses">
+                Live Classes
+              </Link>
             </li>
 
             <li>
-              <Link to="/certificates">Certificates</Link>
+              <Link to="/certificates">
+                Certificates
+              </Link>
             </li>
+
           </>
         )}
 
         {role === "admin" && (
           <>
+
             <li>
-              <Link to="/upload">Upload Course</Link>
+              <Link to="/upload">
+                Upload Course
+              </Link>
             </li>
 
             <li>
-              <Link to="/quiz-upload">Upload Quiz</Link>
+              <Link to="/quiz-upload">
+                Upload Quiz
+              </Link>
             </li>
 
             <li>
-              <Link to="/liveclass-upload">Add Class</Link>
+              <Link to="/liveclass-upload">
+                Add Class
+              </Link>
             </li>
 
             <li>
-              <Link to="/liveclasses">View Classes</Link>
+              <Link to="/liveclasses">
+                View Classes
+              </Link>
             </li>
+
           </>
         )}
+
       </ul>
 
       {/* RIGHT SIDE */}
@@ -93,25 +112,40 @@ function Navbar() {
         {/* THEME BUTTON */}
         <button
           className="theme-btn"
-          onClick={() => setDarkMode(!darkMode)}
+          onClick={() =>
+            setDarkMode(!darkMode)
+          }
         >
           {darkMode ? "☀️" : "🌙"}
         </button>
 
         {!role ? (
           <>
-            <Link className="login-btn" to="/login">
+
+            <Link
+              className="login-btn"
+              to="/login"
+            >
               Login
             </Link>
 
-            <Link className="signup-btn" to="/signup">
+            <Link
+              className="signup-btn"
+              to="/signup"
+            >
               Sign Up
             </Link>
+
           </>
         ) : (
-          <button className="logout-btn" onClick={logout}>
+
+          <button
+            className="logout-btn"
+            onClick={logout}
+          >
             Logout
           </button>
+
         )}
 
       </div>
