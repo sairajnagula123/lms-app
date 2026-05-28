@@ -6,12 +6,7 @@ import "../styles/Login.css";
 
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
-import {
-  ToastContainer,
-  toast,
-} from "react-toastify";
-
-import "react-toastify/dist/ReactToastify.css";
+import { toast } from "react-toastify";
 
 /* IMPORT IMAGE */
 import loginImage from "../assets/signup-image.png";
