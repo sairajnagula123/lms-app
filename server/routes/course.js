@@ -86,9 +86,10 @@ router.post(
               file.originalname,
 
             url:
-              file.secure_url,
+              file.path,
           })
         ) || [];
+
 
       // PDFS
       const pdfUrls =
@@ -98,7 +99,7 @@ router.post(
               file.originalname,
 
             url:
-              file.secure_url,
+              file.path,
           })
         ) || [];
 
