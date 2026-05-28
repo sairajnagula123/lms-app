@@ -56,52 +56,11 @@ function CourseViewer() {
         <h2>LMS Course</h2>
 
         {/* VIDEOS */}
-        <div
-          className={`lesson-item ${
-            activeSection === "video"
-              ? "active"
-              : ""
-          }`}
-          onClick={() =>
-            setActiveSection("video")
-          }
-        >
-          🎥 Videos
-        </div>
-
-        {/* PDF */}
-        <div
-          className={`lesson-item ${
-            activeSection === "pdf"
-              ? "active"
-              : ""
-          }`}
-          onClick={() =>
-            setActiveSection("pdf")
-          }
-        >
-          📄 PDF Notes
-        </div>
-
-      </div>
-
-      {/* MAIN */}
-      <div className="course-main">
-
-        <h1>
-          {course.title}
-        </h1>
-
-        <p>
-          {course.description}
-        </p>
-
-        {/* VIDEOS */}
         {activeSection === "video" && (
 
           <div>
 
-            <h2>
+            <h2 className="section-title">
               Course Videos
             </h2>
 
@@ -119,6 +78,7 @@ function CourseViewer() {
                       🎥 {video.title}
                     </h3>
 
+                    {/* VIDEO PLAYER */}
                     <video
                       controls
                       className="video-player"
@@ -130,6 +90,29 @@ function CourseViewer() {
                       />
 
                     </video>
+
+                    {/* VIDEO BUTTONS */}
+                    <div className="pdf-buttons">
+
+                      {/* OPEN VIDEO */}
+                      <a
+                        href={video.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="open-pdf-btn"
+                      >
+                        Open Video
+                      </a>
+
+                      {/* DOWNLOAD VIDEO */}
+                      <a
+                        href={`${video.url}?fl_attachment=true`}
+                        className="download-pdf-btn"
+                      >
+                        Download Video
+                      </a>
+
+                    </div>
 
                   </div>
                 )

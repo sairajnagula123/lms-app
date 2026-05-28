@@ -217,3 +217,11 @@ iframe{
   gap: 12px;
   margin-top: 15px;
 }
+
+.video-player{
+  width: 100%;
+  max-height: 700px;
+  border-radius: 14px;
+  margin-top: 20px;
+  background: black;
+}
