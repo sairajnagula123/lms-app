@@ -13,9 +13,6 @@ function CourseViewer() {
   const [activeSection, setActiveSection] =
     useState("video");
 
-  const [selectedPdf, setSelectedPdf] =
-    useState("");
-
   useEffect(() => {
 
     const fetchCourse =
@@ -43,6 +40,7 @@ function CourseViewer() {
 
   }, [id]);
 
+  // LOADING
   if (!course) {
 
     return <h1>Loading...</h1>;
@@ -57,6 +55,7 @@ function CourseViewer() {
 
         <h2>LMS Course</h2>
 
+        {/* VIDEOS */}
         <div
           className={`lesson-item ${
             activeSection === "video"
@@ -70,6 +69,7 @@ function CourseViewer() {
           🎥 Videos
         </div>
 
+        {/* PDF */}
         <div
           className={`lesson-item ${
             activeSection === "pdf"
@@ -88,7 +88,9 @@ function CourseViewer() {
       {/* MAIN */}
       <div className="course-main">
 
-        <h1>{course.title}</h1>
+        <h1>
+          {course.title}
+        </h1>
 
         <p>
           {course.description}
@@ -103,32 +105,42 @@ function CourseViewer() {
               Course Videos
             </h2>
 
-            {course.videoUrls?.map(
-              (video, index) => (
+            {course.videoUrls?.length > 0 ? (
 
-                <div
-                  key={index}
-                  className="media-box"
-                >
+              course.videoUrls.map(
+                (video, index) => (
 
-                  <h3>
-                    {video.title}
-                  </h3>
-
-                  <video
-                    controls
-                    width="100%"
+                  <div
+                    key={index}
+                    className="media-box"
                   >
 
-                    <source
-                      src={video.url}
-                      type="video/mp4"
-                    />
+                    <h3>
+                      🎥 {video.title}
+                    </h3>
 
-                  </video>
+                    <video
+                      controls
+                      className="video-player"
+                    >
 
-                </div>
+                      <source
+                        src={video.url}
+                        type="video/mp4"
+                      />
+
+                    </video>
+
+                  </div>
+                )
               )
+
+            ) : (
+
+              <div className="empty-box">
+                No videos uploaded.
+              </div>
+
             )}
 
           </div>
@@ -143,57 +155,52 @@ function CourseViewer() {
               PDF Notes
             </h2>
 
-            {course.pdfUrls?.map(
-              (pdf, index) => (
+            {course.pdfUrls?.length > 0 ? (
 
-                <div
-                  key={index}
-                  className="media-box"
-                >
+              course.pdfUrls.map(
+                (pdf, index) => (
 
-                  <h3>
-                    📄 {pdf.title}
-                  </h3>
-
-                  <button
-                    className="open-pdf-btn"
-                    onClick={() =>
-                      setSelectedPdf(
-                        pdf.url
-                      )
-                    }
+                  <div
+                    key={index}
+                    className="media-box"
                   >
-                    View PDF
-                  </button>
 
-                  <a
-                    href={`${pdf.url}?fl_attachment=true`}
-                    className="download-pdf-btn"
-                  >
-                    Download PDF
-                  </a>
+                    <h3>
+                      📄 {pdf.title}
+                    </h3>
 
-                </div>
+                    <div className="pdf-buttons">
+
+                      {/* VIEW PDF */}
+                      <a
+                        href={`https://docs.google.com/viewer?url=${encodeURIComponent(pdf.url)}&embedded=true`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="open-pdf-btn"
+                      >
+                        View PDF
+                      </a>
+
+                      {/* DOWNLOAD PDF */}
+                      <a
+                        href={`${pdf.url}?fl_attachment=true`}
+                        className="download-pdf-btn"
+                      >
+                        Download PDF
+                      </a>
+
+                    </div>
+
+                  </div>
+                )
               )
-            )}
 
-            {/* PDF VIEWER */}
-            {selectedPdf && (
+            ) : (
 
-              <div
-                style={{
-                  marginTop: "30px",
-                }}
-              >
-
-                <iframe
-                  src={selectedPdf}
-                  title="PDF Viewer"
-                  width="100%"
-                  height="700px"
-                />
-
+              <div className="empty-box">
+                No PDFs uploaded.
               </div>
+
             )}
 
           </div>
