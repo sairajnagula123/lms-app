@@ -1,95 +1,295 @@
 import { useState } from "react";
-import { toast } from "react-toastify";
+
+import { useNavigate } from "react-router-dom";
+
 import axios from "axios";
-import "../styles/Signup.css";
+
+import "../styles/Login.css";
+
+import {
+  FaEye,
+  FaEyeSlash
+} from "react-icons/fa";
+
+/* IMPORT IMAGE */
+
+import loginImage from "../assets/signup-image.png";
 
 function Login() {
+
+  const navigate = useNavigate();
+
+  const [showPassword, setShowPassword] =
+    useState(false);
+
+  // FORM STATE
   const [form, setForm] = useState({
+
     email: "",
+
     password: "",
+
   });
 
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] =
+    useState("");
 
+  const [loading, setLoading] =
+    useState(false);
+
+  // HANDLE INPUT
   const handleChange = (e) => {
+
     setForm({
+
       ...form,
-      [e.target.name]: e.target.value,
+
+      [e.target.name]:
+        e.target.value,
+
     });
+
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // HANDLE LOGIN
+  const handleSubmit =
+    async (e) => {
 
-    setLoading(true);
-    setError("");
+      e.preventDefault();
 
-    try {
-      const res = await axios.post(
-        "https://lms-app-cqbr.onrender.com/api/auth/login",
-        form
-      );
+      setLoading(true);
 
-      // Axios automatically stores response inside res.data
-      const data = res.data;
+      setError("");
 
-      localStorage.setItem("token", data.token);
-      localStorage.setItem("role", data.role);
+      try {
 
-      toast.success("Login successful");
+        const res =
+          await axios.post(
 
-      if (data.role === "admin") {
-        window.location.href = "/upload";
-      } else {
-        window.location.href = "/courses";
+            "http://localhost:5000/api/auth/login",
+
+            form
+
+          );
+
+        alert("Login Successful");
+
+        localStorage.setItem(
+          "token",
+          res.data.token
+        );
+
+        localStorage.setItem(
+          "role",
+          res.data.role
+        );
+
+        navigate("/");
+
+        window.location.reload();
+
+      } catch (err) {
+
+        console.log(err);
+
+        if (err.response) {
+
+          setError(
+            err.response.data.msg
+          );
+
+        } else {
+
+          setError(
+            "Server Error"
+          );
+
+        }
+
+      } finally {
+
+        setLoading(false);
+
       }
-    } catch (err) {
-      console.error(err);
 
-      // Backend error message
-      if (err.response) {
-        setError(err.response.data.msg || "Login failed");
-      }
-      // Network/server down
-      else {
-        setError("Server error / Network issue");
-      }
-    } finally {
-      setLoading(false);
-    }
-  };
+    };
 
   return (
-    <div className="auth-container">
-      <h1>Login</h1>
 
-      {/* Error Message */}
-      {error && <p className="error">{error}</p>}
+    <div className="login-container">
 
-      <form className="auth-form" onSubmit={handleSubmit}>
-        <input
-          name="email"
-          type="email"
-          placeholder="Email"
-          onChange={handleChange}
-          required
+      {/* LEFT SIDE */}
+
+      <div className="login-left">
+
+        {/* TEXT */}
+
+        <div className="login-content">
+
+          <h1>MyLMS</h1>
+
+          <h2>
+            Welcome Back
+          </h2>
+
+          <p>
+            Continue your learning journey with
+            interactive courses and live classes.
+          </p>
+
+        </div>
+
+        {/* IMAGE BELOW TEXT */}
+
+        <img
+          src={loginImage}
+          alt="login"
+          className="login-image"
         />
 
-        <input
-          name="password"
-          type="password"
-          placeholder="Password"
-          onChange={handleChange}
-          required
-        />
+      </div>
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Logging in..." : "Login"}
-        </button>
-      </form>
+      {/* RIGHT SIDE */}
+
+      <div className="login-right">
+
+        <div className="login-card">
+
+          <h1>Login</h1>
+
+          <p className="subtitle">
+
+            Enter your credentials to continue
+
+          </p>
+
+          {error && (
+
+            <p className="error">
+
+              {error}
+
+            </p>
+
+          )}
+
+          <form
+            onSubmit={handleSubmit}
+            autoComplete="on"
+          >
+
+            {/* EMAIL */}
+
+            <input
+
+              type="email"
+
+              name="email"
+
+              placeholder="Email Address"
+
+              value={form.email}
+
+              onChange={handleChange}
+
+              autoComplete="email"
+
+              required
+
+            />
+
+            {/* PASSWORD */}
+
+            <div className="password-box">
+
+              <input
+
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
+
+                name="password"
+
+                placeholder="Password"
+
+                value={form.password}
+
+                onChange={handleChange}
+
+                autoComplete="current-password"
+
+                spellCheck="false"
+
+                required
+
+              />
+
+              <span
+
+                className="eye-icon"
+
+                onClick={() =>
+
+                  setShowPassword(
+                    !showPassword
+                  )
+
+                }
+
+              >
+
+                {showPassword
+                  ? <FaEyeSlash />
+                  : <FaEye />}
+
+              </span>
+
+            </div>
+
+            {/* BUTTON */}
+
+            <button
+
+              type="submit"
+
+              disabled={loading}
+
+            >
+
+              {loading
+                ? "Logging In..."
+                : "Login"}
+
+            </button>
+
+          </form>
+
+          {/* SIGNUP */}
+
+          <p className="signup-text">
+
+            New here?{" "}
+
+            <span
+              onClick={() =>
+                navigate("/signup")
+              }
+            >
+              Create Account
+            </span>
+
+          </p>
+
+        </div>
+
+      </div>
+
     </div>
+
   );
+
 }
 
 export default Login;
