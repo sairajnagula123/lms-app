@@ -40,7 +40,7 @@ function CourseViewer() {
 
   }, [id]);
 
-  // SHIMMER LOADING
+  // LOADING
   if (!course) {
 
     return (
@@ -102,7 +102,7 @@ function CourseViewer() {
 
       </div>
 
-      {/* MAIN CONTENT */}
+      {/* MAIN */}
       <div className="course-main">
 
         {/* HEADER */}
@@ -186,28 +186,35 @@ function CourseViewer() {
             course.pdfUrls.length > 0 ? (
 
               course.pdfUrls.map(
-                (pdf, index) => (
+                (pdf, index) => {
 
-                  <div
-                    key={index}
-                    className="media-box"
-                  >
+                  console.log(
+                    pdf.url
+                  );
 
-                    <h3>
-                      📄 {pdf.title}
-                    </h3>
+                  return (
 
-                    <a
-                      href={pdf.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="open-pdf-btn"
+                    <div
+                      key={index}
+                      className="media-box"
                     >
-                      Open PDF
-                    </a>
 
-                  </div>
-                )
+                      <h3>
+                        📄 {pdf.title}
+                      </h3>
+
+                      <a
+                        href={pdf.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="open-pdf-btn"
+                      >
+                        Open PDF
+                      </a>
+
+                    </div>
+                  );
+                }
               )
 
             ) : (
