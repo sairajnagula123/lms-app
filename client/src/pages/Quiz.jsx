@@ -31,7 +31,7 @@ function Quiz() {
 
   // TIMER
   const [timeLeft, setTimeLeft] =
-    useState(300);
+    useState(0);
 
   const API_URL =
     process.env.REACT_APP_API_URL;
@@ -56,6 +56,7 @@ function Quiz() {
 
           setQuestions(res.data);
 
+          // COURSE TITLE
           if (
             res.data.length > 0
           ) {
@@ -65,6 +66,11 @@ function Quiz() {
             );
 
           }
+
+          // 1 QUESTION = 1 MINUTE
+          setTimeLeft(
+            res.data.length * 60
+          );
 
         } catch (err) {
 
@@ -92,9 +98,10 @@ function Quiz() {
 
   useEffect(() => {
 
-    if (timeLeft <= 0) {
-
-      alert("Time Up!");
+    if (
+      loading ||
+      timeLeft <= 0
+    ) {
 
       return;
     }
@@ -111,7 +118,26 @@ function Quiz() {
     return () =>
       clearInterval(timer);
 
-  }, [timeLeft]);
+  }, [timeLeft, loading]);
+
+  /* =========================
+     AUTO SUBMIT
+  ========================= */
+
+  useEffect(() => {
+
+    if (
+      timeLeft === 0 &&
+      questions.length > 0
+    ) {
+
+      alert(
+        "Time Up! Quiz Submitted."
+      );
+
+    }
+
+  }, [timeLeft, questions]);
 
   /* =========================
      SELECT ANSWER
@@ -254,6 +280,8 @@ function Quiz() {
       <div className="quiz-timer">
 
         Time Left :
+
+        {" "}
 
         {Math.floor(timeLeft / 60)}
         :
