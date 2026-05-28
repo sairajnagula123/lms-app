@@ -38,9 +38,6 @@ const storage =
 
         uploadOptions.resource_type =
           "raw";
-
-        uploadOptions.flags =
-          "attachment";
       }
 
       // VIDEO

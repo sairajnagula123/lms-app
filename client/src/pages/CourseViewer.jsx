@@ -28,8 +28,6 @@ function CourseViewer() {
               `${API_URL}/api/courses/${id}`
             );
 
-          console.log(res.data);
-
           setCourse(res.data);
 
         } catch (err) {
@@ -199,19 +197,27 @@ function CourseViewer() {
                       📄 {pdf.title}
                     </h3>
 
-                    {/* DEBUG URL */}
-                    <p>
-                      {pdf.url}
-                    </p>
+                    <div className="pdf-buttons">
 
-                    <a
-                      href={pdf.url}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="open-pdf-btn"
-                    >
-                      Open PDF
-                    </a>
+                      {/* VIEW PDF */}
+                      <a
+                        href={pdf.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="open-pdf-btn"
+                      >
+                        View PDF
+                      </a>
+
+                      {/* DOWNLOAD PDF */}
+                      <a
+                        href={`${pdf.url}?fl_attachment=true`}
+                        className="download-pdf-btn"
+                      >
+                        Download PDF
+                      </a>
+
+                    </div>
 
                   </div>
                 )
