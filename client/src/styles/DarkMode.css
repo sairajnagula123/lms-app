@@ -1,43 +1,24 @@
-/* GLOBAL DARK MODE */
+:root{
+
+  --bg: white;
+
+  --card: white;
+
+  --text: black;
+
+  --input: white;
+
+}
+
+/* DARK MODE */
 
 .dark{
-  background: #020617;
-  color: white;
-}
 
-/* NAVBAR */
+  --bg: #020617;
 
-.dark .navbar{
-  background: #0f172a;
-}
+  --card: #1e293b;
 
-/* CARDS */
+  --text: white;
 
-.dark .login-card,
-.dark .signup-card,
-.dark .media-box,
-.dark .course-card{
-  background: #1e293b;
-  color: white;
-}
-
-/* INPUTS */
-
-.dark input,
-.dark textarea,
-.dark select{
-  background: #334155;
-  color: white;
-  border: 1px solid #475569;
-}
-
-/* TEXT */
-
-.dark h1,
-.dark h2,
-.dark h3,
-.dark p,
-.dark span,
-.dark a{
-  color: white;
+  --input: #334155;
 }

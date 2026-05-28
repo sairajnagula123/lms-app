@@ -91,7 +91,7 @@
 ========================= */
 
 .media-box{
-  background: white;
+  background: var(--card);
   padding: 25px;
   border-radius: 20px;
   margin-bottom: 30px;
@@ -202,7 +202,7 @@ video.video-player{
 ========================= */
 
 .empty-box{
-  background: white;
+  background: var(--card);
   padding: 25px;
   border-radius: 16px;
   color: #6b7280;

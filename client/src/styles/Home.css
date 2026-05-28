@@ -134,7 +134,7 @@ body {
 }
 
 .secondary-btn:hover {
-  background: white;
+  background: var(--card);
 }
 
 /* STATS */
