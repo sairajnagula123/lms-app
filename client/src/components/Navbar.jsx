@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
-
 import "../styles/Navbar.css";
 
-function Navbar() {
+function Navbar({
+  darkMode,
+  setDarkMode,
+}) {
 
   const [role, setRole] =
     useState("");
@@ -106,6 +108,27 @@ function Navbar() {
 
       {/* RIGHT SIDE */}
       <div className="nav-buttons">
+
+        {/* THEME BUTTON */}
+        <button
+          className="theme-btn"
+          onClick={() => {
+          const newMode =
+            !darkMode;
+          setDarkMode(newMode);
+          if(newMode){
+            document.body.classList.add(
+              "dark"
+            );
+          } else {
+            document.body.classList.remove(
+              "dark"
+            );
+          }
+        }}
+        >
+          {darkMode ? "☀️" : "🌙"}
+        </button>
 
         {!role ? (
           <>
