@@ -102,7 +102,7 @@ function CourseViewer() {
 
       </div>
 
-      {/* MAIN */}
+      {/* MAIN CONTENT */}
       <div className="course-main">
 
         {/* HEADER */}
@@ -201,7 +201,7 @@ function CourseViewer() {
 
                       {/* VIEW PDF */}
                       <a
-                        href={pdf.url}
+                        href={`https://docs.google.com/gview?embedded=true&url=${encodeURIComponent(pdf.url)}`}
                         target="_blank"
                         rel="noreferrer"
                         className="open-pdf-btn"
