@@ -1,18 +1,19 @@
 import { useState } from "react";
-
 import { useNavigate } from "react-router-dom";
-
 import axios from "axios";
 
 import "../styles/Login.css";
 
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+
 import {
-  FaEye,
-  FaEyeSlash
-} from "react-icons/fa";
+  ToastContainer,
+  toast,
+} from "react-toastify";
+
+import "react-toastify/dist/ReactToastify.css";
 
 /* IMPORT IMAGE */
-
 import loginImage from "../assets/signup-image.png";
 
 function Login() {
@@ -24,15 +25,9 @@ function Login() {
 
   // FORM STATE
   const [form, setForm] = useState({
-
     email: "",
-
     password: "",
-
   });
-
-  const [error, setError] =
-    useState("");
 
   const [loading, setLoading] =
     useState(false);
@@ -41,12 +36,9 @@ function Login() {
   const handleChange = (e) => {
 
     setForm({
-
       ...form,
-
       [e.target.name]:
         e.target.value,
-
     });
 
   };
@@ -59,20 +51,17 @@ function Login() {
 
       setLoading(true);
 
-      setError("");
-
       try {
 
         const res =
           await axios.post(
-
             "https://lms-app-cqbr.onrender.com/api/auth/login",
-
             form
-
           );
 
-        alert("Login Successful");
+        toast.success(
+          "Login Successful"
+        );
 
         localStorage.setItem(
           "token",
@@ -84,9 +73,13 @@ function Login() {
           res.data.role
         );
 
-        navigate("/");
+        setTimeout(() => {
 
-        window.location.reload();
+          navigate("/");
+
+          window.location.reload();
+
+        }, 1500);
 
       } catch (err) {
 
@@ -94,13 +87,13 @@ function Login() {
 
         if (err.response) {
 
-          setError(
+          toast.error(
             err.response.data.msg
           );
 
         } else {
 
-          setError(
+          toast.error(
             "Server Error"
           );
 
@@ -118,12 +111,16 @@ function Login() {
 
     <div className="login-container">
 
-      {/* LEFT SIDE */}
+      {/* TOAST */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+      />
 
+      {/* LEFT SIDE */}
       <div className="login-left">
 
         {/* TEXT */}
-
         <div className="login-content">
 
           <h1>MyLMS</h1>
@@ -140,7 +137,6 @@ function Login() {
         </div>
 
         {/* IMAGE BELOW TEXT */}
-
         <img
           src={loginImage}
           alt="login"
@@ -150,7 +146,6 @@ function Login() {
       </div>
 
       {/* RIGHT SIDE */}
-
       <div className="login-right">
 
         <div className="login-card">
@@ -158,20 +153,8 @@ function Login() {
           <h1>Login</h1>
 
           <p className="subtitle">
-
             Enter your credentials to continue
-
           </p>
-
-          {error && (
-
-            <p className="error">
-
-              {error}
-
-            </p>
-
-          )}
 
           <form
             onSubmit={handleSubmit}
@@ -179,65 +162,41 @@ function Login() {
           >
 
             {/* EMAIL */}
-
             <input
-
               type="email"
-
               name="email"
-
               placeholder="Email Address"
-
               value={form.email}
-
               onChange={handleChange}
-
               autoComplete="email"
-
               required
-
             />
 
             {/* PASSWORD */}
-
             <div className="password-box">
 
               <input
-
                 type={
                   showPassword
                     ? "text"
                     : "password"
                 }
-
                 name="password"
-
                 placeholder="Password"
-
                 value={form.password}
-
                 onChange={handleChange}
-
                 autoComplete="current-password"
-
                 spellCheck="false"
-
                 required
-
               />
 
               <span
-
                 className="eye-icon"
-
                 onClick={() =>
-
                   setShowPassword(
                     !showPassword
                   )
-
                 }
-
               >
 
                 {showPassword
@@ -249,13 +208,9 @@ function Login() {
             </div>
 
             {/* BUTTON */}
-
             <button
-
               type="submit"
-
               disabled={loading}
-
             >
 
               {loading
@@ -267,7 +222,6 @@ function Login() {
           </form>
 
           {/* SIGNUP */}
-
           <p className="signup-text">
 
             New here?{" "}
