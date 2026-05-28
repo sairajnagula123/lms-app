@@ -4,8 +4,6 @@ import {
   Route,
 } from "react-router-dom";
 
-import { useState } from "react";
-
 import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
@@ -20,7 +18,6 @@ import LiveClassUpload from "./pages/LiveClassUpload";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
-import "./styles/DarkMode.css";
 
 import {
   ToastContainer,
@@ -29,129 +26,113 @@ import {
 import "react-toastify/dist/ReactToastify.css";
 
 import "./styles/Navbar.css";
-import "./styles/DarkMode.css";
 
 function App() {
 
-  // DARK MODE STATE
-  const [darkMode, setDarkMode] =
-    useState(false);
-
   return (
 
-    <div
-      className={
-        darkMode ? "dark" : ""
-      }
-    >
+    <Router>
 
-      <Router>
+      {/* TOAST */}
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+      />
 
-        {/* TOAST */}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
+      {/* NAVBAR */}
+      <Navbar />
+
+      {/* ROUTES */}
+      <Routes>
+
+        <Route
+          path="/"
+          element={<Home />}
         />
 
-        {/* NAVBAR */}
-        <Navbar
-          darkMode={darkMode}
-          setDarkMode={setDarkMode}
+        <Route
+          path="/signup"
+          element={<Signup />}
         />
 
-        {/* ROUTES */}
-        <Routes>
+        <Route
+          path="/login"
+          element={<Login />}
+        />
 
-          <Route
-            path="/"
-            element={<Home />}
-          />
+        {/* ADMIN */}
+        <Route
+          path="/upload"
+          element={
+            <ProtectedRoute>
+              <CourseUpload />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/signup"
-            element={<Signup />}
-          />
+        <Route
+          path="/quiz-upload"
+          element={
+            <ProtectedRoute>
+              <QuizUpload />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/login"
-            element={<Login />}
-          />
+        <Route
+          path="/liveclass-upload"
+          element={
+            <ProtectedRoute>
+              <LiveClassUpload />
+            </ProtectedRoute>
+          }
+        />
 
-          {/* ADMIN */}
-          <Route
-            path="/upload"
-            element={
-              <ProtectedRoute>
-                <CourseUpload />
-              </ProtectedRoute>
-            }
-          />
+        {/* USER */}
+        <Route
+          path="/courses"
+          element={
+            <ProtectedRoute>
+              <CourseList />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/quiz-upload"
-            element={
-              <ProtectedRoute>
-                <QuizUpload />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/quiz/:courseId"
+          element={<Quiz />}
+        />
 
-          <Route
-            path="/liveclass-upload"
-            element={
-              <ProtectedRoute>
-                <LiveClassUpload />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/certificates"
+          element={
+            <ProtectedRoute>
+              <Certificates />
+            </ProtectedRoute>
+          }
+        />
 
-          {/* USER */}
-          <Route
-            path="/courses"
-            element={
-              <ProtectedRoute>
-                <CourseList />
-              </ProtectedRoute>
-            }
-          />
+        <Route
+          path="/course/:id"
+          element={
+            <ProtectedRoute>
+              <CourseViewer />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/quiz/:courseId"
-            element={<Quiz />}
-          />
+        <Route
+          path="/liveclasses"
+          element={
+            <ProtectedRoute>
+              <LiveClasses />
+            </ProtectedRoute>
+          }
+        />
 
-          <Route
-            path="/certificates"
-            element={
-              <ProtectedRoute>
-                <Certificates />
-              </ProtectedRoute>
-            }
-          />
+      </Routes>
 
-          <Route
-            path="/course/:id"
-            element={
-              <ProtectedRoute>
-                <CourseViewer />
-              </ProtectedRoute>
-            }
-          />
-
-          <Route
-            path="/liveclasses"
-            element={
-              <ProtectedRoute>
-                <LiveClasses />
-              </ProtectedRoute>
-            }
-          />
-
-        </Routes>
-
-      </Router>
-
-    </div>
+    </Router>
   );
 }
 
