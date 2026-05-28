@@ -85,7 +85,8 @@ router.post(
             title:
               file.originalname,
 
-            url: file.path,
+            url:
+              file.secure_url,
           })
         ) || [];
 
@@ -96,7 +97,8 @@ router.post(
             title:
               file.originalname,
 
-            url: file.path,
+            url:
+              file.secure_url,
           })
         ) || [];
 
@@ -122,7 +124,8 @@ router.post(
       console.error(err);
 
       res.status(500).json({
-        message: "Upload failed",
+        message:
+          err.message,
       });
     }
   }
