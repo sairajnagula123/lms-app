@@ -112,7 +112,7 @@ function CourseViewer() {
                   >
 
                     <h3>
-                      🎥 {video.title}
+                      🎥 {video.title?.replace(/\.[^/.]+$/, "")}
                     </h3>
 
                     {/* VIDEO */}
