@@ -27,32 +27,32 @@ function UploadContent() {
 
   useEffect(() => {
 
-    fetchCourses();
+    const fetchCourses = async () => {
 
-  }, []);
+      try {
 
-  const fetchCourses = async () => {
+        const res =
+          await axios.get(
+            `${API_URL}/api/courses`
+          );
 
-    try {
+        setCourses(res.data);
 
-      const res =
-        await axios.get(
-          `${API_URL}/api/courses`
+      } catch (err) {
+
+        console.log(err);
+
+        setError(
+          "Failed to load courses"
         );
 
-      setCourses(res.data);
+      }
 
-    } catch (err) {
+    };
 
-      console.log(err);
+    fetchCourses();
 
-      setError(
-        "Failed to load courses"
-      );
-
-    }
-
-  };
+  }, [API_URL]);
 
   const uploadVideo = async () => {
 
