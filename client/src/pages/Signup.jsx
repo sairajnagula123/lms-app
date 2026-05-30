@@ -2,6 +2,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { GoogleLogin } from "@react-oauth/google";
 
 import "../styles/Signup.css";
 
@@ -72,6 +73,46 @@ function Signup() {
     } finally {
 
       setLoading(false);
+
+    }
+
+  };
+
+  const handleGoogleLogin = async (
+    credentialResponse
+  ) => {
+
+    try {
+
+      const res = await axios.post(
+        "https://lms-app-cqbr.onrender.com/api/auth/google-login",
+        {
+          credential:
+            credentialResponse.credential,
+        }
+      );
+
+      localStorage.setItem(
+        "token",
+        res.data.token
+      );
+
+      localStorage.setItem(
+        "role",
+        res.data.role
+      );
+
+      navigate("/");
+
+      window.location.reload();
+
+    } catch (err) {
+
+      console.log(err);
+
+      alert(
+        "Google Login Failed"
+      );
 
     }
 
@@ -223,6 +264,33 @@ function Signup() {
             </button>
 
           </form>
+
+          <div
+            style={{
+              marginTop: "20px",
+              textAlign: "center",
+            }}
+          >
+            <p
+              style={{
+                marginBottom: "10px",
+                color: "#666",
+              }}
+            >
+              OR
+            </p>
+
+            <GoogleLogin
+              onSuccess={
+                handleGoogleLogin
+              }
+              onError={() =>
+                alert(
+                  "Google Login Failed"
+                )
+              }
+            />
+          </div>
 
           {/* LOGIN */}
 

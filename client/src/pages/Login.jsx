@@ -7,6 +7,8 @@ import axios from "axios";
 
 import "../styles/Login.css";
 
+import { GoogleLogin } from "@react-oauth/google";
+
 import {
   FaEye,
   FaEyeSlash,
@@ -112,6 +114,48 @@ function Login() {
         setLoading(false);
       }
     };
+
+  const handleGoogleLogin = async (
+    credentialResponse
+  ) => {
+    try {
+
+      const res = await axios.post(
+        "https://lms-app-cqbr.onrender.com/api/auth/google-login",
+        {
+          credential:
+            credentialResponse.credential,
+        }
+      );
+
+      localStorage.setItem(
+        "token",
+        res.data.token
+      );
+
+      localStorage.setItem(
+        "role",
+        res.data.role
+      );
+
+      toast.success(
+        "Login Successful"
+      );
+
+      navigate("/");
+
+      window.location.reload();
+
+    } catch (err) {
+
+      console.log(err);
+
+      toast.error(
+        "Google Login Failed"
+      );
+
+    }
+  };
 
   return (
 
@@ -220,6 +264,32 @@ function Login() {
             </button>
 
           </form>
+
+          <div
+
+            style={{
+              marginTop: "20px",
+              textAlign: "center",
+            }}
+          >
+            <p
+              style={{
+                marginBottom: "10px",
+                color: "#666",
+              }}
+            >
+              OR
+            </p>
+
+            <GoogleLogin
+              onSuccess={handleGoogleLogin}
+              onError={() =>
+                toast.error(
+                  "Google Login Failed"
+                )
+              }
+            />
+          </div>
 
           {/* SIGNUP */}
           <p className="signup-text">
