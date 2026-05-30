@@ -150,7 +150,11 @@ function App() {
 
           <Route
             path="/upload-content"
-            element={<UploadContent />}
+            element={
+              <ProtectedRoute>
+                <UploadContent />
+              </ProtectedRoute>
+            }
           />
 
         </Routes>
