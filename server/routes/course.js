@@ -12,28 +12,38 @@ router.post("/add", async (req, res) => {
 
   try {
 
-    const { title, description } = req.body;
+    const { title, description } =
+      req.body;
 
     if (!title || !description) {
 
       return res.status(400).json({
-        message: "Title and Description required",
+        message:
+          "Title and Description required",
       });
 
     }
 
-    const course = new Course({
-      title,
-      description,
-      videoUrls: [],
-      pdfUrls: [],
-    });
+    const course =
+      new Course({
+
+        title,
+        description,
+
+        videoUrls: [],
+        pdfUrls: [],
+
+      });
 
     await course.save();
 
     res.status(201).json({
-      message: "Course created successfully",
+
+      message:
+        "Course created successfully",
+
       course,
+
     });
 
   } catch (err) {
@@ -51,6 +61,7 @@ router.post("/add", async (req, res) => {
 // ADD VIDEO TO COURSE
 // ==========================
 router.post(
+
   "/:id/video",
 
   upload.single("video"),
@@ -67,22 +78,40 @@ router.post(
       if (!course) {
 
         return res.status(404).json({
-          message: "Course not found",
+          message:
+            "Course not found",
+        });
+
+      }
+
+      if (!req.file) {
+
+        return res.status(400).json({
+          message:
+            "No video uploaded",
         });
 
       }
 
       course.videoUrls.push({
-        title: req.file.originalname,
-        url: req.file.path,
+
+        title:
+          req.file.originalname,
+
+        url:
+          req.file.path,
+
       });
 
       await course.save();
 
       res.json({
+
         message:
           "Video uploaded successfully",
+
         course,
+
       });
 
     } catch (err) {
@@ -94,6 +123,7 @@ router.post(
     }
 
   }
+
 );
 
 
@@ -101,6 +131,7 @@ router.post(
 // ADD PDF TO COURSE
 // ==========================
 router.post(
+
   "/:id/pdf",
 
   upload.single("pdf"),
@@ -117,22 +148,40 @@ router.post(
       if (!course) {
 
         return res.status(404).json({
-          message: "Course not found",
+          message:
+            "Course not found",
+        });
+
+      }
+
+      if (!req.file) {
+
+        return res.status(400).json({
+          message:
+            "No PDF uploaded",
         });
 
       }
 
       course.pdfUrls.push({
-        title: req.file.originalname,
-        url: req.file.path,
+
+        title:
+          req.file.originalname,
+
+        url:
+          req.file.path,
+
       });
 
       await course.save();
 
       res.json({
+
         message:
           "PDF uploaded successfully",
+
         course,
+
       });
 
     } catch (err) {
@@ -144,6 +193,7 @@ router.post(
     }
 
   }
+
 );
 
 
@@ -187,7 +237,8 @@ router.get("/:id", async (req, res) => {
     if (!course) {
 
       return res.status(404).json({
-        message: "Course not found",
+        message:
+          "Course not found",
       });
 
     }
