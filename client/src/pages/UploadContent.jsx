@@ -25,6 +25,12 @@ function UploadContent() {
   const [error, setError] =
     useState("");
 
+  const [videoProgress, setVideoProgress] =
+    useState(0);
+
+  const [pdfProgress, setPdfProgress] =
+    useState(0);
+
   useEffect(() => {
 
     const fetchCourses = async () => {
@@ -66,6 +72,7 @@ function UploadContent() {
       );
 
       return;
+
     }
 
     const formData =
@@ -80,16 +87,43 @@ function UploadContent() {
 
       setError("");
       setMessage("");
+      setVideoProgress(0);
 
       const res =
         await axios.post(
           `${API_URL}/api/courses/${selectedCourse}/video`,
-          formData
+          formData,
+          {
+            headers: {
+              "Content-Type":
+                "multipart/form-data",
+            },
+
+            onUploadProgress:
+              (progressEvent) => {
+
+                const percent =
+                  Math.round(
+                    (
+                      progressEvent.loaded *
+                      100
+                    ) /
+                    progressEvent.total
+                  );
+
+                setVideoProgress(
+                  percent
+                );
+
+              },
+          }
         );
 
       setMessage(
         res.data.message
       );
+
+      setVideoProgress(100);
 
       setVideo(null);
 
@@ -116,6 +150,7 @@ function UploadContent() {
       );
 
       return;
+
     }
 
     const formData =
@@ -130,16 +165,43 @@ function UploadContent() {
 
       setError("");
       setMessage("");
+      setPdfProgress(0);
 
       const res =
         await axios.post(
           `${API_URL}/api/courses/${selectedCourse}/pdf`,
-          formData
+          formData,
+          {
+            headers: {
+              "Content-Type":
+                "multipart/form-data",
+            },
+
+            onUploadProgress:
+              (progressEvent) => {
+
+                const percent =
+                  Math.round(
+                    (
+                      progressEvent.loaded *
+                      100
+                    ) /
+                    progressEvent.total
+                  );
+
+                setPdfProgress(
+                  percent
+                );
+
+              },
+          }
         );
 
       setMessage(
         res.data.message
       );
+
+      setPdfProgress(100);
 
       setPdf(null);
 
@@ -225,6 +287,32 @@ function UploadContent() {
           Upload Video
         </button>
 
+        {videoProgress > 0 && (
+
+          <div
+            style={{
+              marginTop: "10px",
+            }}
+          >
+
+            <p>
+              Uploading Video:
+              {" "}
+              {videoProgress}%
+            </p>
+
+            <progress
+              value={videoProgress}
+              max="100"
+              style={{
+                width: "100%",
+              }}
+            />
+
+          </div>
+
+        )}
+
         <h3>
           📄 Upload PDF
         </h3>
@@ -245,6 +333,32 @@ function UploadContent() {
         >
           Upload PDF
         </button>
+
+        {pdfProgress > 0 && (
+
+          <div
+            style={{
+              marginTop: "10px",
+            }}
+          >
+
+            <p>
+              Uploading PDF:
+              {" "}
+              {pdfProgress}%
+            </p>
+
+            <progress
+              value={pdfProgress}
+              max="100"
+              style={{
+                width: "100%",
+              }}
+            />
+
+          </div>
+
+        )}
 
       </div>
 
