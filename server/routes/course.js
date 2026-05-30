@@ -70,8 +70,9 @@ router.post(
           url: file.path,
         })) || [];
 
-      console.log("VIDEO URLS:", videoUrls);
-      console.log("PDF URLS:", pdfUrls);
+      console.log("Videos count:", videoUrls.length);
+      console.log("PDF count:", pdfUrls.length);
+      console.log("Reached before save");
 
       const newCourse = new Course({
         title,
@@ -80,11 +81,9 @@ router.post(
         pdfUrls,
       });
 
-      console.log("SAVING COURSE...");
-
       await newCourse.save();
 
-      console.log("COURSE SAVED SUCCESSFULLY");
+      console.log("Saved successfully");
 
       res.status(201).json({
         message: "Course uploaded successfully",
