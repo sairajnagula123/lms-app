@@ -281,14 +281,13 @@ function Login() {
               OR
             </p>
 
-            <GoogleLogin
-              onSuccess={handleGoogleLogin}
-              onError={() =>
-                toast.error(
-                  "Google Login Failed"
-                )
-              }
-            />
+            <div className="google-login-wrapper">
+              <GoogleLogin
+                onSuccess={handleGoogleLogin}
+                onError={() => console.log("Google Login Failed")}
+                width="350"
+              />
+            </div>
           </div>
 
           {/* SIGNUP */}
