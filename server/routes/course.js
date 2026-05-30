@@ -17,7 +17,7 @@ router.get("/", async (req, res) => {
     res.json(courses);
 
   } catch (err) {
-    console.error(err);
+    console.error("GET COURSES ERROR:", err);
 
     res.status(500).json({
       message: "Failed to fetch courses",
@@ -31,6 +31,7 @@ router.get("/", async (req, res) => {
 // ==========================
 router.post(
   "/add",
+
   upload.fields([
     {
       name: "videos",
@@ -45,10 +46,17 @@ router.post(
   async (req, res) => {
     try {
 
+      console.log("=================================");
       console.log("BODY:", req.body);
       console.log("FILES:", req.files);
 
       const { title, description } = req.body;
+
+      if (!title || !description) {
+        return res.status(400).json({
+          message: "Title and description are required",
+        });
+      }
 
       const videoUrls =
         req.files?.videos?.map((file) => ({
@@ -62,6 +70,9 @@ router.post(
           url: file.path,
         })) || [];
 
+      console.log("VIDEO URLS:", videoUrls);
+      console.log("PDF URLS:", pdfUrls);
+
       const newCourse = new Course({
         title,
         description,
@@ -69,7 +80,11 @@ router.post(
         pdfUrls,
       });
 
+      console.log("SAVING COURSE...");
+
       await newCourse.save();
+
+      console.log("COURSE SAVED SUCCESSFULLY");
 
       res.status(201).json({
         message: "Course uploaded successfully",
@@ -78,7 +93,24 @@ router.post(
 
     } catch (err) {
 
-      console.error("UPLOAD ERROR:", err);
+      console.log("=================================");
+      console.log("UPLOAD ERROR");
+      console.log("MESSAGE:", err.message);
+
+      if (err.name) {
+        console.log("NAME:", err.name);
+      }
+
+      if (err.code) {
+        console.log("CODE:", err.code);
+      }
+
+      if (err.errors) {
+        console.log("MONGOOSE ERRORS:", err.errors);
+      }
+
+      console.log("STACK:");
+      console.log(err.stack);
 
       res.status(500).json({
         message: err.message,
@@ -107,7 +139,7 @@ router.get("/:id", async (req, res) => {
 
   } catch (err) {
 
-    console.error(err);
+    console.error("GET COURSE ERROR:", err);
 
     res.status(500).json({
       message: "Failed to fetch course",
