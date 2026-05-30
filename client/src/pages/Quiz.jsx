@@ -6,95 +6,65 @@ import "../styles/Quiz.css";
 
 function Quiz() {
 
-  const { courseId } =
-    useParams();
+  const { courseId } = useParams();
 
-  const [questions, setQuestions] =
-    useState([]);
+  const [questions, setQuestions] = useState([]);
+  const [answers, setAnswers] = useState({});
+  const [courseTitle, setCourseTitle] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-  const [answers, setAnswers] =
-    useState({});
+  const [timeLeft, setTimeLeft] = useState(0);
 
-  const [courseTitle,
-    setCourseTitle] =
-    useState("");
-
-  const [loading, setLoading] =
-    useState(true);
-
-  const [submitting,
-    setSubmitting] =
-    useState(false);
-
-  const [error, setError] =
-    useState("");
-
-  // TIMER
-  const [timeLeft, setTimeLeft] =
-    useState(0);
+  const [score, setScore] = useState(0);
+  const [showResult, setShowResult] = useState(false);
 
   const API_URL =
     process.env.REACT_APP_API_URL;
 
-  /* =========================
-     FETCH QUIZ
-  ========================= */
-
   useEffect(() => {
 
-    const fetchQuiz =
-      async () => {
+    const fetchQuiz = async () => {
 
-        try {
+      try {
 
-          setLoading(true);
+        setLoading(true);
 
-          const res =
-            await axios.get(
-              `${API_URL}/api/quizzes/${courseId}`
-            );
+        const res = await axios.get(
+          `${API_URL}/api/quizzes/${courseId}`
+        );
 
-          setQuestions(res.data);
+        setQuestions(res.data);
 
-          // COURSE TITLE
-          if (
-            res.data.length > 0
-          ) {
+        if (res.data.length > 0) {
 
-            setCourseTitle(
-              res.data[0].courseTitle || ""
-            );
-
-          }
-
-          // 1 QUESTION = 1 MINUTE
-          setTimeLeft(
-            res.data.length * 60
+          setCourseTitle(
+            res.data[0].courseTitle || ""
           );
-
-        } catch (err) {
-
-          console.error(err);
-
-          setError(
-            "Failed to load quiz"
-          );
-
-        } finally {
-
-          setLoading(false);
 
         }
 
-      };
+        setTimeLeft(
+          res.data.length * 60
+        );
+
+      } catch (err) {
+
+        console.error(err);
+        setError("Failed to load quiz");
+
+      } finally {
+
+        setLoading(false);
+
+      }
+
+    };
 
     fetchQuiz();
 
   }, [courseId, API_URL]);
-
-  /* =========================
-     TIMER
-  ========================= */
 
   useEffect(() => {
 
@@ -102,27 +72,20 @@ function Quiz() {
       loading ||
       timeLeft <= 0
     ) {
-
       return;
     }
 
-    const timer =
-      setInterval(() => {
+    const timer = setInterval(() => {
 
-        setTimeLeft(
-          (prev) => prev - 1
-        );
+      setTimeLeft(
+        (prev) => prev - 1
+      );
 
-      }, 1000);
+    }, 1000);
 
-    return () =>
-      clearInterval(timer);
+    return () => clearInterval(timer);
 
   }, [timeLeft, loading]);
-
-  /* =========================
-     AUTO SUBMIT
-  ========================= */
 
   useEffect(() => {
 
@@ -132,16 +95,12 @@ function Quiz() {
     ) {
 
       alert(
-        "Time Up! Quiz Submitted."
+        "Time Up! Submit your quiz."
       );
 
     }
 
   }, [timeLeft, questions]);
-
-  /* =========================
-     SELECT ANSWER
-  ========================= */
 
   const handleSelect =
     (qId, answer) => {
@@ -153,10 +112,6 @@ function Quiz() {
 
     };
 
-  /* =========================
-     SUBMIT QUIZ
-  ========================= */
-
   const handleSubmit =
     async (e) => {
 
@@ -164,7 +119,7 @@ function Quiz() {
 
       setSubmitting(true);
 
-      let score = 0;
+      let finalScore = 0;
 
       questions.forEach((q) => {
 
@@ -173,19 +128,17 @@ function Quiz() {
           q.correctAnswer
         ) {
 
-          score++;
+          finalScore++;
 
         }
 
       });
 
-      alert(
-        `You scored ${score} / ${questions.length}`
-      );
+      setScore(finalScore);
+      setShowResult(true);
 
-      // PASS CONDITION
       if (
-        score >=
+        finalScore >=
         Math.ceil(
           questions.length / 2
         )
@@ -193,33 +146,23 @@ function Quiz() {
 
         try {
 
-          const res =
-            await axios.post(
-              `${API_URL}/api/certificates/generate`,
-              {
-                userEmail:
-                  localStorage.getItem(
-                    "userEmail"
-                  ),
+          await axios.post(
+            `${API_URL}/api/certificates/generate`,
+            {
+              userEmail:
+                localStorage.getItem(
+                  "userEmail"
+                ),
 
-                courseTitle:
-                  courseTitle ||
-                  "Untitled Course",
-              }
-            );
-
-          alert(
-            res.data.message ||
-            "Certificate generated!"
+              courseTitle:
+                courseTitle ||
+                "Untitled Course",
+            }
           );
 
         } catch (err) {
 
           console.error(err);
-
-          alert(
-            "Error generating certificate."
-          );
 
         }
 
@@ -229,40 +172,22 @@ function Quiz() {
 
     };
 
-  /* =========================
-     LOADING
-  ========================= */
-
   if (loading) {
 
     return (
-
       <div className="quiz-container">
-
-        <h2>
-          Loading Quiz...
-        </h2>
-
+        <h2>Loading Quiz...</h2>
       </div>
-
     );
 
   }
 
-  /* =========================
-     ERROR
-  ========================= */
-
   if (error) {
 
     return (
-
       <div className="quiz-container">
-
         <h2>{error}</h2>
-
       </div>
-
     );
 
   }
@@ -275,13 +200,9 @@ function Quiz() {
         Quiz - {courseTitle}
       </h2>
 
-      {/* TIMER */}
-
       <div className="quiz-timer">
 
-        Time Left :
-
-        {" "}
+        Time Left :{" "}
 
         {Math.floor(timeLeft / 60)}
         :
@@ -291,9 +212,7 @@ function Quiz() {
 
       </div>
 
-      <form
-        onSubmit={handleSubmit}
-      >
+      <form onSubmit={handleSubmit}>
 
         {questions.map(
           (q, index) => (
@@ -305,9 +224,7 @@ function Quiz() {
 
               <p>
 
-                {index + 1}.
-                {" "}
-                {q.question}
+                {index + 1}. {q.question}
 
               </p>
 
@@ -377,9 +294,40 @@ function Quiz() {
 
       </form>
 
+      {showResult && (
+
+        <div className="result-overlay">
+
+          <div className="result-modal">
+
+            <h2>
+              Quiz Completed 🎯
+            </h2>
+
+            <div className="score-circle">
+
+              {score}/{questions.length}
+
+            </div>
+
+            <button
+              onClick={() =>
+                setShowResult(false)
+              }
+            >
+              Close
+            </button>
+
+          </div>
+
+        </div>
+
+      )}
+
     </div>
 
   );
+
 }
 
 export default Quiz;
