@@ -1,8 +1,8 @@
 import { useState } from "react";
 import axios from "axios";
+import "../styles/LiveClassUpload.css";
 
 function LiveClassUpload() {
-
   const [form, setForm] = useState({
     title: "",
     description: "",
@@ -11,20 +11,20 @@ function LiveClassUpload() {
     time: "",
   });
 
-  const handleChange = (e) => {
+  const [loading, setLoading] = useState(false);
 
+  const handleChange = (e) => {
     setForm({
       ...form,
       [e.target.name]: e.target.value,
     });
-
   };
 
   const handleSubmit = async (e) => {
-
     e.preventDefault();
 
     try {
+      setLoading(true);
 
       await axios.post(
         "https://lms-app-cqbr.onrender.com/api/liveclasses/create",
@@ -33,7 +33,6 @@ function LiveClassUpload() {
 
       alert("Live Class Created Successfully");
 
-      // ✅ Clear Form
       setForm({
         title: "",
         description: "",
@@ -42,30 +41,23 @@ function LiveClassUpload() {
         time: "",
       });
 
-      // ✅ Redirect Admin To View Classes
       window.location.href = "/liveclasses";
-
     } catch (error) {
-
       console.log(error);
-
       alert("Error creating live class");
-
+    } finally {
+      setLoading(false);
     }
-
   };
 
   return (
-    <div className="auth-container">
-
+    <div className="liveclass-container">
       <h1>Create Live Class</h1>
 
       <form
-        className="auth-form"
+        className="liveclass-form"
         onSubmit={handleSubmit}
       >
-
-        {/* CLASS TITLE */}
         <input
           type="text"
           name="title"
@@ -75,16 +67,14 @@ function LiveClassUpload() {
           required
         />
 
-        {/* DESCRIPTION */}
         <textarea
           name="description"
-          placeholder="Description"
+          placeholder="Class Description"
           value={form.description}
           onChange={handleChange}
           required
         />
 
-        {/* ROOM ID */}
         <input
           type="text"
           name="roomId"
@@ -94,7 +84,6 @@ function LiveClassUpload() {
           required
         />
 
-        {/* DATE */}
         <input
           type="date"
           name="date"
@@ -103,7 +92,6 @@ function LiveClassUpload() {
           required
         />
 
-        {/* TIME */}
         <input
           type="time"
           name="time"
@@ -112,13 +100,15 @@ function LiveClassUpload() {
           required
         />
 
-        {/* SUBMIT BUTTON */}
-        <button type="submit">
-          Create Live Class
+        <button
+          type="submit"
+          disabled={loading}
+        >
+          {loading
+            ? "Creating..."
+            : "Create Live Class"}
         </button>
-
       </form>
-
     </div>
   );
 }
