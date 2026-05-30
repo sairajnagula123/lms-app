@@ -10,17 +10,8 @@ function CourseUpload() {
   const [description, setDescription] =
     useState("");
 
-  const [videos, setVideos] =
-    useState([]);
-
-  const [pdfs, setPdfs] =
-    useState([]);
-
   const [loading, setLoading] =
     useState(false);
-
-  const [uploadProgress, setUploadProgress] =
-    useState(0);
 
   const [error, setError] =
     useState("");
@@ -35,38 +26,9 @@ function CourseUpload() {
 
     e.preventDefault();
 
-    const formData = new FormData();
-
-    formData.append("title", title);
-
-    formData.append(
-      "description",
-      description
-    );
-
-    videos.forEach((video) => {
-
-      formData.append(
-        "videos",
-        video
-      );
-
-    });
-
-    pdfs.forEach((pdf) => {
-
-      formData.append(
-        "pdfs",
-        pdf
-      );
-
-    });
-
     try {
 
       setLoading(true);
-
-      setUploadProgress(0);
 
       setError("");
 
@@ -75,30 +37,9 @@ function CourseUpload() {
       const response =
         await axios.post(
           `${API_URL}/api/courses/add`,
-          formData,
           {
-            headers: {
-              "Content-Type":
-                "multipart/form-data",
-            },
-
-            onUploadProgress:
-              (progressEvent) => {
-
-                const percent =
-                  Math.round(
-                    (
-                      progressEvent.loaded *
-                      100
-                    ) /
-                      progressEvent.total
-                  );
-
-                setUploadProgress(
-                  percent
-                );
-
-              },
+            title,
+            description,
           }
         );
 
@@ -110,17 +51,11 @@ function CourseUpload() {
 
       setDescription("");
 
-      setVideos([]);
-
-      setPdfs([]);
-
-      setUploadProgress(0);
-
     } catch (err) {
 
       setError(
         err.response?.data?.message ||
-          "Upload failed"
+        "Failed to create course"
       );
 
     } finally {
@@ -138,7 +73,7 @@ function CourseUpload() {
       <div className="upload-container">
 
         <h2>
-          📚 Upload New Course
+          📚 Create New Course
         </h2>
 
         {error && (
@@ -176,150 +111,15 @@ function CourseUpload() {
             required
           />
 
-          {/* VIDEO UPLOAD */}
-          <div className="upload-box">
-
-            <label className="upload-label">
-              🎥 Upload Videos
-            </label>
-
-            <input
-              type="file"
-              multiple
-              accept="video/*"
-              id="videoUpload"
-              hidden
-              onChange={(e) =>
-                setVideos(
-                  Array.from(
-                    e.target.files
-                  )
-                )
-              }
-            />
-
-            <label
-              htmlFor="videoUpload"
-              className="custom-upload-btn"
-            >
-              Choose Videos
-            </label>
-
-            <div className="selected-files">
-
-              {videos.length > 0 ? (
-
-                videos.map(
-                  (video, index) => (
-
-                    <div
-                      key={index}
-                      className="file-item"
-                    >
-                      🎥 {video.name}
-                    </div>
-
-                  )
-                )
-
-              ) : (
-
-                <p className="empty-file">
-                  No videos selected
-                </p>
-
-              )}
-
-            </div>
-
-          </div>
-
-          {/* PDF UPLOAD */}
-          <div className="upload-box">
-
-            <label className="upload-label">
-              📄 Upload PDFs
-            </label>
-
-            <input
-              type="file"
-              multiple
-              accept="application/pdf"
-              id="pdfUpload"
-              hidden
-              onChange={(e) =>
-                setPdfs(
-                  Array.from(
-                    e.target.files
-                  )
-                )
-              }
-            />
-
-            <label
-              htmlFor="pdfUpload"
-              className="custom-upload-btn"
-            >
-              Choose PDFs
-            </label>
-
-            <div className="selected-files">
-
-              {pdfs.length > 0 ? (
-
-                pdfs.map(
-                  (pdf, index) => (
-
-                    <div
-                      key={index}
-                      className="file-item"
-                    >
-                      📄 {pdf.name}
-                    </div>
-
-                  )
-                )
-
-              ) : (
-
-                <p className="empty-file">
-                  No PDFs selected
-                </p>
-
-              )}
-
-            </div>
-
-          </div>
-
-          {/* PROGRESS BAR */}
-          {loading && (
-
-            <div className="progress-container">
-
-              <div
-                className="progress-bar"
-                style={{
-                  width:
-                    `${uploadProgress}%`,
-                }}
-              >
-                {uploadProgress}%
-              </div>
-
-            </div>
-
-          )}
-
           <button
             type="submit"
             disabled={loading}
           >
-
-            {loading
-              ? `Uploading... ${uploadProgress}%`
-              : "Upload Course"}
-
+            {
+              loading
+                ? "Creating..."
+                : "Create Course"
+            }
           </button>
 
         </form>

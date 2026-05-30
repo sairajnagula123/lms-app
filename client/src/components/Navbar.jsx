@@ -79,7 +79,13 @@ function Navbar({
 
             <li>
               <Link to="/upload">
-                Upload Course
+                Create Course
+              </Link>
+            </li>
+
+            <li>
+              <Link to="/upload-content">
+                Upload Content
               </Link>
             </li>
 

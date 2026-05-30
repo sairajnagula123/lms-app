@@ -10,6 +10,7 @@ import Signup from "./pages/Signup";
 import Login from "./pages/Login";
 import Home from "./pages/Home";
 import CourseUpload from "./pages/CourseUpload";
+import UploadContent from "./pages/UploadContent";
 import CourseList from "./pages/CourseList";
 import QuizUpload from "./pages/QuizUpload";
 import Quiz from "./pages/Quiz";
@@ -145,6 +146,11 @@ function App() {
                 <LiveClasses />
               </ProtectedRoute>
             }
+          />
+
+          <Route
+            path="/upload-content"
+            element={<UploadContent />}
           />
 
         </Routes>

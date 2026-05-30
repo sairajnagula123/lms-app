@@ -6,144 +6,202 @@ const Course = require("../models/Course");
 
 
 // ==========================
-// GET ALL COURSES
+// CREATE COURSE
 // ==========================
-router.get("/", async (req, res) => {
+router.post("/add", async (req, res) => {
+
   try {
-    const courses = await Course.find().sort({
-      createdAt: -1,
+
+    const { title, description } = req.body;
+
+    if (!title || !description) {
+
+      return res.status(400).json({
+        message: "Title and Description required",
+      });
+
+    }
+
+    const course = new Course({
+      title,
+      description,
+      videoUrls: [],
+      pdfUrls: [],
     });
 
-    res.json(courses);
+    await course.save();
+
+    res.status(201).json({
+      message: "Course created successfully",
+      course,
+    });
 
   } catch (err) {
-    console.error("GET COURSES ERROR:", err);
 
     res.status(500).json({
-      message: "Failed to fetch courses",
+      message: err.message,
     });
+
   }
+
 });
 
 
 // ==========================
-// ADD COURSE
+// ADD VIDEO TO COURSE
 // ==========================
 router.post(
-  "/add",
+  "/:id/video",
 
-  upload.fields([
-    {
-      name: "videos",
-      maxCount: 10,
-    },
-    {
-      name: "pdfs",
-      maxCount: 10,
-    },
-  ]),
+  upload.single("video"),
 
   async (req, res) => {
+
     try {
 
-      console.log("=================================");
-      console.log("BODY:", req.body);
-      console.log("FILES:", req.files);
+      const course =
+        await Course.findById(
+          req.params.id
+        );
 
-      const { title, description } = req.body;
+      if (!course) {
 
-      if (!title || !description) {
-        return res.status(400).json({
-          message: "Title and description are required",
+        return res.status(404).json({
+          message: "Course not found",
         });
+
       }
 
-      const videoUrls =
-        req.files?.videos?.map((file) => ({
-          title: file.originalname,
-          url: file.path,
-        })) || [];
-
-      const pdfUrls =
-        req.files?.pdfs?.map((file) => ({
-          title: file.originalname,
-          url: file.path,
-        })) || [];
-
-      console.log("Videos count:", videoUrls.length);
-      console.log("PDF count:", pdfUrls.length);
-      console.log("Reached before save");
-
-      const newCourse = new Course({
-        title,
-        description,
-        videoUrls,
-        pdfUrls,
+      course.videoUrls.push({
+        title: req.file.originalname,
+        url: req.file.path,
       });
 
-      await newCourse.save();
+      await course.save();
 
-      console.log("Saved successfully");
-
-      res.status(201).json({
-        message: "Course uploaded successfully",
-        course: newCourse,
+      res.json({
+        message:
+          "Video uploaded successfully",
+        course,
       });
 
     } catch (err) {
 
-      console.log("=================================");
-      console.log("UPLOAD ERROR");
-      console.log("MESSAGE:", err.message);
+      res.status(500).json({
+        message: err.message,
+      });
 
-      if (err.name) {
-        console.log("NAME:", err.name);
+    }
+
+  }
+);
+
+
+// ==========================
+// ADD PDF TO COURSE
+// ==========================
+router.post(
+  "/:id/pdf",
+
+  upload.single("pdf"),
+
+  async (req, res) => {
+
+    try {
+
+      const course =
+        await Course.findById(
+          req.params.id
+        );
+
+      if (!course) {
+
+        return res.status(404).json({
+          message: "Course not found",
+        });
+
       }
 
-      if (err.code) {
-        console.log("CODE:", err.code);
-      }
+      course.pdfUrls.push({
+        title: req.file.originalname,
+        url: req.file.path,
+      });
 
-      if (err.errors) {
-        console.log("MONGOOSE ERRORS:", err.errors);
-      }
+      await course.save();
 
-      console.log("STACK:");
-      console.log(err.stack);
+      res.json({
+        message:
+          "PDF uploaded successfully",
+        course,
+      });
+
+    } catch (err) {
 
       res.status(500).json({
         message: err.message,
       });
+
     }
+
   }
 );
+
+
+// ==========================
+// GET ALL COURSES
+// ==========================
+router.get("/", async (req, res) => {
+
+  try {
+
+    const courses =
+      await Course.find().sort({
+        createdAt: -1,
+      });
+
+    res.json(courses);
+
+  } catch (err) {
+
+    res.status(500).json({
+      message: err.message,
+    });
+
+  }
+
+});
 
 
 // ==========================
 // GET SINGLE COURSE
 // ==========================
 router.get("/:id", async (req, res) => {
+
   try {
 
     const course =
-      await Course.findById(req.params.id);
+      await Course.findById(
+        req.params.id
+      );
 
     if (!course) {
+
       return res.status(404).json({
         message: "Course not found",
       });
+
     }
 
     res.json(course);
 
   } catch (err) {
 
-    console.error("GET COURSE ERROR:", err);
-
     res.status(500).json({
-      message: "Failed to fetch course",
+      message: err.message,
     });
+
   }
+
 });
 
 module.exports = router;
