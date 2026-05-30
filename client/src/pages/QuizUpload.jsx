@@ -44,8 +44,9 @@ function QuizUpload() {
   ) => {
     const updatedQuestions = [...form.questions];
 
-    updatedQuestions[questionIndex].options[optionIndex] =
-      value;
+    updatedQuestions[questionIndex].options[
+      optionIndex
+    ] = value;
 
     setForm({
       ...form,
@@ -68,7 +69,9 @@ function QuizUpload() {
   };
 
   const removeQuestion = (index) => {
-    if (form.questions.length === 1) return;
+    if (form.questions.length === 1) {
+      return;
+    }
 
     const updatedQuestions = form.questions.filter(
       (_, i) => i !== index
@@ -92,7 +95,10 @@ function QuizUpload() {
         form
       );
 
-      alert(res.data.message);
+      alert(
+        res.data.message ||
+          "Questions uploaded successfully"
+      );
 
       setForm({
         courseId: "",
@@ -110,7 +116,7 @@ function QuizUpload() {
       if (err.response) {
         setError(
           err.response.data.message ||
-            "Failed to upload quiz"
+            "Failed to upload questions"
         );
       } else {
         setError("Server error / Network issue");
@@ -124,7 +130,9 @@ function QuizUpload() {
     <div className="quiz-upload-container">
       <h2>Upload Quiz</h2>
 
-      {error && <p className="error">{error}</p>}
+      {error && (
+        <p className="error">{error}</p>
+      )}
 
       <form onSubmit={handleSubmit}>
         <input
@@ -138,14 +146,11 @@ function QuizUpload() {
         {form.questions.map((q, qIndex) => (
           <div
             key={qIndex}
-            style={{
-              border: "1px solid #ddd",
-              padding: "15px",
-              marginBottom: "20px",
-              borderRadius: "10px",
-            }}
+            className="question-card"
           >
-            <h3>Question {qIndex + 1}</h3>
+            <h3>
+              Question {qIndex + 1}
+            </h3>
 
             <input
               type="text"
@@ -161,22 +166,26 @@ function QuizUpload() {
               required
             />
 
-            {q.options.map((opt, optIndex) => (
-              <input
-                key={optIndex}
-                type="text"
-                placeholder={`Option ${optIndex + 1}`}
-                value={opt}
-                onChange={(e) =>
-                  handleOptionChange(
-                    qIndex,
-                    optIndex,
-                    e.target.value
-                  )
-                }
-                required
-              />
-            ))}
+            {q.options.map(
+              (opt, optIndex) => (
+                <input
+                  key={optIndex}
+                  type="text"
+                  placeholder={`Option ${
+                    optIndex + 1
+                  }`}
+                  value={opt}
+                  onChange={(e) =>
+                    handleOptionChange(
+                      qIndex,
+                      optIndex,
+                      e.target.value
+                    )
+                  }
+                  required
+                />
+              )
+            )}
 
             <input
               type="text"
@@ -194,6 +203,7 @@ function QuizUpload() {
 
             <button
               type="button"
+              className="remove-btn"
               onClick={() =>
                 removeQuestion(qIndex)
               }
@@ -205,6 +215,7 @@ function QuizUpload() {
 
         <button
           type="button"
+          className="add-btn"
           onClick={addQuestion}
         >
           + Add Another Question
@@ -212,6 +223,7 @@ function QuizUpload() {
 
         <button
           type="submit"
+          className="submit-btn"
           disabled={loading}
         >
           {loading
