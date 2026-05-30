@@ -4,23 +4,35 @@ import "../styles/CourseUpload.css";
 
 function CourseUpload() {
 
+  const API_URL =
+    process.env.REACT_APP_API_URL;
+
+  const CLOUD_NAME =
+    process.env.REACT_APP_CLOUD_NAME;
+
+  const UPLOAD_PRESET =
+    process.env.REACT_APP_UPLOAD_PRESET;
+
   const [title, setTitle] =
     useState("");
 
   const [description, setDescription] =
     useState("");
 
+  const [image, setImage] =
+    useState(null);
+
   const [loading, setLoading] =
     useState(false);
+
+  const [uploadProgress, setUploadProgress] =
+    useState(0);
 
   const [error, setError] =
     useState("");
 
   const [success, setSuccess] =
     useState("");
-
-  const API_URL =
-    process.env.REACT_APP_API_URL;
 
   const handleSubmit = async (e) => {
 
@@ -29,10 +41,51 @@ function CourseUpload() {
     try {
 
       setLoading(true);
-
       setError("");
-
       setSuccess("");
+      setUploadProgress(0);
+
+      let imageUrl = "";
+
+      if (image) {
+
+        const formData =
+          new FormData();
+
+        formData.append(
+          "file",
+          image
+        );
+
+        formData.append(
+          "upload_preset",
+          UPLOAD_PRESET
+        );
+
+        const uploadRes =
+          await axios.post(
+            `https://api.cloudinary.com/v1_1/${CLOUD_NAME}/image/upload`,
+            formData,
+            {
+              onUploadProgress:
+                (event) => {
+
+                  const percent =
+                    Math.round(
+                      (event.loaded * 100) /
+                      event.total
+                    );
+
+                  setUploadProgress(
+                    percent
+                  );
+                },
+            }
+          );
+
+        imageUrl =
+          uploadRes.data.secure_url;
+      }
 
       const response =
         await axios.post(
@@ -40,6 +93,7 @@ function CourseUpload() {
           {
             title,
             description,
+            imageUrl,
           }
         );
 
@@ -48,10 +102,13 @@ function CourseUpload() {
       );
 
       setTitle("");
-
       setDescription("");
+      setImage(null);
+      setUploadProgress(0);
 
     } catch (err) {
+
+      console.log(err);
 
       setError(
         err.response?.data?.message ||
@@ -95,7 +152,9 @@ function CourseUpload() {
             placeholder="Course Title"
             value={title}
             onChange={(e) =>
-              setTitle(e.target.value)
+              setTitle(
+                e.target.value
+              )
             }
             required
           />
@@ -110,6 +169,36 @@ function CourseUpload() {
             }
             required
           />
+
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) =>
+              setImage(
+                e.target.files[0]
+              )
+            }
+          />
+
+          {uploadProgress > 0 && (
+            <>
+              <p>
+                Uploading Image:
+                {" "}
+                {uploadProgress}%
+              </p>
+
+              <progress
+                value={
+                  uploadProgress
+                }
+                max="100"
+                style={{
+                  width: "100%",
+                }}
+              />
+            </>
+          )}
 
           <button
             type="submit"
