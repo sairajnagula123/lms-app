@@ -4,7 +4,10 @@ const router = express.Router();
 const upload = require("../middleware/upload");
 const Course = require("../models/Course");
 
+
+// ==========================
 // GET ALL COURSES
+// ==========================
 router.get("/", async (req, res) => {
   try {
     const courses = await Course.find().sort({
@@ -12,6 +15,7 @@ router.get("/", async (req, res) => {
     });
 
     res.json(courses);
+
   } catch (err) {
     console.error(err);
 
@@ -21,28 +25,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-// GET SINGLE COURSE
-router.get("/:id", async (req, res) => {
-  try {
-    const course = await Course.findById(req.params.id);
 
-    if (!course) {
-      return res.status(404).json({
-        message: "Course not found",
-      });
-    }
-
-    res.json(course);
-  } catch (err) {
-    console.error(err);
-
-    res.status(500).json({
-      message: "Failed to fetch course",
-    });
-  }
-});
-
+// ==========================
 // ADD COURSE
+// ==========================
 router.post(
   "/add",
   upload.fields([
@@ -55,8 +41,10 @@ router.post(
       maxCount: 10,
     },
   ]),
+
   async (req, res) => {
     try {
+
       console.log("BODY:", req.body);
       console.log("FILES:", req.files);
 
@@ -74,9 +62,6 @@ router.post(
           url: file.path,
         })) || [];
 
-      console.log("VIDEO URLS:", videoUrls);
-      console.log("PDF URLS:", pdfUrls);
-
       const newCourse = new Course({
         title,
         description,
@@ -90,7 +75,9 @@ router.post(
         message: "Course uploaded successfully",
         course: newCourse,
       });
+
     } catch (err) {
+
       console.error("UPLOAD ERROR:", err);
 
       res.status(500).json({
@@ -99,5 +86,33 @@ router.post(
     }
   }
 );
+
+
+// ==========================
+// GET SINGLE COURSE
+// ==========================
+router.get("/:id", async (req, res) => {
+  try {
+
+    const course =
+      await Course.findById(req.params.id);
+
+    if (!course) {
+      return res.status(404).json({
+        message: "Course not found",
+      });
+    }
+
+    res.json(course);
+
+  } catch (err) {
+
+    console.error(err);
+
+    res.status(500).json({
+      message: "Failed to fetch course",
+    });
+  }
+});
 
 module.exports = router;
