@@ -3,12 +3,15 @@ import axios from "axios";
 import "../styles/QuizUpload.css";
 
 function QuizUpload() {
-
   const [form, setForm] = useState({
     courseId: "",
-    question: "",
-    options: ["", "", "", ""],
-    correctAnswer: "",
+    questions: [
+      {
+        question: "",
+        options: ["", "", "", ""],
+        correctAnswer: "",
+      },
+    ],
   });
 
   const [loading, setLoading] = useState(false);
@@ -16,22 +19,64 @@ function QuizUpload() {
 
   const API_URL = process.env.REACT_APP_API_URL;
 
-  const handleChange = (e) => {
+  const handleCourseIdChange = (e) => {
     setForm({
       ...form,
-      [e.target.name]: e.target.value,
+      courseId: e.target.value,
     });
   };
 
-  const handleOptionChange = (index, value) => {
+  const handleQuestionChange = (index, field, value) => {
+    const updatedQuestions = [...form.questions];
 
-    const updated = [...form.options];
-
-    updated[index] = value;
+    updatedQuestions[index][field] = value;
 
     setForm({
       ...form,
-      options: updated,
+      questions: updatedQuestions,
+    });
+  };
+
+  const handleOptionChange = (
+    questionIndex,
+    optionIndex,
+    value
+  ) => {
+    const updatedQuestions = [...form.questions];
+
+    updatedQuestions[questionIndex].options[optionIndex] =
+      value;
+
+    setForm({
+      ...form,
+      questions: updatedQuestions,
+    });
+  };
+
+  const addQuestion = () => {
+    setForm({
+      ...form,
+      questions: [
+        ...form.questions,
+        {
+          question: "",
+          options: ["", "", "", ""],
+          correctAnswer: "",
+        },
+      ],
+    });
+  };
+
+  const removeQuestion = (index) => {
+    if (form.questions.length === 1) return;
+
+    const updatedQuestions = form.questions.filter(
+      (_, i) => i !== index
+    );
+
+    setForm({
+      ...form,
+      questions: updatedQuestions,
     });
   };
 
@@ -47,25 +92,29 @@ function QuizUpload() {
         form
       );
 
-      alert(res.data.message || "Quiz added successfully!");
+      alert(res.data.message);
 
-      // Reset form
       setForm({
         courseId: "",
-        question: "",
-        options: ["", "", "", ""],
-        correctAnswer: "",
+        questions: [
+          {
+            question: "",
+            options: ["", "", "", ""],
+            correctAnswer: "",
+          },
+        ],
       });
-
     } catch (err) {
       console.error(err);
 
       if (err.response) {
-        setError(err.response.data.message || "Failed to add quiz");
+        setError(
+          err.response.data.message ||
+            "Failed to upload quiz"
+        );
       } else {
         setError("Server error / Network issue");
       }
-
     } finally {
       setLoading(false);
     }
@@ -73,53 +122,102 @@ function QuizUpload() {
 
   return (
     <div className="quiz-upload-container">
-
       <h2>Upload Quiz</h2>
 
       {error && <p className="error">{error}</p>}
 
       <form onSubmit={handleSubmit}>
-
         <input
-          name="courseId"
+          type="text"
           placeholder="Course ID"
           value={form.courseId}
-          onChange={handleChange}
+          onChange={handleCourseIdChange}
           required
         />
 
-        <input
-          name="question"
-          placeholder="Question"
-          value={form.question}
-          onChange={handleChange}
-          required
-        />
+        {form.questions.map((q, qIndex) => (
+          <div
+            key={qIndex}
+            style={{
+              border: "1px solid #ddd",
+              padding: "15px",
+              marginBottom: "20px",
+              borderRadius: "10px",
+            }}
+          >
+            <h3>Question {qIndex + 1}</h3>
 
-        {form.options.map((opt, idx) => (
-          <input
-            key={idx}
-            placeholder={`Option ${idx + 1}`}
-            value={opt}
-            onChange={(e) =>
-              handleOptionChange(idx, e.target.value)
-            }
-            required
-          />
+            <input
+              type="text"
+              placeholder="Question"
+              value={q.question}
+              onChange={(e) =>
+                handleQuestionChange(
+                  qIndex,
+                  "question",
+                  e.target.value
+                )
+              }
+              required
+            />
+
+            {q.options.map((opt, optIndex) => (
+              <input
+                key={optIndex}
+                type="text"
+                placeholder={`Option ${optIndex + 1}`}
+                value={opt}
+                onChange={(e) =>
+                  handleOptionChange(
+                    qIndex,
+                    optIndex,
+                    e.target.value
+                  )
+                }
+                required
+              />
+            ))}
+
+            <input
+              type="text"
+              placeholder="Correct Answer"
+              value={q.correctAnswer}
+              onChange={(e) =>
+                handleQuestionChange(
+                  qIndex,
+                  "correctAnswer",
+                  e.target.value
+                )
+              }
+              required
+            />
+
+            <button
+              type="button"
+              onClick={() =>
+                removeQuestion(qIndex)
+              }
+            >
+              Remove Question
+            </button>
+          </div>
         ))}
 
-        <input
-          name="correctAnswer"
-          placeholder="Correct Answer"
-          value={form.correctAnswer}
-          onChange={handleChange}
-          required
-        />
-
-        <button type="submit" disabled={loading}>
-          {loading ? "Adding..." : "Add Question"}
+        <button
+          type="button"
+          onClick={addQuestion}
+        >
+          + Add Another Question
         </button>
 
+        <button
+          type="submit"
+          disabled={loading}
+        >
+          {loading
+            ? "Uploading..."
+            : "Upload All Questions"}
+        </button>
       </form>
     </div>
   );
