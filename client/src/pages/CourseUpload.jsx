@@ -19,6 +19,9 @@ function CourseUpload() {
   const [loading, setLoading] =
     useState(false);
 
+  const [uploadProgress, setUploadProgress] =
+    useState(0);
+
   const [error, setError] =
     useState("");
 
@@ -28,7 +31,6 @@ function CourseUpload() {
   const API_URL =
     process.env.REACT_APP_API_URL;
 
-  // SUBMIT
   const handleSubmit = async (e) => {
 
     e.preventDefault();
@@ -42,27 +44,29 @@ function CourseUpload() {
       description
     );
 
-    // VIDEOS
     videos.forEach((video) => {
 
       formData.append(
         "videos",
         video
       );
+
     });
 
-    // PDFS
     pdfs.forEach((pdf) => {
 
       formData.append(
         "pdfs",
         pdf
       );
+
     });
 
     try {
 
       setLoading(true);
+
+      setUploadProgress(0);
 
       setError("");
 
@@ -77,6 +81,24 @@ function CourseUpload() {
               "Content-Type":
                 "multipart/form-data",
             },
+
+            onUploadProgress:
+              (progressEvent) => {
+
+                const percent =
+                  Math.round(
+                    (
+                      progressEvent.loaded *
+                      100
+                    ) /
+                      progressEvent.total
+                  );
+
+                setUploadProgress(
+                  percent
+                );
+
+              },
           }
         );
 
@@ -84,7 +106,6 @@ function CourseUpload() {
         response.data.message
       );
 
-      // RESET
       setTitle("");
 
       setDescription("");
@@ -92,6 +113,8 @@ function CourseUpload() {
       setVideos([]);
 
       setPdfs([]);
+
+      setUploadProgress(0);
 
     } catch (err) {
 
@@ -103,7 +126,9 @@ function CourseUpload() {
     } finally {
 
       setLoading(false);
+
     }
+
   };
 
   return (
@@ -130,7 +155,6 @@ function CourseUpload() {
 
         <form onSubmit={handleSubmit}>
 
-          {/* TITLE */}
           <input
             type="text"
             placeholder="Course Title"
@@ -141,7 +165,6 @@ function CourseUpload() {
             required
           />
 
-          {/* DESCRIPTION */}
           <textarea
             placeholder="Course Description"
             value={description}
@@ -195,6 +218,7 @@ function CourseUpload() {
                     >
                       🎥 {video.name}
                     </div>
+
                   )
                 )
 
@@ -252,6 +276,7 @@ function CourseUpload() {
                     >
                       📄 {pdf.name}
                     </div>
+
                   )
                 )
 
@@ -267,14 +292,34 @@ function CourseUpload() {
 
           </div>
 
-          {/* SUBMIT */}
+          {/* PROGRESS BAR */}
+          {loading && (
+
+            <div className="progress-container">
+
+              <div
+                className="progress-bar"
+                style={{
+                  width:
+                    `${uploadProgress}%`,
+                }}
+              >
+                {uploadProgress}%
+              </div>
+
+            </div>
+
+          )}
+
           <button
             type="submit"
             disabled={loading}
           >
+
             {loading
-              ? "Uploading..."
+              ? `Uploading... ${uploadProgress}%`
               : "Upload Course"}
+
           </button>
 
         </form>
@@ -282,6 +327,7 @@ function CourseUpload() {
       </div>
 
     </div>
+
   );
 }
 
