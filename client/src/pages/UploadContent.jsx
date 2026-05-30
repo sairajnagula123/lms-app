@@ -20,10 +20,16 @@ function UploadContent() {
     useState("");
 
   const [video, setVideo] =
-    useState(null);
+  useState(null);
 
   const [pdf, setPdf] =
     useState(null);
+
+  const [videoProgress, setVideoProgress] =
+    useState(0);
+
+  const [pdfProgress, setPdfProgress] =
+    useState(0);
 
   const [message, setMessage] =
     useState("");
