@@ -255,4 +255,44 @@ router.get("/:id", async (req, res) => {
 
 });
 
+router.post("/:id/video-url", async (req, res) => {
+
+  try {
+
+    const { videoUrl, title } =
+      req.body;
+
+    const course =
+      await Course.findById(
+        req.params.id
+      );
+
+    if (!course) {
+      return res.status(404).json({
+        message: "Course not found",
+      });
+    }
+
+    course.videoUrls.push({
+      title,
+      url: videoUrl,
+    });
+
+    await course.save();
+
+    res.json({
+      message:
+        "Video saved successfully",
+    });
+
+  } catch (err) {
+
+    res.status(500).json({
+      message: err.message,
+    });
+
+  }
+
+});
+
 module.exports = router;
