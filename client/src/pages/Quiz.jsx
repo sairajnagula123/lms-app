@@ -96,8 +96,10 @@ function Quiz() {
   }, [timeLeft, loading]);
 
   useEffect(() => {
+
     if (
-      timeLeft === 0 &&
+      !loading &&
+      timeLeft <= 0 &&
       questions.length > 0 &&
       !quizCompleted
     ) {
@@ -114,8 +116,7 @@ function Quiz() {
 
   }, [
     timeLeft,
-    questions,
-    quizCompleted,
+    loading,
   ]);
 
   const handleSelect =
