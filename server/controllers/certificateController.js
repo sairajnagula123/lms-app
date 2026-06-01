@@ -6,13 +6,19 @@ exports.generateCertificate = async (req, res) => {
     const { userEmail, courseTitle } =
       req.body;
 
-    const cert = new Certificate({
-      userEmail,
-      courseTitle,
-      completedAt: new Date(),
-    });
+    const existing =
+      await Certificate.findOne({
+        userEmail,
+        courseTitle,
+      });
 
-    await cert.save();
+    if (!existing) {
+      await Certificate.create({
+        userEmail,
+        courseTitle,
+        completedAt: new Date(),
+      });
+    }
 
     res.json({
       message:

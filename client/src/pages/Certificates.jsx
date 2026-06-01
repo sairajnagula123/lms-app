@@ -10,7 +10,12 @@ function Certificates() {
   useEffect(() => {
     const fetchCertificates = async () => {
       try {
-        const email = localStorage.getItem("email");
+        const user = JSON.parse(
+          localStorage.getItem("user")
+        );
+
+        const email =
+          user?.email;
 
         const res = await axios.get(
           `${process.env.REACT_APP_API_URL}/api/certificates/${email}`

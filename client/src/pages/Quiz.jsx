@@ -146,13 +146,15 @@ function Quiz() {
 
         try {
 
+          const user = JSON.parse(
+            localStorage.getItem("user")
+          );
+
           await axios.post(
             `${API_URL}/api/certificates/generate`,
             {
               userEmail:
-                localStorage.getItem(
-                  "userEmail"
-                ),
+                user?.email,
 
               courseTitle:
                 courseTitle ||
