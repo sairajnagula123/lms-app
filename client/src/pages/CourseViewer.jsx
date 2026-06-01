@@ -48,7 +48,7 @@ function CourseViewer() {
 
           const enrollmentRes =
             await axios.get(
-              `${API_URL}/api/enrollments/check/${id}/${user._id}`
+              `${API_URL}/api/enrollments/check/${id}/${user.id}`
             );
 
           setHasAccess(
