@@ -39,15 +39,13 @@ function BuyCourse() {
   const handlePayment =
     async () => {
 
-      const loaded =
-        await loadRazorpay();
+      const loaded = await loadRazorpay();
+
+      console.log("Loaded:", loaded);
+      console.log("window.Razorpay:", window.Razorpay);
 
       if (!loaded) {
-
-        alert(
-          "Razorpay failed to load"
-        );
-
+        alert("Razorpay failed to load");
         return;
       }
 

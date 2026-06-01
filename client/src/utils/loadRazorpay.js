@@ -1,17 +1,27 @@
 const loadRazorpay = () => {
   return new Promise((resolve) => {
 
-    const script =
-      document.createElement("script");
+    if (window.Razorpay) {
+      resolve(true);
+      return;
+    }
+
+    const script = document.createElement("script");
 
     script.src =
       "https://checkout.razorpay.com/v1/checkout.js";
 
-    script.onload = () =>
-      resolve(true);
+    script.async = true;
 
-    script.onerror = () =>
+    script.onload = () => {
+      console.log("Razorpay Loaded");
+      resolve(true);
+    };
+
+    script.onerror = () => {
+      console.log("Razorpay Load Failed");
       resolve(false);
+    };
 
     document.body.appendChild(script);
   });
