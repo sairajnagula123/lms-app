@@ -192,71 +192,44 @@ function CourseList() {
 
                 <div className="course-buttons">
                   <div className="course-price">
-                    ₹
-                    {
-                      course.price
-                    }
+                    ₹{course.price}
                   </div>
 
                   {enrolledCourses.includes(
                     course._id
                   ) ? (
-                    <Link
-                      to={`/course/${course._id}`}
-                      className="course-button view"
-                    >
-                      Open Course
-                    </Link>
+                    <>
+                      <Link
+                        to={`/course/${course._id}`}
+                        className="course-button view"
+                      >
+                        Open Course
+                      </Link>
+
+                      <Link
+                        to={`/quiz/${course._id}`}
+                        className="course-button quiz"
+                      >
+                        Take Quiz
+                      </Link>
+                    </>
                   ) : (
-                    <Link
-                      to={`/buy-course/${course._id}`}
-                      className="course-button view"
-                    >
-                      Buy Course
-                    </Link>
+                    <>
+                      <Link
+                        to={`/buy-course/${course._id}`}
+                        className="course-button view"
+                      >
+                        Buy Course
+                      </Link>
+
+                      <button
+                        className="course-button quiz disabled"
+                        disabled
+                      >
+                        Buy First
+                      </button>
+                    </>
                   )}
-
-                  <div className="course-buttons">
-                    <div className="course-price">
-                      ₹{course.price}
-                    </div>
-
-                    {enrolledCourses.includes(
-                      course._id
-                    ) ? (
-                      <>
-                        <Link
-                          to={`/course/${course._id}`}
-                          className="course-button view"
-                        >
-                          Open Course
-                        </Link>
-
-                        <Link
-                          to={`/quiz/${course._id}`}
-                          className="course-button quiz"
-                        >
-                          Take Quiz
-                        </Link>
-                      </>
-                    ) : (
-                      <>
-                        <Link
-                          to={`/buy-course/${course._id}`}
-                          className="course-button view"
-                        >
-                          Buy Course
-                        </Link>
-
-                        <button
-                          className="course-button quiz disabled"
-                          disabled
-                        >
-                          Buy First
-                        </button>
-                      </>
-                    )}
-                  </div>
                 </div>
               </div>
             </div>
