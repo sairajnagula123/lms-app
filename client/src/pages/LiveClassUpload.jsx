@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import { toast } from "react-toastify";
 import "../styles/LiveClassUpload.css";
 
 function LiveClassUpload() {
@@ -31,7 +32,9 @@ function LiveClassUpload() {
         form
       );
 
-      alert("Live Class Created Successfully");
+      toast.success(
+        "Live Class Created Successfully"
+      );
 
       setForm({
         title: "",
@@ -41,10 +44,17 @@ function LiveClassUpload() {
         time: "",
       });
 
-      window.location.href = "/liveclasses";
+      setTimeout(() => {
+        window.location.href = "/liveclasses";
+      }, 1500);
+
     } catch (error) {
       console.log(error);
-      alert("Error creating live class");
+
+      toast.error(
+        "Error creating live class"
+      );
+
     } finally {
       setLoading(false);
     }

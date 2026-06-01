@@ -1,6 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 import "../styles/QuizUpload.css";
+import { toast } from "react-toastify";
 
 function QuizUpload() {
   const [form, setForm] = useState({
@@ -95,9 +96,9 @@ function QuizUpload() {
         form
       );
 
-      alert(
+      toast.success(
         res.data.message ||
-          "Questions uploaded successfully"
+        "Questions uploaded successfully"
       );
 
       setForm({
@@ -114,12 +115,24 @@ function QuizUpload() {
       console.error(err);
 
       if (err.response) {
-        setError(
+
+        const msg =
           err.response.data.message ||
-            "Failed to upload questions"
-        );
+          "Failed to upload questions";
+
+        setError(msg);
+        toast.error(msg);
+
       } else {
-        setError("Server error / Network issue");
+
+        setError(
+          "Server error / Network issue"
+        );
+
+        toast.error(
+          "Server error / Network issue"
+        );
+
       }
     } finally {
       setLoading(false);

@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { GoogleLogin } from "@react-oauth/google";
+import { toast } from "react-toastify";
 
 import "../styles/Signup.css";
 
@@ -46,7 +47,7 @@ function Signup() {
         form
       );
 
-      alert(res.data.msg);
+      toast.success(res.data.msg);
 
       setForm({
         name: "",
@@ -54,7 +55,9 @@ function Signup() {
         password: "",
       });
 
-      navigate("/login");
+      setTimeout(() => {
+        navigate("/login");
+      }, 1500);
 
     } catch (err) {
 
@@ -64,9 +67,17 @@ function Signup() {
 
         setError(err.response.data.msg);
 
+        toast.error(
+          err.response.data.msg
+        );
+
       } else {
 
         setError("Server Error");
+
+        toast.error(
+          "Server Error"
+        );
 
       }
 
@@ -102,15 +113,20 @@ function Signup() {
         res.data.role
       );
 
-      navigate("/");
+      toast.success(
+        "Google Login Successful"
+      );
 
-      window.location.reload();
+      setTimeout(() => {
+        navigate("/");
+        window.location.reload();
+      }, 1000);
 
     } catch (err) {
 
       console.log(err);
 
-      alert(
+      toast.error(
         "Google Login Failed"
       );
 
@@ -197,8 +213,6 @@ function Signup() {
 
           <form onSubmit={handleSubmit}>
 
-            {/* NAME */}
-
             <input
               type="text"
               name="name"
@@ -208,8 +222,6 @@ function Signup() {
               autoComplete="off"
               required
             />
-
-            {/* EMAIL */}
 
             <input
               type="email"
@@ -221,12 +233,14 @@ function Signup() {
               required
             />
 
-            {/* PASSWORD */}
-
             <div className="password-box">
 
               <input
-                type={showPassword ? "text" : "password"}
+                type={
+                  showPassword
+                    ? "text"
+                    : "password"
+                }
                 name="password"
                 placeholder="Password"
                 value={form.password}
@@ -238,7 +252,9 @@ function Signup() {
               <span
                 className="eye-icon"
                 onClick={() =>
-                  setShowPassword(!showPassword)
+                  setShowPassword(
+                    !showPassword
+                  )
                 }
               >
 
@@ -249,8 +265,6 @@ function Signup() {
               </span>
 
             </div>
-
-            {/* BUTTON */}
 
             <button
               type="submit"
@@ -282,21 +296,27 @@ function Signup() {
 
             <div className="google-login-wrapper">
               <GoogleLogin
-                onSuccess={handleGoogleLogin}
-                onError={() => console.log("Google Login Failed")}
+                onSuccess={
+                  handleGoogleLogin
+                }
+                onError={() =>
+                  toast.error(
+                    "Google Login Failed"
+                  )
+                }
                 width="350"
               />
             </div>
           </div>
-
-          {/* LOGIN */}
 
           <p className="login-text">
 
             Already have an account?{" "}
 
             <span
-              onClick={() => navigate("/login")}
+              onClick={() =>
+                navigate("/login")
+              }
             >
               Login
             </span>
