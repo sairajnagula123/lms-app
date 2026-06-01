@@ -34,26 +34,87 @@ function Certificates() {
   }, []);
 
   const downloadPDF = (cert) => {
-    const doc = new jsPDF();
+    const doc = new jsPDF("landscape");
 
-    doc.setFontSize(22);
-    doc.text("Certificate of Completion", 45, 40);
+    // Border
+    doc.rect(10, 10, 277, 190);
 
-    doc.setFontSize(14);
-    doc.text(`This certifies that`, 20, 70);
-    doc.text(`${cert.userEmail}`, 20, 85);
-
-    doc.text(`has successfully completed the course`, 20, 105);
-
-    doc.text(`"${cert.courseTitle}"`, 20, 120);
-
+    // LMS Name
+    doc.setFontSize(28);
     doc.text(
-      `Completed on: ${new Date(cert.completedAt).toDateString()}`,
-      20,
-      145
+      "LMS PLATFORM",
+      105,
+      30
     );
 
-    doc.save(`${cert.courseTitle}_certificate.pdf`);
+    // Certificate Title
+    doc.setFontSize(24);
+    doc.text(
+      "CERTIFICATE OF COMPLETION",
+      75,
+      50
+    );
+
+    // Body
+    doc.setFontSize(16);
+    doc.text(
+      "This is to certify that",
+      105,
+      75
+    );
+
+    // Student Name
+    doc.setFontSize(26);
+    doc.text(
+      cert.userName,
+      105,
+      95
+    );
+
+    // Course
+    doc.setFontSize(16);
+    doc.text(
+      "has successfully completed the course",
+      80,
+      115
+    );
+
+    doc.setFontSize(22);
+    doc.text(
+      cert.courseTitle,
+      95,
+      130
+    );
+
+    // Date
+    doc.setFontSize(14);
+    doc.text(
+      `Date: ${new Date(
+        cert.completedAt
+      ).toDateString()}`,
+      20,
+      170
+    );
+
+    // Certificate ID
+    doc.text(
+      `Certificate ID: ${cert._id.slice(
+        -8
+      )}`,
+      20,
+      180
+    );
+
+    // Signature
+    doc.text(
+      "Authorized Signature",
+      210,
+      170
+    );
+
+    doc.save(
+      `${cert.courseTitle}_certificate.pdf`
+    );
   };
 
   if (loading) {

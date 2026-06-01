@@ -155,12 +155,12 @@ function Quiz() {
           await axios.post(
             `${API_URL}/api/certificates/generate`,
             {
+              userName:
+                user?.name,
               userEmail:
                 user?.email,
-
               courseTitle:
-                courseTitle ||
-                "Untitled Course",
+                courseTitle,
             }
           );
 

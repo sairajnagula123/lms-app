@@ -3,22 +3,20 @@ const Certificate = require("../models/Certificate");
 // GENERATE CERTIFICATE
 exports.generateCertificate = async (req, res) => {
   try {
-    const { userEmail, courseTitle } =
-      req.body;
+    const {
+      userName,
+      userEmail,
+      courseTitle,
+    } = req.body;
 
-    const existing =
-      await Certificate.findOne({
-        userEmail,
-        courseTitle,
-      });
+    const cert = new Certificate({
+      userName,
+      userEmail,
+      courseTitle,
+      completedAt: new Date(),
+    });
 
-    if (!existing) {
-      await Certificate.create({
-        userEmail,
-        courseTitle,
-        completedAt: new Date(),
-      });
-    }
+    await cert.save();
 
     res.json({
       message:
