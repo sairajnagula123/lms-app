@@ -87,17 +87,39 @@ function BuyCourse() {
           course.title,
 
         handler: async function (response) {
-            await axios.post(
-              `${API_URL}/api/payment/verify-payment`,
-              {
-                ...response,
-                userId: user._id,
-                courseId: course._id,
-                amount: course.price,
-              }
+          try {
+
+            const verifyRes =
+              await axios.post(
+                `${API_URL}/api/payment/verify-payment`,
+                {
+                  ...response,
+                  userId: user._id,
+                  courseId: course._id,
+                  amount: course.price,
+                }
+              );
+
+            if (verifyRes.data.success) {
+
+              alert(
+                "Course Purchased Successfully"
+              );
+
+              window.location.href =
+                `/course/${course._id}`;
+
+            }
+
+          } catch (err) {
+
+            console.error(err);
+
+            alert(
+              "Payment succeeded but enrollment failed"
             );
 
-            alert("Course Purchased Successfully");
+          }
         },
       };
 

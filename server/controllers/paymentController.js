@@ -109,6 +109,18 @@ exports.verifyPayment =
         amount,
       });
 
+      console.log(
+        "ENROLLMENT SAVED"
+      );
+
+      console.log({
+        userId,
+        courseId,
+        paymentId:
+          razorpay_payment_id,
+        amount,
+      });
+
       res.json({
         success: true,
       });
