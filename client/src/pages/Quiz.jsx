@@ -27,9 +27,7 @@ function Quiz() {
   useEffect(() => {
 
     const fetchQuiz = async () => {
-
       try {
-
         setLoading(true);
 
         const res = await axios.get(
@@ -40,8 +38,12 @@ function Quiz() {
 
         if (res.data.length > 0) {
 
+          const courseRes = await axios.get(
+            `${API_URL}/api/courses/${courseId}`
+          );
+
           setCourseTitle(
-            res.data[0].courseTitle || ""
+            courseRes.data.title
           );
 
         }
@@ -53,7 +55,10 @@ function Quiz() {
       } catch (err) {
 
         console.error(err);
-        setError("Failed to load quiz");
+
+        setError(
+          "Failed to load quiz"
+        );
 
       } finally {
 
