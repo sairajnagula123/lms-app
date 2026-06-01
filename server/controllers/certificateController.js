@@ -9,6 +9,20 @@ exports.generateCertificate = async (req, res) => {
       courseTitle,
     } = req.body;
 
+    // Check if certificate already exists
+    const existingCertificate =
+      await Certificate.findOne({
+        userEmail,
+        courseTitle,
+      });
+
+    if (existingCertificate) {
+      return res.status(200).json({
+        message:
+          "Certificate already exists.",
+      });
+    }
+
     const cert = new Certificate({
       userName,
       userEmail,
@@ -18,15 +32,20 @@ exports.generateCertificate = async (req, res) => {
 
     await cert.save();
 
-    res.json({
+    res.status(201).json({
       message:
         "Certificate generated successfully.",
     });
+
   } catch (err) {
+
+    console.error(err);
+
     res.status(500).json({
       message:
         "Error generating certificate.",
     });
+
   }
 };
 
@@ -36,6 +55,7 @@ exports.getCertificates = async (
   res
 ) => {
   try {
+
     const certs =
       await Certificate.find({
         userEmail:
@@ -43,10 +63,13 @@ exports.getCertificates = async (
       });
 
     res.json(certs);
+
   } catch (err) {
+
     res.status(500).json({
       message:
         "Error fetching certificates.",
     });
+
   }
 };
