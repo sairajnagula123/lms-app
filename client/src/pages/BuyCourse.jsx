@@ -67,9 +67,7 @@ function BuyCourse() {
 
       const options = {
 
-        key:
-          process.env
-            .REACT_APP_RAZORPAY_KEY_ID,
+        key: "rzp_test_SwEtTRS8E3wn9r", // paste your actual Razorpay Test Key ID
 
         amount:
           data.order.amount,
@@ -86,28 +84,19 @@ function BuyCourse() {
         description:
           course.title,
 
-        handler:
-          async function (
-            response
-          ) {
-
+        handler: async function (response) {
             await axios.post(
               `${API_URL}/api/payment/verify-payment`,
               {
                 ...response,
-                userId:
-                  user._id,
-                courseId:
-                  course._id,
-                amount:
-                  course.price,
+                userId: user._id,
+                courseId: course._id,
+                amount: course.price,
               }
             );
 
-            alert(
-              "Course Purchased Successfully"
-            );
-          },
+            alert("Course Purchased Successfully");
+        },
       };
 
       const paymentObject =
