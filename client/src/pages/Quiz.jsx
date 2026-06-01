@@ -19,6 +19,7 @@ function Quiz() {
 
   const [score, setScore] = useState(0);
   const [showResult, setShowResult] = useState(false);
+  const [quizCompleted, setQuizCompleted] = useState(false);
 
   const API_URL =
     process.env.REACT_APP_API_URL;
@@ -136,6 +137,7 @@ function Quiz() {
 
       setScore(finalScore);
       setShowResult(true);
+      setQuizCompleted(true);
 
       if (
         finalScore >=
@@ -248,17 +250,18 @@ function Quiz() {
                     >
 
                       <input
-                        type="radio"
-                        name={q._id}
-                        value={opt}
-                        onChange={() =>
-                          handleSelect(
-                            q._id,
-                            opt
-                          )
-                        }
-                        required
-                      />
+                      type="radio"
+                      name={q._id}
+                      value={opt}
+                      onChange={() =>
+                        handleSelect(
+                          q._id,
+                          opt
+                        )
+                      }
+                      disabled={quizCompleted}
+                      required
+                    />
 
                       <span className="option-label">
 
@@ -285,7 +288,10 @@ function Quiz() {
         <button
           className="quiz-submit"
           type="submit"
-          disabled={submitting}
+          disabled={
+            submitting ||
+            quizCompleted
+          }
         >
 
           {submitting
@@ -313,11 +319,13 @@ function Quiz() {
             </div>
 
             <button
-              onClick={() =>
-                setShowResult(false)
-              }
+              onClick={() => {
+                window.location.replace(
+                  "/courses"
+                );
+              }}
             >
-              Close
+              Back to Courses
             </button>
 
           </div>
