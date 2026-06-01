@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 import "../styles/Quiz.css";
 
@@ -94,19 +95,27 @@ function Quiz() {
   }, [timeLeft, loading]);
 
   useEffect(() => {
-
     if (
       timeLeft === 0 &&
-      questions.length > 0
+      questions.length > 0 &&
+      !quizCompleted
     ) {
 
-      alert(
-        "Time Up! Submit your quiz."
+      toast.warning(
+        "⏰ Time Up! Quiz submitted automatically."
       );
+
+      handleSubmit({
+        preventDefault: () => {},
+      });
 
     }
 
-  }, [timeLeft, questions]);
+  }, [
+    timeLeft,
+    questions,
+    quizCompleted,
+  ]);
 
   const handleSelect =
     (qId, answer) => {
@@ -118,68 +127,77 @@ function Quiz() {
 
     };
 
-  const handleSubmit =
-    async (e) => {
-
+  const handleSubmit = async (e) => {
+    if (e?.preventDefault) {
       e.preventDefault();
+    }
 
-      setSubmitting(true);
+    if (quizCompleted) return;
 
-      let finalScore = 0;
+    setSubmitting(true);
 
-      questions.forEach((q) => {
+    let finalScore = 0;
 
-        if (
-          answers[q._id] ===
-          q.correctAnswer
-        ) {
-
-          finalScore++;
-
-        }
-
-      });
-
-      setScore(finalScore);
-      setShowResult(true);
-      setQuizCompleted(true);
+    questions.forEach((q) => {
 
       if (
-        finalScore >=
-        Math.ceil(
-          questions.length / 2
-        )
+        answers[q._id] ===
+        q.correctAnswer
       ) {
+        finalScore++;
+      }
 
-        try {
+    });
 
-          const user = JSON.parse(
-            localStorage.getItem("user")
-          );
+    setScore(finalScore);
+    setShowResult(true);
+    setQuizCompleted(true);
 
-          await axios.post(
-            `${API_URL}/api/certificates/generate`,
-            {
-              userName:
-                user?.name,
-              userEmail:
-                user?.email,
-              courseTitle:
-                courseTitle,
-            }
-          );
+    toast.success(
+      `Quiz Submitted! Score: ${finalScore}/${questions.length}`
+    );
 
-        } catch (err) {
+    if (
+      finalScore >=
+      Math.ceil(
+        questions.length / 2
+      )
+    ) {
 
-          console.error(err);
+      try {
 
-        }
+        const user = JSON.parse(
+          localStorage.getItem("user")
+        );
+
+        await axios.post(
+          `${API_URL}/api/certificates/generate`,
+          {
+            userName: user?.name,
+            userEmail: user?.email,
+            courseTitle: courseTitle,
+          }
+        );
+
+        toast.success(
+          "Certificate Generated Successfully!"
+        );
+
+      } catch (err) {
+
+        console.error(err);
+
+        toast.error(
+          "Failed to generate certificate"
+        );
 
       }
 
-      setSubmitting(false);
+    }
 
-    };
+    setSubmitting(false);
+
+  };
 
   if (loading) {
 
