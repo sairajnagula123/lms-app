@@ -58,6 +58,11 @@ function BuyCourse() {
           )
         );
 
+      if (!user) {
+        alert("Please login again");
+        return;
+      }
+
       const { data } =
         await axios.post(
           `${API_URL}/api/payment/create-order`,

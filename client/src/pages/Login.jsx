@@ -84,6 +84,11 @@ function Login() {
           res.data.role
         );
 
+        localStorage.setItem(
+          "user",
+          JSON.stringify(res.data.user)
+        );
+
         setTimeout(() => {
 
           navigate("/");
@@ -136,6 +141,11 @@ function Login() {
       localStorage.setItem(
         "role",
         res.data.role
+      );
+
+      localStorage.setItem(
+        "user",
+        JSON.stringify(res.data.user)
       );
 
       toast.success(

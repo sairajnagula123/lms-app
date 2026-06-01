@@ -148,7 +148,7 @@ exports.googleLogin = async (req, res) => {
       token,
       role: user.role,
       user: {
-        id: user._id,
+        id: user.id,
         name: user.name,
         email: user.email,
       },
