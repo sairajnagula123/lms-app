@@ -99,7 +99,7 @@ function BuyCourse() {
                 `${API_URL}/api/payment/verify-payment`,
                 {
                   ...response,
-                  userId: user._id,
+                  userId: user.id,
                   courseId: course._id,
                   amount: course.price,
                 }
