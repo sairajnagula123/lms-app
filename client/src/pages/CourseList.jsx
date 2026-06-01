@@ -160,9 +160,7 @@ function CourseList() {
         {courses.map(
           (course) => (
             <div
-              key={
-                course._id
-              }
+              key={course._id}
               className="course-card"
             >
               <div className="course-image">
@@ -171,23 +169,17 @@ function CourseList() {
                     course.imageUrl ||
                     "https://images.unsplash.com/photo-1516321318423-f06f85e504b3"
                   }
-                  alt={
-                    course.title
-                  }
+                  alt={course.title}
                 />
               </div>
 
               <div className="course-content">
                 <div className="course-title">
-                  {
-                    course.title
-                  }
+                  {course.title}
                 </div>
 
                 <div className="course-desc">
-                  {
-                    course.description
-                  }
+                  {course.description}
                 </div>
 
                 <div className="course-buttons">
@@ -214,21 +206,12 @@ function CourseList() {
                       </Link>
                     </>
                   ) : (
-                    <>
-                      <Link
-                        to={`/buy-course/${course._id}`}
-                        className="course-button view"
-                      >
-                        Buy Course
-                      </Link>
-
-                      <button
-                        className="course-button quiz disabled"
-                        disabled
-                      >
-                        Buy First
-                      </button>
-                    </>
+                    <Link
+                      to={`/buy-course/${course._id}`}
+                      className="course-button buy"
+                    >
+                      Buy Course
+                    </Link>
                   )}
                 </div>
               </div>
