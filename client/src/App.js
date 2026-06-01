@@ -19,6 +19,7 @@ import CourseViewer from "./pages/CourseViewer";
 import LiveClasses from "./pages/LiveClasses";
 import LiveClassUpload from "./pages/LiveClassUpload";
 import BuyCourse from "./pages/BuyCourse";
+import LiveClassRoom from "./pages/LiveClassRoom";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
@@ -161,6 +162,11 @@ function App() {
           <Route
             path="/buy-course/:id"
             element={<BuyCourse />}
+          />
+
+          <Route
+            path="/liveclassroom/:roomId"
+            element={<LiveClassRoom />}
           />
 
         </Routes>
