@@ -63,50 +63,68 @@ exports.createOrder = async (req, res) => {
   }
 };
 
-exports.verifyPayment =
-  async (req, res) => {
-    try {
+exports.verifyPayment = async (req, res) => {
+  try {
 
-      const {
-        razorpay_order_id,
-        razorpay_payment_id,
-        razorpay_signature,
-        courseId,
-        userId,
-        amount,
-      } = req.body;
+    console.log("VERIFY PAYMENT HIT");
+    console.log("REQ BODY:", req.body);
 
-      const generatedSignature =
-        crypto
-          .createHmac(
-            "sha256",
-            process.env
-              .RAZORPAY_KEY_SECRET
-          )
-          .update(
-            razorpay_order_id +
-              "|" +
-              razorpay_payment_id
-          )
-          .digest("hex");
+    const {
+      razorpay_order_id,
+      razorpay_payment_id,
+      razorpay_signature,
+      courseId,
+      userId,
+      amount,
+    } = req.body;
 
-      if (
-        generatedSignature !==
-        razorpay_signature
-      ) {
-        return res.status(400).json({
-          success: false,
-          message:
-            "Payment verification failed",
-        });
-      }
+    console.log("USER ID:", userId);
+    console.log("COURSE ID:", courseId);
+    console.log("PAYMENT ID:", razorpay_payment_id);
 
-      console.log("VERIFY PAYMENT BODY:");
-      console.log(req.body);
+    const generatedSignature =
+      crypto
+        .createHmac(
+          "sha256",
+          process.env.RAZORPAY_KEY_SECRET
+        )
+        .update(
+          razorpay_order_id +
+            "|" +
+            razorpay_payment_id
+        )
+        .digest("hex");
 
-      console.log("USER ID:", userId);
-      console.log("COURSE ID:", courseId);
+    console.log(
+      "GENERATED SIGNATURE:",
+      generatedSignature
+    );
 
+    console.log(
+      "RAZORPAY SIGNATURE:",
+      razorpay_signature
+    );
+
+    if (
+      generatedSignature !==
+      razorpay_signature
+    ) {
+      console.log(
+        "SIGNATURE VERIFICATION FAILED"
+      );
+
+      return res.status(400).json({
+        success: false,
+        message:
+          "Payment verification failed",
+      });
+    }
+
+    console.log(
+      "SIGNATURE VERIFIED SUCCESSFULLY"
+    );
+
+    const enrollment =
       await Enrollment.create({
         userId,
         courseId,
@@ -115,32 +133,33 @@ exports.verifyPayment =
         amount,
       });
 
-      console.log(
-        "ENROLLMENT SAVED"
-      );
+    console.log(
+      "ENROLLMENT SAVED"
+    );
 
-      console.log({
-        userId,
-        courseId,
-        paymentId:
-          razorpay_payment_id,
-        amount,
-      });
+    console.log(
+      "ENROLLMENT:",
+      enrollment
+    );
 
-      res.json({
-        success: true,
-      });
+    res.json({
+      success: true,
+      message:
+        "Enrollment successful",
+    });
 
-    } catch (err) {
+  } catch (err) {
 
-      console.log(
-        "VERIFY PAYMENT ERROR:",
-        err
-      );
+    console.log(
+      "VERIFY PAYMENT ERROR:"
+    );
 
-      res.status(500).json({
-        message: err.message,
-      });
+    console.log(err);
 
-    }
-  };
+    res.status(500).json({
+      success: false,
+      message: err.message,
+    });
+
+  }
+};
