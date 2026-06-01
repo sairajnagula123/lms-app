@@ -1,90 +1,128 @@
 import { useState } from "react";
+
+import { useNavigate }
+from "react-router-dom";
+
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+
+import "../styles/Login.css";
+
 import { GoogleLogin } from "@react-oauth/google";
-import { toast } from "react-toastify";
 
-import "../styles/Signup.css";
+import {
+  FaEye,
+  FaEyeSlash,
+} from "react-icons/fa";
 
-function Signup() {
+import {
+  toast,
+} from "react-toastify";
 
-  const [showPassword, setShowPassword] = useState(false);
+/* IMAGE */
+import loginImage
+from "../assets/signup-image.png";
 
-  const [form, setForm] = useState({
-    name: "",
-    email: "",
-    password: "",
-  });
+function Login() {
 
-  const [loading, setLoading] = useState(false);
+  const navigate =
+    useNavigate();
 
-  const [error, setError] = useState("");
+  const [showPassword,
+    setShowPassword] =
+    useState(false);
 
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-
-    setForm({
-      ...form,
-      [e.target.name]: e.target.value,
+  // FORM STATE
+  const [form, setForm] =
+    useState({
+      email: "",
+      password: "",
     });
 
-  };
+  const [loading,
+    setLoading] =
+    useState(false);
 
-  const handleSubmit = async (e) => {
-
-    e.preventDefault();
-
-    setLoading(true);
-
-    setError("");
-
-    try {
-
-      const res = await axios.post(
-        "https://lms-app-cqbr.onrender.com/api/auth/signup",
-        form
-      );
-
-      toast.success(res.data.msg);
+  // INPUT CHANGE
+  const handleChange =
+    (e) => {
 
       setForm({
-        name: "",
-        email: "",
-        password: "",
+        ...form,
+
+        [e.target.name]:
+          e.target.value,
       });
+    };
 
-      navigate("/login");
+  // LOGIN
+  const handleSubmit =
+    async (e) => {
 
-    } catch (err) {
+      e.preventDefault();
 
-      console.log(err);
+      setLoading(true);
 
-      if (err.response) {
+      try {
 
-        setError(err.response.data.msg);
-        toast.error(err.response.data.msg);
+        const res =
+          await axios.post(
+            "https://lms-app-cqbr.onrender.com/api/auth/login",
+            form
+          );
 
-      } else {
+        toast.success(
+          "Login Successful"
+        );
 
-        setError("Server Error");
-        toast.error("Server Error");
+        localStorage.setItem(
+          "token",
+          res.data.token
+        );
 
+        localStorage.setItem(
+          "role",
+          res.data.role
+        );
+
+        localStorage.setItem(
+          "user",
+          JSON.stringify(res.data.user)
+        );
+
+        setTimeout(() => {
+
+          navigate("/");
+
+          window.location.reload();
+
+        }, 1500);
+
+      } catch (err) {
+
+        console.log(err);
+
+        if (err.response) {
+
+          toast.error(
+            err.response.data.msg
+          );
+
+        } else {
+
+          toast.error(
+            "Server Error"
+          );
+        }
+
+      } finally {
+
+        setLoading(false);
       }
-
-    } finally {
-
-      setLoading(false);
-
-    }
-
-  };
+    };
 
   const handleGoogleLogin = async (
     credentialResponse
   ) => {
-
     try {
 
       const res = await axios.post(
@@ -105,8 +143,13 @@ function Signup() {
         res.data.role
       );
 
+      localStorage.setItem(
+        "user",
+        JSON.stringify(res.data.user)
+      );
+
       toast.success(
-        "Google Login Successful"
+        "Login Successful"
       );
 
       navigate("/");
@@ -122,108 +165,68 @@ function Signup() {
       );
 
     }
-
   };
 
   return (
 
-    <div className="signup-container">
+    <div className="login-container">
 
-      {/* LEFT SIDE */}
+      {/* LEFT */}
+      <div className="login-left">
 
-      <div className="signup-left">
-
-        <div className="overlay">
+        <div className="login-content">
 
           <h1>MyLMS</h1>
 
           <h2>
-            Start Your <br />
-            Learning Journey
+            Welcome Back
           </h2>
 
           <p>
-            Join thousands of learners and explore
-            courses anytime anywhere.
+            Continue your learning journey
+            with interactive courses and
+            live classes.
           </p>
-
-          <div className="feature">
-
-            <span>📚</span>
-
-            <div>
-              <h4>Expert Instructors</h4>
-              <p>Learn from the best mentors</p>
-            </div>
-
-          </div>
-
-          <div className="feature">
-
-            <span>🎥</span>
-
-            <div>
-              <h4>Live Classes</h4>
-              <p>Interactive live sessions</p>
-            </div>
-
-          </div>
-
-          <div className="feature">
-
-            <span>🏆</span>
-
-            <div>
-              <h4>Get Certified</h4>
-              <p>Boost your career skills</p>
-            </div>
-
-          </div>
 
         </div>
 
+        <img
+          src={loginImage}
+          alt="login"
+          className="login-image"
+        />
+
       </div>
 
-      {/* RIGHT SIDE */}
+      {/* RIGHT */}
+      <div className="login-right">
 
-      <div className="signup-right">
+        <div className="login-card">
 
-        <div className="signup-card">
-
-          <h1>Create Account</h1>
+          <h1>Login</h1>
 
           <p className="subtitle">
-            Fill your details to get started
+            Enter your credentials
+            to continue
           </p>
 
-          {error && (
-            <p className="error">
-              {error}
-            </p>
-          )}
+          <form
+            onSubmit={handleSubmit}
+            autoComplete="on"
+          >
 
-          <form onSubmit={handleSubmit}>
-
-            <input
-              type="text"
-              name="name"
-              placeholder="Full Name"
-              value={form.name}
-              onChange={handleChange}
-              autoComplete="off"
-              required
-            />
-
+            {/* EMAIL */}
             <input
               type="email"
               name="email"
               placeholder="Email Address"
               value={form.email}
               onChange={handleChange}
-              autoComplete="off"
+              autoComplete="email"
               required
             />
 
+            {/* PASSWORD */}
             <div className="password-box">
 
               <input
@@ -236,7 +239,8 @@ function Signup() {
                 placeholder="Password"
                 value={form.password}
                 onChange={handleChange}
-                autoComplete="off"
+                autoComplete="current-password"
+                spellCheck="false"
                 required
               />
 
@@ -257,26 +261,27 @@ function Signup() {
 
             </div>
 
+            {/* BUTTON */}
             <button
               type="submit"
               disabled={loading}
             >
 
               {loading
-                ? "Signing Up..."
-                : "Sign Up"}
+                ? "Logging In..."
+                : "Login"}
 
             </button>
 
           </form>
 
           <div
+
             style={{
               marginTop: "20px",
               textAlign: "center",
             }}
           >
-
             <p
               style={{
                 marginBottom: "10px",
@@ -287,33 +292,25 @@ function Signup() {
             </p>
 
             <div className="google-login-wrapper">
-
               <GoogleLogin
-                onSuccess={
-                  handleGoogleLogin
-                }
-                onError={() =>
-                  toast.error(
-                    "Google Login Failed"
-                  )
-                }
+                onSuccess={handleGoogleLogin}
+                onError={() => console.log("Google Login Failed")}
                 width="350"
               />
-
             </div>
-
           </div>
 
-          <p className="login-text">
+          {/* SIGNUP */}
+          <p className="signup-text">
 
-            Already have an account?{" "}
+            New here?{" "}
 
             <span
               onClick={() =>
-                navigate("/login")
+                navigate("/signup")
               }
             >
-              Login
+              Create Account
             </span>
 
           </p>
@@ -323,9 +320,7 @@ function Signup() {
       </div>
 
     </div>
-
   );
-
 }
 
-export default Signup;
+export default Login;
