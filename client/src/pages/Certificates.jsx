@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import jsPDF from "jspdf";
+import "../styles/Certificates.css"
 
 function Certificates() {
   const [certs, setCerts] = useState([]);
@@ -151,36 +152,66 @@ function Certificates() {
   }
 
   return (
-    <div style={{ padding: "30px" }}>
-      <h2>Your Certificates</h2>
+    <div className="certificates-container">
+      <h2 className="certificates-title">
+        🎓 Your Certificates
+      </h2>
 
       {certs.length === 0 ? (
-        <p>No certificates found.</p>
+        <div className="empty-certificates">
+          No certificates found.
+        </div>
       ) : (
-        certs.map((cert, i) => (
-          <div
-            key={i}
-            style={{
-              marginBottom: "20px",
-              border: "1px solid #ccc",
-              padding: "15px",
-              borderRadius: "8px",
-            }}
-          >
-            <p>
-              <strong>Course:</strong> {cert.courseTitle}
-            </p>
+        <div className="certificates-grid">
 
-            <p>
-              <strong>Date:</strong>{" "}
-              {new Date(cert.completedAt).toDateString()}
-            </p>
+          {certs.map((cert, i) => (
+            <div
+              key={i}
+              className="certificate-card"
+            >
 
-            <button onClick={() => downloadPDF(cert)}>
-              Download Certificate
-            </button>
-          </div>
-        ))
+              <div className="certificate-header">
+                <span className="certificate-icon">
+                  🏆
+                </span>
+
+                <div className="certificate-course">
+                  {cert.courseTitle}
+                </div>
+              </div>
+
+              <div className="certificate-info">
+                <p>
+                  <strong>Date:</strong>{" "}
+                  {new Date(
+                    cert.completedAt
+                  ).toDateString()}
+                </p>
+
+                <p>
+                  <strong>Student:</strong>{" "}
+                  {cert.userName}
+                </p>
+
+                <p>
+                  <strong>ID:</strong>{" "}
+                  {cert._id?.slice(-8)}
+                </p>
+              </div>
+
+              <button
+                className="download-btn"
+                onClick={() =>
+                  downloadPDF(cert)
+                }
+              >
+                📥 Download Certificate
+              </button>
+
+            </div>
+          ))}
+
+        </div>
       )}
     </div>
   );
