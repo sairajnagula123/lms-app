@@ -101,6 +101,12 @@ exports.verifyPayment =
         });
       }
 
+      console.log("VERIFY PAYMENT BODY:");
+      console.log(req.body);
+
+      console.log("USER ID:", userId);
+      console.log("COURSE ID:", courseId);
+
       await Enrollment.create({
         userId,
         courseId,
