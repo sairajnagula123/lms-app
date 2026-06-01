@@ -19,4 +19,14 @@ router.post(
   verifyPayment
 );
 
+router.get(
+  "/test",
+  (req, res) => {
+    res.json({
+      message:
+        "Payment route working",
+    });
+  }
+);
+
 module.exports = router;

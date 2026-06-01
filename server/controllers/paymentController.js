@@ -10,18 +10,19 @@ const Course =
 const Enrollment =
   require("../models/Enrollment");
 
-const razorpay =
-  new Razorpay({
-    key_id:
-      process.env.RAZORPAY_KEY_ID,
-    key_secret:
-      process.env
-        .RAZORPAY_KEY_SECRET,
-  });
-
 exports.createOrder =
   async (req, res) => {
     try {
+
+      const razorpay =
+        new Razorpay({
+          key_id:
+            process.env.RAZORPAY_KEY_ID,
+          key_secret:
+            process.env
+              .RAZORPAY_KEY_SECRET,
+        });
+
       const { courseId } =
         req.body;
 
@@ -49,16 +50,25 @@ exports.createOrder =
         order,
         course,
       });
+
     } catch (err) {
+
+      console.log(
+        "CREATE ORDER ERROR:",
+        err
+      );
+
       res.status(500).json({
         message: err.message,
       });
+
     }
   };
 
 exports.verifyPayment =
   async (req, res) => {
     try {
+
       const {
         razorpay_order_id,
         razorpay_payment_id,
@@ -104,9 +114,17 @@ exports.verifyPayment =
       res.json({
         success: true,
       });
+
     } catch (err) {
+
+      console.log(
+        "VERIFY PAYMENT ERROR:",
+        err
+      );
+
       res.status(500).json({
         message: err.message,
       });
+
     }
   };
