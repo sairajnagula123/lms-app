@@ -9,7 +9,7 @@ import { useParams } from "react-router-dom";
 
 import loadRazorpay from "../utils/loadRazorpay";
 
-import "./BuyCourse.css";
+import "../styles/BuyCourse.css";
 
 function BuyCourse() {
 
