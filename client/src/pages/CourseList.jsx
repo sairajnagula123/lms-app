@@ -102,8 +102,11 @@ function CourseList() {
           >
             <div className="course-image">
               <img
-                src="https://images.unsplash.com/photo-1516321318423-f06f85e504b3"
-                alt="course"
+                src={
+                  course.imageUrl ||
+                  "https://images.unsplash.com/photo-1516321318423-f06f85e504b3"
+                }
+                alt={course.title}
               />
             </div>
 
@@ -118,11 +121,15 @@ function CourseList() {
 
               <div className="course-buttons">
                 {/* OPEN COURSE PAGE */}
+                <div className="course-price">
+                  ₹{course.price}
+                </div>
+
                 <Link
-                  to={`/course/${course._id}`}
+                  to={`/buy-course/${course._id}`}
                   className="course-button view"
                 >
-                  Open Course
+                  Buy Course
                 </Link>
 
                 {/* QUIZ */}

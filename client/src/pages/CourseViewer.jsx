@@ -4,7 +4,6 @@ import axios from "axios";
 import "../styles/CourseViewer.css";
 
 function CourseViewer() {
-
   const { id } = useParams();
 
   const [course, setCourse] =
@@ -13,56 +12,125 @@ function CourseViewer() {
   const [activeSection, setActiveSection] =
     useState("video");
 
-  useEffect(() => {
+  const [hasAccess, setHasAccess] =
+    useState(false);
 
+  const [checking, setChecking] =
+    useState(true);
+
+  useEffect(() => {
     const fetchCourse =
       async () => {
-
         try {
-
           const API_URL =
             process.env.REACT_APP_API_URL;
 
-          const res =
+          const user =
+            JSON.parse(
+              localStorage.getItem(
+                "user"
+              )
+            );
+
+          const courseRes =
             await axios.get(
               `${API_URL}/api/courses/${id}`
             );
 
-          setCourse(res.data);
+          setCourse(
+            courseRes.data
+          );
 
+          if (!user) {
+            setChecking(false);
+            return;
+          }
+
+          const enrollmentRes =
+            await axios.get(
+              `${API_URL}/api/enrollments/check/${id}/${user._id}`
+            );
+
+          setHasAccess(
+            enrollmentRes.data
+              .enrolled
+          );
         } catch (err) {
-
           console.error(err);
+        } finally {
+          setChecking(false);
         }
       };
 
     fetchCourse();
-
   }, [id]);
 
-  // LOADING
-  if (!course) {
+  if (checking) {
+    return (
+      <h2
+        style={{
+          textAlign:
+            "center",
+          marginTop:
+            "50px",
+        }}
+      >
+        Checking Access...
+      </h2>
+    );
+  }
 
+  if (!course) {
     return <h1>Loading...</h1>;
   }
 
-  return (
+  if (!hasAccess) {
+    return (
+      <div
+        style={{
+          textAlign:
+            "center",
+          padding: "50px",
+        }}
+      >
+        <h2>
+          🔒 Paid Course
+        </h2>
 
+        <p>
+          Purchase this
+          course to access
+          videos and PDFs.
+        </p>
+
+        <h3>
+          ₹{course.price}
+        </h3>
+      </div>
+    );
+  }
+
+  return (
     <div className="lms-layout">
 
       {/* SIDEBAR */}
       <div className="course-sidebar">
 
-        <h2>LMS Course</h2>
+        <h2>
+          LMS Course
+        </h2>
 
         <div
           className={`lesson-item ${
-            activeSection === "video"
+            activeSection ===
+            "video"
               ? "active"
               : ""
           }`}
           onClick={() =>
-            setActiveSection("video")
+            setActiveSection(
+              "video"
+            )
           }
         >
           🎥 Videos
@@ -70,12 +138,15 @@ function CourseViewer() {
 
         <div
           className={`lesson-item ${
-            activeSection === "pdf"
+            activeSection ===
+            "pdf"
               ? "active"
               : ""
           }`}
           onClick={() =>
-            setActiveSection("pdf")
+            setActiveSection(
+              "pdf"
+            )
           }
         >
           📄 PDF Notes
@@ -86,53 +157,66 @@ function CourseViewer() {
       {/* MAIN CONTENT */}
       <div className="course-main">
 
-        <h1>{course.title}</h1>
+        <h1>
+          {course.title}
+        </h1>
 
         <p className="course-description">
-          {course.description}
+          {
+            course.description
+          }
         </p>
 
         {/* VIDEO SECTION */}
-        {activeSection === "video" && (
-
+        {activeSection ===
+          "video" && (
           <div>
 
             <h2 className="section-title">
               Course Videos
             </h2>
 
-            {course.videoUrls?.length > 0 ? (
+            {course.videoUrls
+              ?.length > 0 ? (
 
               course.videoUrls.map(
-                (video, index) => (
-
+                (
+                  video,
+                  index
+                ) => (
                   <div
-                    key={index}
+                    key={
+                      index
+                    }
                     className="media-box"
                   >
 
                     <h3>
-                      🎥 {video.title?.replace(/\.[^/.]+$/, "")}
+                      🎥{" "}
+                      {video.title?.replace(
+                        /\.[^/.]+$/,
+                        ""
+                      )}
                     </h3>
 
-                    {/* VIDEO */}
                     <video
                       controls
                       className="video-player"
                     >
-
                       <source
-                        src={video.url}
+                        src={
+                          video.url
+                        }
                         type="video/mp4"
                       />
-
                     </video>
 
-                    {/* BUTTONS */}
                     <div className="video-buttons">
 
                       <a
-                        href={video.url}
+                        href={
+                          video.url
+                        }
                         target="_blank"
                         rel="noreferrer"
                         className="open-video-btn"
@@ -141,7 +225,9 @@ function CourseViewer() {
                       </a>
 
                       <a
-                        href={video.url}
+                        href={
+                          video.url
+                        }
                         download
                         className="download-video-btn"
                       >
@@ -157,7 +243,8 @@ function CourseViewer() {
             ) : (
 
               <div className="empty-box">
-                No videos uploaded.
+                No videos
+                uploaded.
               </div>
 
             )}
@@ -166,33 +253,42 @@ function CourseViewer() {
         )}
 
         {/* PDF SECTION */}
-        {activeSection === "pdf" && (
-
+        {activeSection ===
+          "pdf" && (
           <div>
 
             <h2 className="section-title">
               PDF Notes
             </h2>
 
-            {course.pdfUrls?.length > 0 ? (
+            {course.pdfUrls
+              ?.length > 0 ? (
 
               course.pdfUrls.map(
-                (pdf, index) => (
-
+                (
+                  pdf,
+                  index
+                ) => (
                   <div
-                    key={index}
+                    key={
+                      index
+                    }
                     className="media-box"
                   >
 
                     <h3>
-                      📄 {pdf.title}
+                      📄{" "}
+                      {
+                        pdf.title
+                      }
                     </h3>
 
                     <div className="pdf-buttons">
 
-                      {/* VIEW PDF */}
                       <a
-                        href={`https://docs.google.com/viewer?url=${encodeURIComponent(pdf.url)}&embedded=true`}
+                        href={`https://docs.google.com/viewer?url=${encodeURIComponent(
+                          pdf.url
+                        )}&embedded=true`}
                         target="_blank"
                         rel="noreferrer"
                         className="open-pdf-btn"
@@ -200,7 +296,6 @@ function CourseViewer() {
                         View PDF
                       </a>
 
-                      {/* DOWNLOAD PDF */}
                       <a
                         href={`${pdf.url}?fl_attachment=true`}
                         className="download-pdf-btn"
@@ -217,7 +312,8 @@ function CourseViewer() {
             ) : (
 
               <div className="empty-box">
-                No PDFs uploaded.
+                No PDFs
+                uploaded.
               </div>
 
             )}

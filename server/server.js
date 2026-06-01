@@ -47,6 +47,10 @@ app.use("/api/certificates", require("./routes/certificateRoutes"));
 // ✅ LIVE CLASSES ROUTE
 app.use("/api/liveclasses", require("./routes/liveClassRoutes"));
 
+app.use("/api/payment", require("./routes/paymentRoutes"));
+
+app.use("/api/enrollments", require("./routes/enrollmentRoutes"));
+
 
 // ✅ Start Server
 app.listen(PORT, () => {

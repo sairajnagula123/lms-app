@@ -19,6 +19,9 @@ function CourseUpload() {
   const [description, setDescription] =
     useState("");
 
+  const [price, setPrice] =
+    useState("");
+
   const [image, setImage] =
     useState(null);
 
@@ -93,6 +96,7 @@ function CourseUpload() {
           {
             title,
             description,
+            price,
             imageUrl,
           }
         );
@@ -103,6 +107,7 @@ function CourseUpload() {
 
       setTitle("");
       setDescription("");
+      setPrice("");
       setImage(null);
       setUploadProgress(0);
 
@@ -164,6 +169,18 @@ function CourseUpload() {
             value={description}
             onChange={(e) =>
               setDescription(
+                e.target.value
+              )
+            }
+            required
+          />
+
+          <input
+            type="number"
+            placeholder="Course Price (₹)"
+            value={price}
+            onChange={(e) =>
+              setPrice(
                 e.target.value
               )
             }

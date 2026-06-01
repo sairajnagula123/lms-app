@@ -1,19 +1,32 @@
 const Course = require("../models/Course");
 
 // CREATE COURSE
+// CREATE COURSE
 exports.createCourse = async (req, res) => {
   try {
-    const { title, description } = req.body;
+    const {
+      title,
+      description,
+      price,
+      imageUrl,
+    } = req.body;
 
-    if (!title || !description) {
+    if (
+      !title ||
+      !description ||
+      price === undefined
+    ) {
       return res.status(400).json({
-        message: "Title and Description required",
+        message:
+          "Title, Description and Price required",
       });
     }
 
     const course = new Course({
       title,
       description,
+      price,
+      imageUrl,
       videoUrls: [],
       pdfUrls: [],
     });
@@ -21,7 +34,8 @@ exports.createCourse = async (req, res) => {
     await course.save();
 
     res.status(201).json({
-      message: "Course created successfully",
+      message:
+        "Course created successfully",
       course,
     });
   } catch (err) {

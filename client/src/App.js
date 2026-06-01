@@ -18,6 +18,7 @@ import Certificates from "./pages/Certificates";
 import CourseViewer from "./pages/CourseViewer";
 import LiveClasses from "./pages/LiveClasses";
 import LiveClassUpload from "./pages/LiveClassUpload";
+import BuyCourse from "./pages/BuyCourse";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
@@ -155,6 +156,11 @@ function App() {
                 <UploadContent />
               </ProtectedRoute>
             }
+          />
+
+          <Route
+            path="/buy-course/:id"
+            element={<BuyCourse />}
           />
 
         </Routes>
