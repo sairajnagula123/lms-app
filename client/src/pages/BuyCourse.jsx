@@ -9,6 +9,8 @@ import { useParams } from "react-router-dom";
 
 import loadRazorpay from "../utils/loadRazorpay";
 
+import "./BuyCourse.css";
+
 function BuyCourse() {
 
   const { id } = useParams();
@@ -108,33 +110,45 @@ function BuyCourse() {
     };
 
   if (!course)
-    return <h2>Loading...</h2>;
+  return (
+    <h2 className="loading-text">
+      Loading...
+    </h2>
+  );
 
   return (
-    <div
-      style={{
-        padding: "40px",
-      }}
-    >
-      <h2>
-        {course.title}
-      </h2>
+    <div className="buy-course-container">
+      <div className="buy-course-card">
 
-      <p>
-        {course.description}
-      </p>
+        <img
+          src={course.thumbnail}
+          alt={course.title}
+          className="buy-course-image"
+        />
 
-      <h3>
-        ₹{course.price}
-      </h3>
+        <div className="buy-course-content">
 
-      <button
-        onClick={
-          handlePayment
-        }
-      >
-        Buy Now
-      </button>
+          <h2 className="buy-course-title">
+            {course.title}
+          </h2>
+
+          <p className="buy-course-description">
+            {course.description}
+          </p>
+
+          <h3 className="buy-course-price">
+            ₹{course.price}
+          </h3>
+
+          <button
+            className="buy-course-btn"
+            onClick={handlePayment}
+          >
+            Buy Now
+          </button>
+
+        </div>
+      </div>
     </div>
   );
 }
