@@ -246,3 +246,9 @@ body {
   }
 
 }
+
+.course-button.disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+  pointer-events: none;
+}
