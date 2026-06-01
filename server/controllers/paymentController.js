@@ -10,60 +10,58 @@ const Course =
 const Enrollment =
   require("../models/Enrollment");
 
-exports.createOrder =
-  async (req, res) => {
-    try {
+exports.createOrder = async (req, res) => {
+  try {
 
-      const razorpay =
-        new Razorpay({
-          key_id:
-            process.env.RAZORPAY_KEY_ID,
-          key_secret:
-            process.env
-              .RAZORPAY_KEY_SECRET,
-        });
+    console.log("REQ BODY:", req.body);
 
-      const { courseId } =
-        req.body;
+    const razorpay = new Razorpay({
+      key_id: process.env.RAZORPAY_KEY_ID,
+      key_secret: process.env.RAZORPAY_KEY_SECRET,
+    });
 
-      const course =
-        await Course.findById(
-          courseId
-        );
+    const { courseId } = req.body;
 
-      if (!course) {
-        return res.status(404).json({
-          message:
-            "Course not found",
-        });
-      }
+    const course = await Course.findById(courseId);
 
-      const order =
-        await razorpay.orders.create({
-          amount:
-            course.price * 100,
-          currency: "INR",
-        });
+    console.log("COURSE:", course);
 
-      res.json({
-        success: true,
-        order,
-        course,
+    if (!course) {
+      return res.status(404).json({
+        message: "Course not found",
       });
-
-    } catch (err) {
-
-      console.log(
-        "CREATE ORDER ERROR:",
-        err
-      );
-
-      res.status(500).json({
-        message: err.message,
-      });
-
     }
-  };
+
+    console.log("PRICE:", course.price);
+
+    if (!course.price || course.price <= 0) {
+      return res.status(400).json({
+        message: "Invalid course price",
+      });
+    }
+
+    const order = await razorpay.orders.create({
+      amount: course.price * 100,
+      currency: "INR",
+    });
+
+    console.log("ORDER:", order);
+
+    res.json({
+      success: true,
+      order,
+      course,
+    });
+
+  } catch (err) {
+
+    console.log("CREATE ORDER ERROR:", err);
+
+    res.status(500).json({
+      message: err.message,
+    });
+  }
+};
 
 exports.verifyPayment =
   async (req, res) => {
