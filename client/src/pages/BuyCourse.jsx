@@ -188,15 +188,6 @@ function BuyCourse() {
   return (
     <div className="buy-course-container">
       <div className="buy-course-card">
-        <img
-          src={
-            course.thumbnail
-          }
-          alt={
-            course.title
-          }
-          className="buy-course-image"
-        />
 
         <div className="buy-course-content">
           <h2 className="buy-course-title">
