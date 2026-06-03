@@ -42,11 +42,12 @@
 }
 
 /* =========================
-   INPUTS
+   INPUTS / SELECT / TEXTAREA
 ========================= */
 
 .quiz-upload-container input,
-.quiz-upload-container textarea {
+.quiz-upload-container textarea,
+.quiz-upload-container select {
   width: 100%;
   padding: 14px;
   margin-bottom: 15px;
@@ -60,6 +61,17 @@
   box-sizing: border-box;
 }
 
+/* Dropdown Styling */
+
+.quiz-upload-container select {
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  cursor: pointer;
+}
+
+/* Placeholder */
+
 .quiz-upload-container input::placeholder,
 .quiz-upload-container textarea::placeholder {
   color: var(--secondary-text);
@@ -70,7 +82,8 @@
 ========================= */
 
 .quiz-upload-container input:focus,
-.quiz-upload-container textarea:focus {
+.quiz-upload-container textarea:focus,
+.quiz-upload-container select:focus {
   border-color: #1976d2;
   box-shadow: 0px 0px 5px rgba(25, 118, 210, 0.4);
 }
