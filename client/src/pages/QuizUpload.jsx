@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import axios from "axios";
 import "../styles/QuizUpload.css";
 import { toast } from "react-toastify";
@@ -15,10 +15,28 @@ function QuizUpload() {
     ],
   });
 
+  const [courses, setCourses] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
   const API_URL = process.env.REACT_APP_API_URL;
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const res = await axios.get(
+          `${API_URL}/api/courses`
+        );
+
+        setCourses(res.data);
+      } catch (err) {
+        console.error(err);
+        toast.error("Failed to load courses");
+      }
+    };
+
+    fetchCourses();
+  }, [API_URL]);
 
   const handleCourseIdChange = (e) => {
     setForm({
@@ -27,7 +45,11 @@ function QuizUpload() {
     });
   };
 
-  const handleQuestionChange = (index, field, value) => {
+  const handleQuestionChange = (
+    index,
+    field,
+    value
+  ) => {
     const updatedQuestions = [...form.questions];
 
     updatedQuestions[index][field] = value;
@@ -148,13 +170,24 @@ function QuizUpload() {
       )}
 
       <form onSubmit={handleSubmit}>
-        <input
-          type="text"
-          placeholder="Course ID"
+        <select
           value={form.courseId}
           onChange={handleCourseIdChange}
           required
-        />
+        >
+          <option value="">
+            Select Course
+          </option>
+
+          {courses.map((course) => (
+            <option
+              key={course._id}
+              value={course._id}
+            >
+              {course.title}
+            </option>
+          ))}
+        </select>
 
         {form.questions.map((q, qIndex) => (
           <div
