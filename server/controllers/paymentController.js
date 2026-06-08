@@ -12,40 +12,75 @@ const Enrollment =
 
 exports.createOrder = async (req, res) => {
   try {
-
+    console.log("========== CREATE ORDER ==========");
     console.log("REQ BODY:", req.body);
 
+    console.log(
+      "KEY ID:",
+      process.env.RAZORPAY_KEY_ID
+    );
+
+    console.log(
+      "SECRET EXISTS:",
+      !!process.env.RAZORPAY_KEY_SECRET
+    );
+
     const razorpay = new Razorpay({
-      key_id: process.env.RAZORPAY_KEY_ID,
-      key_secret: process.env.RAZORPAY_KEY_SECRET,
+      key_id:
+        process.env.RAZORPAY_KEY_ID,
+      key_secret:
+        process.env.RAZORPAY_KEY_SECRET,
     });
 
     const { courseId } = req.body;
 
-    const course = await Course.findById(courseId);
+    console.log(
+      "COURSE ID:",
+      courseId
+    );
 
-    console.log("COURSE:", course);
+    const course =
+      await Course.findById(courseId);
+
+    console.log(
+      "COURSE:",
+      course
+    );
 
     if (!course) {
       return res.status(404).json({
-        message: "Course not found",
+        message:
+          "Course not found",
       });
     }
 
-    console.log("PRICE:", course.price);
+    console.log(
+      "PRICE:",
+      course.price
+    );
 
-    if (!course.price || course.price <= 0) {
+    if (
+      !course.price ||
+      course.price <= 0
+    ) {
       return res.status(400).json({
-        message: "Invalid course price",
+        message:
+          "Invalid course price",
       });
     }
 
-    const order = await razorpay.orders.create({
-      amount: course.price * 100,
-      currency: "INR",
-    });
+    const order =
+      await razorpay.orders.create({
+        amount:
+          course.price * 100,
+        currency: "INR",
+      });
 
-    console.log("ORDER:", order);
+    console.log(
+      "ORDER CREATED:"
+    );
+
+    console.log(order);
 
     res.json({
       success: true,
@@ -55,9 +90,26 @@ exports.createOrder = async (req, res) => {
 
   } catch (err) {
 
-    console.log("CREATE ORDER ERROR:", err);
+    console.log(
+      "========== CREATE ORDER ERROR =========="
+    );
+
+    console.log(err);
+
+    console.log(
+      "MESSAGE:",
+      err.message
+    );
+
+    if (err.error) {
+      console.log(
+        "RAZORPAY ERROR:",
+        err.error
+      );
+    }
 
     res.status(500).json({
+      success: false,
       message: err.message,
     });
   }
