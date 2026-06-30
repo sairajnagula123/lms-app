@@ -20,6 +20,7 @@ import LiveClasses from "./pages/LiveClasses";
 import LiveClassUpload from "./pages/LiveClassUpload";
 import BuyCourse from "./pages/BuyCourse";
 import LiveClassRoom from "./pages/LiveClassRoom";
+import AIAssistant from "./components/AIChat";
 
 import ProtectedRoute from "./components/ProtectedRoute";
 import Navbar from "./components/Navbar";
@@ -168,6 +169,8 @@ function App() {
             path="/liveclassroom/:roomId"
             element={<LiveClassRoom />}
           />
+
+          <Route path="/ai" element={<AIAssistant />} />
 
         </Routes>
 

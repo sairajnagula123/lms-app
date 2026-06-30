@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
+import AIChat from "../components/AIChat";
 import axios from "axios";
 import "../styles/CourseViewer.css";
 
@@ -17,6 +18,8 @@ function CourseViewer() {
 
   const [checking, setChecking] =
     useState(true);
+
+  const [showAI, setShowAI] = useState(false);
 
   useEffect(() => {
     const fetchCourse =
@@ -309,20 +312,31 @@ function CourseViewer() {
                 )
               )
 
-            ) : (
 
+              ) : (
               <div className="empty-box">
-                No PDFs
-                uploaded.
+                No PDFs uploaded.
               </div>
-
             )}
-
           </div>
         )}
 
-      </div>
+        {/* Floating AI Button */}
+        <button
+          className="ai-floating-btn"
+          onClick={() => setShowAI(true)}
+        >
+          🤖 Ask AI
+        </button>
 
+        {/* AI Chat */}
+        {showAI && (
+          <AIChat
+            courseTitle={course.title}
+            onClose={() => setShowAI(false)}
+          />
+        )}
+      </div>
     </div>
   );
 }
