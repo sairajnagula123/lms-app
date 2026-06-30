@@ -1,5 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
+import "../styles/AIChat.css";
 
 function AIChat({ courseTitle, onClose }) {
   const [question, setQuestion] = useState("");
